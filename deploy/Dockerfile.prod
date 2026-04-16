@@ -30,7 +30,8 @@ COPY broker/ ./broker/
 COPY dashboard/ ./dashboard/
 COPY scoring/ ./scoring/
 COPY live_trading/ ./live_trading/
-COPY data/models/ ./data/models/
+COPY notifications/ ./notifications/
+COPY strategy/ ./strategy/
 COPY run_autonomous.py .
 COPY main.py .
 
@@ -41,12 +42,12 @@ RUN mkdir -p /app/data /app/data/daily_reports /app/logs
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app
 
-# Expose ports: 8501 = PWA dashboard
-EXPOSE 8501
+# Expose ports: 8510 = PWA dashboard
+EXPOSE 8510
 
 # Health check via FastAPI
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD curl -f http://localhost:8501/health || exit 1
+    CMD curl -f http://localhost:8510/health || exit 1
 
 # Start both engine + dashboard
 COPY deploy/start.sh /app/start.sh
