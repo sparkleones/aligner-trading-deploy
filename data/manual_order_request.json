@@ -1,0 +1,10 @@
+{
+  "type": "manual_order",
+  "strike": 23750,
+  "option_type": "PE",
+  "side": "BUY",
+  "lots": 1,
+  "qty": 65,
+  "status": "PENDING",
+  "timestamp": "2026-04-09T09:51:29.414052"
+}

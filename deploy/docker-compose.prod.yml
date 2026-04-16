@@ -1,0 +1,80 @@
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  Aligner Trading — Production Docker Compose                                ║
+# ║  Engine + PWA Dashboard + Cloudflare Tunnel (remote access)                 ║
+# ║                                                                              ║
+# ║  Usage:                                                                      ║
+# ║    docker compose -f deploy/docker-compose.prod.yml up -d                    ║
+# ║                                                                              ║
+# ║  Access from anywhere:                                                       ║
+# ║    https://trade.yourdomain.com/live                                         ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+services:
+  # ── Trading Engine + Dashboard ─────────────────────────────────────────────
+  aligner:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.prod
+    container_name: aligner-trading
+    restart: always
+    ports:
+      - "8510:8510"   # Trading dashboard (access via http://<EC2-IP>:8510/terminal)
+    volumes:
+      - ../data:/app/data
+      - ../logs:/app/logs
+      - ../.env:/app/.env:ro   # Secrets injected at runtime, never baked into image
+    env_file:
+      - ../.env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TZ=Asia/Kolkata
+      - DASHBOARD_PORT=8510
+      - LIVE_TRADING_CONFIRMED=YES   # Bypass interactive prompt on headless AWS
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8510/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # ── Cloudflare Tunnel (free, secure remote access) ────────────────────────
+  # This gives you HTTPS access from anywhere: https://trade.yourdomain.com
+  #
+  # Setup (one-time):
+  #   1. Sign up at https://dash.cloudflare.com (free plan works)
+  #   2. Add your domain to Cloudflare
+  #   3. Go to Zero Trust > Networks > Tunnels > Create
+  #   4. Copy the tunnel token
+  #   5. Set CLOUDFLARE_TUNNEL_TOKEN in .env
+  #
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: aligner-tunnel
+    restart: always
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN:-}
+    depends_on:
+      aligner:
+        condition: service_healthy
+    profiles:
+      - tunnel  # Only start with: docker compose --profile tunnel up
+
+  # ── Watchtower (auto-update containers) ────────────────────────────────────
+  watchtower:
+    image: containrrr/watchtower
+    container_name: aligner-watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=86400  # Check daily
+      - WATCHTOWER_INCLUDE_STOPPED=true
+    profiles:
+      - auto-update

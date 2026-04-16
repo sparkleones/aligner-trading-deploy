@@ -1,0 +1,189 @@
+{
+  "V3": {
+    "version": "V3",
+    "net_pnl": 766265,
+    "return_pct": 383.1,
+    "total_trades": 42,
+    "winning_trades": 26,
+    "losing_trades": 16,
+    "win_rate": 61.9,
+    "sharpe": 18.3,
+    "profit_factor": 6.23,
+    "max_drawdown": 0,
+    "avg_win": 35109,
+    "avg_loss": -9161,
+    "final_equity": 966265,
+    "entry_type_stats": {
+      "composite": {
+        "count": 20,
+        "pnl": 470559.0,
+        "wins": 11
+      },
+      "sr_bounce_support": {
+        "count": 13,
+        "pnl": 185131.0,
+        "wins": 11
+      },
+      "sr_bounce_resistance": {
+        "count": 4,
+        "pnl": 48027.0,
+        "wins": 3
+      },
+      "sr_breakout": {
+        "count": 3,
+        "pnl": 88368.0,
+        "wins": 1
+      },
+      "gap_entry": {
+        "count": 2,
+        "pnl": -25820.0,
+        "wins": 0
+      }
+    },
+    "exit_reason_stats": {
+      "trail_pct": {
+        "count": 12,
+        "pnl": -126404.0,
+        "wins": 0
+      },
+      "time_exit": {
+        "count": 22,
+        "pnl": 903683.0,
+        "wins": 22
+      },
+      "sr_stop": {
+        "count": 4,
+        "pnl": -840.0,
+        "wins": 2
+      },
+      "eod_close": {
+        "count": 2,
+        "pnl": 6938.0,
+        "wins": 2
+      },
+      "sr_combo_trail": {
+        "count": 2,
+        "pnl": -17112.0,
+        "wins": 0
+      }
+    }
+  },
+  "V4": {
+    "version": "V4",
+    "net_pnl": 602781,
+    "return_pct": 301.4,
+    "total_trades": 50,
+    "winning_trades": 28,
+    "losing_trades": 22,
+    "win_rate": 56.0,
+    "sharpe": 11.31,
+    "profit_factor": 3.65,
+    "max_drawdown": 13.69,
+    "avg_win": 29661,
+    "avg_loss": -10352,
+    "final_equity": 802781,
+    "entry_type_stats": {
+      "composite": {
+        "count": 23,
+        "pnl": 237409.0,
+        "wins": 9
+      },
+      "sr_bounce_support": {
+        "count": 15,
+        "pnl": 124303.0,
+        "wins": 13
+      },
+      "sr_bounce_resistance": {
+        "count": 10,
+        "pnl": 256146.0,
+        "wins": 5
+      },
+      "gap_entry": {
+        "count": 1,
+        "pnl": -15293.0,
+        "wins": 0
+      },
+      "gap_zero_hero": {
+        "count": 1,
+        "pnl": 216.0,
+        "wins": 1
+      }
+    },
+    "exit_reason_stats": {
+      "trail_pct": {
+        "count": 20,
+        "pnl": -222565.0,
+        "wins": 0
+      },
+      "time_exit": {
+        "count": 19,
+        "pnl": 802993.0,
+        "wins": 19
+      },
+      "eod_close": {
+        "count": 2,
+        "pnl": 23336.0,
+        "wins": 2
+      },
+      "sr_stop": {
+        "count": 8,
+        "pnl": -1199.0,
+        "wins": 6
+      },
+      "zero_hero_time": {
+        "count": 1,
+        "pnl": 216.0,
+        "wins": 1
+      }
+    }
+  },
+  "V6": {
+    "version": "V6",
+    "net_pnl": 193587,
+    "return_pct": 96.8,
+    "total_trades": 22,
+    "winning_trades": 13,
+    "losing_trades": 9,
+    "win_rate": 59.1,
+    "sharpe": 7.83,
+    "profit_factor": 3.48,
+    "max_drawdown": 7.42,
+    "avg_win": 20890,
+    "avg_loss": -8665,
+    "final_equity": 393587,
+    "entry_type_stats": {
+      "composite": {
+        "count": 21,
+        "pnl": 201724.0,
+        "wins": 13
+      },
+      "orb_breakout_down": {
+        "count": 1,
+        "pnl": -8137.0,
+        "wins": 0
+      }
+    },
+    "exit_reason_stats": {
+      "trail_pct": {
+        "count": 2,
+        "pnl": -19970.0,
+        "wins": 0
+      },
+      "eod_close": {
+        "count": 15,
+        "pnl": 209219.0,
+        "wins": 11
+      },
+      "expiry_day_close": {
+        "count": 4,
+        "pnl": 12475.0,
+        "wins": 2
+      },
+      "time_exit": {
+        "count": 1,
+        "pnl": -8137.0,
+        "wins": 0
+      }
+    }
+  }
+}

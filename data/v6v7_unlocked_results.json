@@ -1,0 +1,536 @@
+{
+  "V6": {
+    "version": "V6",
+    "net_pnl": 254303,
+    "return_pct": 127.2,
+    "total_trades": 43,
+    "trades_per_day": 1.0,
+    "winning_trades": 24,
+    "losing_trades": 19,
+    "win_rate": 55.8,
+    "sharpe": 6.35,
+    "profit_factor": 3.26,
+    "max_drawdown": 5.5,
+    "avg_win": 15277,
+    "avg_loss": -5913,
+    "final_equity": 454303,
+    "pnl_per_trade": 5914,
+    "trail_kills": 10,
+    "time_exits": 5,
+    "eod_exits": 22,
+    "btst_count": 9,
+    "btst_pnl": 103994,
+    "zero_hero_trades": 0,
+    "zero_hero_pnl": 0,
+    "composite_score": 28.48,
+    "entry_type_stats": {
+      "orb_breakout_up": {
+        "count": 3,
+        "pnl": -6250.0,
+        "wins": 2
+      },
+      "composite": {
+        "count": 35,
+        "pnl": 204907.0,
+        "wins": 18
+      },
+      "orb_breakout_down": {
+        "count": 5,
+        "pnl": 55646.0,
+        "wins": 4
+      }
+    },
+    "exit_reason_stats": {
+      "time_exit": {
+        "count": 5,
+        "pnl": 42471.0,
+        "wins": 4
+      },
+      "eod_close": {
+        "count": 22,
+        "pnl": 203401.0,
+        "wins": 14
+      },
+      "expiry_day_close": {
+        "count": 6,
+        "pnl": 19774.0,
+        "wins": 4
+      },
+      "trail_pct": {
+        "count": 10,
+        "pnl": -11343.0,
+        "wins": 2
+      }
+    }
+  },
+  "V7": {
+    "version": "V7",
+    "net_pnl": 272123,
+    "return_pct": 136.1,
+    "total_trades": 90,
+    "trades_per_day": 1.3,
+    "winning_trades": 39,
+    "losing_trades": 51,
+    "win_rate": 43.3,
+    "sharpe": 4.66,
+    "profit_factor": 2.27,
+    "max_drawdown": 9.26,
+    "avg_win": 12452,
+    "avg_loss": -4187,
+    "final_equity": 472123,
+    "pnl_per_trade": 3024,
+    "trail_kills": 25,
+    "time_exits": 45,
+    "eod_exits": 8,
+    "btst_count": 14,
+    "btst_pnl": 152214,
+    "zero_hero_trades": 0,
+    "zero_hero_pnl": 0,
+    "composite_score": 22.97,
+    "entry_type_stats": {
+      "composite": {
+        "count": 47,
+        "pnl": 120186.0,
+        "wins": 17
+      },
+      "sr_bounce_support": {
+        "count": 12,
+        "pnl": 19157.0,
+        "wins": 5
+      },
+      "orb_breakout_up": {
+        "count": 6,
+        "pnl": 3057.0,
+        "wins": 3
+      },
+      "sr_bounce_resistance": {
+        "count": 18,
+        "pnl": 79622.0,
+        "wins": 9
+      },
+      "orb_breakout_down": {
+        "count": 7,
+        "pnl": 50101.0,
+        "wins": 5
+      }
+    },
+    "exit_reason_stats": {
+      "time_exit": {
+        "count": 45,
+        "pnl": 265063.0,
+        "wins": 26
+      },
+      "sr_stop": {
+        "count": 4,
+        "pnl": -30079.0,
+        "wins": 0
+      },
+      "eod_close": {
+        "count": 8,
+        "pnl": 42544.0,
+        "wins": 4
+      },
+      "expiry_day_close": {
+        "count": 8,
+        "pnl": 20012.0,
+        "wins": 4
+      },
+      "trail_pct": {
+        "count": 25,
+        "pnl": -25417.0,
+        "wins": 5
+      }
+    }
+  },
+  "V6_2T": {
+    "version": "V6_2T",
+    "net_pnl": 342355,
+    "return_pct": 171.2,
+    "total_trades": 82,
+    "trades_per_day": 1.2,
+    "winning_trades": 44,
+    "losing_trades": 38,
+    "win_rate": 53.7,
+    "sharpe": 5.58,
+    "profit_factor": 2.75,
+    "max_drawdown": 9.11,
+    "avg_win": 12216,
+    "avg_loss": -5136,
+    "final_equity": 542355,
+    "pnl_per_trade": 4175,
+    "trail_kills": 13,
+    "time_exits": 47,
+    "eod_exits": 5,
+    "btst_count": 12,
+    "btst_pnl": 113174,
+    "zero_hero_trades": 0,
+    "zero_hero_pnl": 0,
+    "composite_score": 26.18,
+    "entry_type_stats": {
+      "composite": {
+        "count": 54,
+        "pnl": 293316.0,
+        "wins": 28
+      },
+      "sr_bounce_support": {
+        "count": 12,
+        "pnl": 10542.0,
+        "wins": 6
+      },
+      "orb_breakout_up": {
+        "count": 6,
+        "pnl": 12112.0,
+        "wins": 4
+      },
+      "orb_breakout_down": {
+        "count": 2,
+        "pnl": 5613.0,
+        "wins": 1
+      },
+      "sr_bounce_resistance": {
+        "count": 8,
+        "pnl": 20772.0,
+        "wins": 5
+      }
+    },
+    "exit_reason_stats": {
+      "time_exit": {
+        "count": 47,
+        "pnl": 369610.0,
+        "wins": 32
+      },
+      "sr_stop": {
+        "count": 4,
+        "pnl": -30525.0,
+        "wins": 0
+      },
+      "eod_close": {
+        "count": 5,
+        "pnl": 10952.0,
+        "wins": 2
+      },
+      "expiry_day_close": {
+        "count": 13,
+        "pnl": 7583.0,
+        "wins": 6
+      },
+      "trail_pct": {
+        "count": 13,
+        "pnl": -15265.0,
+        "wins": 4
+      }
+    }
+  },
+  "V6_3T": {
+    "version": "V6_3T",
+    "net_pnl": 464805,
+    "return_pct": 232.4,
+    "total_trades": 140,
+    "trades_per_day": 1.9,
+    "winning_trades": 71,
+    "losing_trades": 69,
+    "win_rate": 50.7,
+    "sharpe": 7.79,
+    "profit_factor": 2.55,
+    "max_drawdown": 6.69,
+    "avg_win": 10767,
+    "avg_loss": -4343,
+    "final_equity": 664805,
+    "pnl_per_trade": 3320,
+    "trail_kills": 13,
+    "time_exits": 59,
+    "eod_exits": 26,
+    "btst_count": 25,
+    "btst_pnl": 170576,
+    "zero_hero_trades": 4,
+    "zero_hero_pnl": 1792,
+    "composite_score": 32.95,
+    "entry_type_stats": {
+      "sr_bounce_support": {
+        "count": 51,
+        "pnl": 66373.0,
+        "wins": 24
+      },
+      "sr_bounce_resistance": {
+        "count": 30,
+        "pnl": 87176.0,
+        "wins": 16
+      },
+      "composite": {
+        "count": 48,
+        "pnl": 284703.0,
+        "wins": 24
+      },
+      "orb_breakout_up": {
+        "count": 5,
+        "pnl": 19148.0,
+        "wins": 4
+      },
+      "orb_breakout_down": {
+        "count": 2,
+        "pnl": 5613.0,
+        "wins": 1
+      },
+      "zero_hero_expiry": {
+        "count": 4,
+        "pnl": 1792.0,
+        "wins": 2
+      }
+    },
+    "exit_reason_stats": {
+      "time_exit": {
+        "count": 59,
+        "pnl": 427660.0,
+        "wins": 39
+      },
+      "eod_close": {
+        "count": 26,
+        "pnl": 83495.0,
+        "wins": 14
+      },
+      "sr_stop": {
+        "count": 16,
+        "pnl": -83653.0,
+        "wins": 0
+      },
+      "expiry_day_close": {
+        "count": 21,
+        "pnl": 28437.0,
+        "wins": 12
+      },
+      "trail_pct": {
+        "count": 13,
+        "pnl": 12351.0,
+        "wins": 4
+      },
+      "zero_hero_stop": {
+        "count": 2,
+        "pnl": -877.0,
+        "wins": 0
+      },
+      "sr_combo_trail": {
+        "count": 1,
+        "pnl": -5277.0,
+        "wins": 0
+      },
+      "zero_hero_time": {
+        "count": 1,
+        "pnl": 115.0,
+        "wins": 1
+      },
+      "zero_hero_target": {
+        "count": 1,
+        "pnl": 2554.0,
+        "wins": 1
+      }
+    }
+  },
+  "V7_3T": {
+    "version": "V7_3T",
+    "net_pnl": 438644,
+    "return_pct": 219.3,
+    "total_trades": 152,
+    "trades_per_day": 2.1,
+    "winning_trades": 69,
+    "losing_trades": 83,
+    "win_rate": 45.4,
+    "sharpe": 7.0,
+    "profit_factor": 2.34,
+    "max_drawdown": 7.72,
+    "avg_win": 11093,
+    "avg_loss": -3937,
+    "final_equity": 638644,
+    "pnl_per_trade": 2886,
+    "trail_kills": 27,
+    "time_exits": 74,
+    "eod_exits": 16,
+    "btst_count": 31,
+    "btst_pnl": 218258,
+    "zero_hero_trades": 4,
+    "zero_hero_pnl": 1792,
+    "composite_score": 30.68,
+    "entry_type_stats": {
+      "sr_bounce_support": {
+        "count": 51,
+        "pnl": 59943.0,
+        "wins": 20
+      },
+      "sr_bounce_resistance": {
+        "count": 34,
+        "pnl": 82666.0,
+        "wins": 18
+      },
+      "composite": {
+        "count": 56,
+        "pnl": 276511.0,
+        "wins": 25
+      },
+      "orb_breakout_up": {
+        "count": 5,
+        "pnl": 9786.0,
+        "wins": 3
+      },
+      "orb_breakout_down": {
+        "count": 2,
+        "pnl": 7946.0,
+        "wins": 1
+      },
+      "zero_hero_expiry": {
+        "count": 4,
+        "pnl": 1792.0,
+        "wins": 2
+      }
+    },
+    "exit_reason_stats": {
+      "time_exit": {
+        "count": 74,
+        "pnl": 380654.0,
+        "wins": 42
+      },
+      "sr_stop": {
+        "count": 15,
+        "pnl": -81951.0,
+        "wins": 0
+      },
+      "eod_close": {
+        "count": 16,
+        "pnl": 81179.0,
+        "wins": 9
+      },
+      "trail_pct": {
+        "count": 27,
+        "pnl": 6754.0,
+        "wins": 5
+      },
+      "expiry_day_close": {
+        "count": 13,
+        "pnl": 38214.0,
+        "wins": 9
+      },
+      "sr_combo_trail": {
+        "count": 3,
+        "pnl": 12002.0,
+        "wins": 2
+      },
+      "zero_hero_stop": {
+        "count": 2,
+        "pnl": -877.0,
+        "wins": 0
+      },
+      "zero_hero_time": {
+        "count": 1,
+        "pnl": 115.0,
+        "wins": 1
+      },
+      "zero_hero_target": {
+        "count": 1,
+        "pnl": 2554.0,
+        "wins": 1
+      }
+    }
+  },
+  "V7_5T": {
+    "version": "V7_5T",
+    "net_pnl": 574317,
+    "return_pct": 287.2,
+    "total_trades": 205,
+    "trades_per_day": 2.2,
+    "winning_trades": 93,
+    "losing_trades": 112,
+    "win_rate": 45.4,
+    "sharpe": 7.04,
+    "profit_factor": 2.29,
+    "max_drawdown": 6.62,
+    "avg_win": 10967,
+    "avg_loss": -3978,
+    "final_equity": 774317,
+    "pnl_per_trade": 2802,
+    "trail_kills": 31,
+    "time_exits": 98,
+    "eod_exits": 29,
+    "btst_count": 43,
+    "btst_pnl": 267231,
+    "zero_hero_trades": 4,
+    "zero_hero_pnl": 1792,
+    "composite_score": 32.47,
+    "entry_type_stats": {
+      "sr_bounce_resistance": {
+        "count": 48,
+        "pnl": 116934.0,
+        "wins": 25
+      },
+      "composite": {
+        "count": 82,
+        "pnl": 369513.0,
+        "wins": 36
+      },
+      "sr_bounce_support": {
+        "count": 62,
+        "pnl": 84502.0,
+        "wins": 26
+      },
+      "orb_breakout_up": {
+        "count": 5,
+        "pnl": 1635.0,
+        "wins": 3
+      },
+      "orb_breakout_down": {
+        "count": 4,
+        "pnl": -59.0,
+        "wins": 1
+      },
+      "zero_hero_expiry": {
+        "count": 4,
+        "pnl": 1792.0,
+        "wins": 2
+      }
+    },
+    "exit_reason_stats": {
+      "trail_pct": {
+        "count": 31,
+        "pnl": -11591.0,
+        "wins": 5
+      },
+      "eod_close": {
+        "count": 29,
+        "pnl": 170513.0,
+        "wins": 17
+      },
+      "time_exit": {
+        "count": 98,
+        "pnl": 458861.0,
+        "wins": 55
+      },
+      "sr_combo_trail": {
+        "count": 5,
+        "pnl": -7628.0,
+        "wins": 2
+      },
+      "expiry_day_close": {
+        "count": 19,
+        "pnl": 72945.0,
+        "wins": 12
+      },
+      "sr_stop": {
+        "count": 19,
+        "pnl": -110575.0,
+        "wins": 0
+      },
+      "zero_hero_stop": {
+        "count": 2,
+        "pnl": -877.0,
+        "wins": 0
+      },
+      "zero_hero_time": {
+        "count": 1,
+        "pnl": 115.0,
+        "wins": 1
+      },
+      "zero_hero_target": {
+        "count": 1,
+        "pnl": 2554.0,
+        "wins": 1
+      }
+    }
+  }
+}

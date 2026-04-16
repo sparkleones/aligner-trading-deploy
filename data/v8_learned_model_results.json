@@ -1,0 +1,64 @@
+{
+  "summary": {
+    "net_pnl": 527278,
+    "return_pct": 263.6,
+    "total_trades": 263,
+    "trades_per_day": 2.5,
+    "win_rate": 46.4,
+    "sharpe": 6.45,
+    "profit_factor": 1.85,
+    "max_drawdown": 3.9,
+    "btst_trades": 47,
+    "btst_pnl": 264562,
+    "put_trades": 128,
+    "put_pnl": 476991,
+    "call_trades": 135,
+    "call_pnl": 50287
+  },
+  "exit_reasons": {
+    "time_exit": {
+      "count": 136,
+      "pnl": 545241.0,
+      "wins": 77
+    },
+    "eod_close": {
+      "count": 71,
+      "pnl": 164192.0,
+      "wins": 35
+    },
+    "expiry_close": {
+      "count": 24,
+      "pnl": -590.0,
+      "wins": 8
+    },
+    "trail_stop": {
+      "count": 32,
+      "pnl": -181565.0,
+      "wins": 2
+    }
+  },
+  "v8_parameters": {
+    "put_trail_pct": 0.01,
+    "call_trail_pct": 0.008,
+    "put_min_hold_for_trail": 90,
+    "call_min_hold_for_trail": 60,
+    "put_max_hold": 300,
+    "call_max_hold": 270,
+    "cooldown_minutes": 10,
+    "avoid_entry_ranges": [
+      [
+        45,
+        75
+      ],
+      [
+        165,
+        225
+      ]
+    ],
+    "put_min_score": 4.0,
+    "call_min_score": 5.0,
+    "supertrend_flip_exit": false,
+    "btst_enabled": true,
+    "btst_vix_cap": 25
+  }
+}

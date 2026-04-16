@@ -1,0 +1,546 @@
+================================================================================
+  COMPREHENSIVE MARKET ANALYSIS: NIFTY 50 & BANKNIFTY
+  Period: October 2025 - April 2026
+  Generated: April 5, 2026
+================================================================================
+
+TABLE OF CONTENTS
+-----------------
+1. NIFTY 50 TOP MOVERS
+2. BANKNIFTY ANALYSIS
+3. KEY MACRO EVENTS
+4. SECTOR ROTATION PATTERNS
+5. EXPIRY DAY BEHAVIOR (TUESDAY SHIFT)
+6. VIX BEHAVIOR
+7. TRADING MODEL PARAMETERS
+
+================================================================================
+1. NIFTY 50 TOP MOVERS (Oct 2025 - Apr 2026)
+================================================================================
+
+OVERALL INDEX PERFORMANCE:
+- All-Time High: 26,373.2 (January 5, 2026)
+- March 2026 Low: ~22,283.85 (March 30, 2026 intraday)
+- Peak-to-Trough Decline: ~15.5% (4,089 points)
+- FY26 Full Year (Apr 2025 - Mar 2026): NIFTY50 down ~5% (-1,187.95 points)
+- March 2026 alone: -11.4% (worst monthly fall since COVID-19 March 2020)
+- Feb 20 to March 30 intraday low: -12% (NIFTY), -12.3% (SENSEX)
+- Market cap erosion in March: Rs 51 lakh crore wiped out
+
+---------- TOP LOSERS (FY26) ----------
+
+Stock                | FY26 Return  | Fall from 52W High | Sector
+---------------------|--------------|--------------------|-----------
+Trent Limited        |    --        | -44.0%             | Retail
+TCS                  | -34.0%       | -29.3%             | IT
+IndiGo               | -22.0%       | -32.9%             | Aviation
+Wipro                | -28.0%       | --                 | IT
+Asian Paints         |    --        | -26.6%             | FMCG/Paints
+HDFC Bank            | -15.0% (1Y) | --                 | Banking
+Maruti Suzuki        |    --        | -25%+ (est.)       | Auto
+Infosys              |    --        | -25%+ (est.)       | IT
+HUL                  |    --        | 52-week low hit    | FMCG
+Bajaj Finance        |    --        | 52-week low hit    | NBFC
+
+---------- TOP GAINERS (FY26) ----------
+
+Stock                | FY26 Return  | CY2025 Return | Sector
+---------------------|--------------|---------------|-----------
+Bharat Electronics   | +33%         | +33%          | Defence
+Shriram Finance      | +32%         | +72.4%        | NBFC
+Hindalco Industries  | +30%         | +47.2%        | Metal
+Bajaj Finance        |    --        | strong H1     | NBFC
+SBI Life             |    --        | positive      | Insurance
+HDFC Life            |    --        | positive      | Insurance
+Bharti Airtel        |    --        | positive      | Telecom
+
+---------- NIFTY 50 CURRENT WEIGHTAGE (Apr 4, 2026) ----------
+
+Stock                | Weightage
+---------------------|-----------
+HDFC Bank            | 11.30%
+Reliance Industries  | 8.76% - 9.96%
+ICICI Bank           | 8.27%
+Infosys              | 4.33%
+TCS                  | 4.83%
+Bharti Airtel        | ~4%
+ITC                  | ~3.5%
+Larsen & Toubro      | ~3.5%
+SBI                  | ~3%
+HUL                  | ~2.5%
+
+KEY INSIGHT FOR TRADING MODEL:
+- Heavyweights (HDFC Bank + RIL + ICICI = ~28% of index) drove
+  disproportionate index decline
+- IT sector (TCS + Infosys + Wipro + HCL Tech = ~15% weight) was the
+  single biggest sectoral drag
+- Financials were 60% of FPI outflows in the worst fortnight
+
+
+================================================================================
+2. BANKNIFTY ANALYSIS
+================================================================================
+
+INDEX PERFORMANCE:
+- 52-Week High: 61,764.85
+- 52-Week Low: 49,156.95 (some data shows 47,702.90)
+- Current (Apr 4, 2026): 51,548.75
+- Correction from ATH: ~16.5%
+- March 2026: Bank Nifty fell ~15% (vs NIFTY -9.4% broad), worst in 6 years
+- 4 consecutive weeks of red closes in March 2026
+- Corrected 13.5% from all-time high by end of March
+
+---------- INDIVIDUAL BANK PERFORMANCE ----------
+
+Bank             | Weightage  | Performance         | Key Metrics
+-----------------|------------|---------------------|-----------------------------
+HDFC Bank        | 25.55%     | -15% (1Y)           | 12% deposit growth maintained
+                 |            | -14.8% (30-day)     | Hit 52-week low
+ICICI Bank       | 19.41%     | -8.67% (1Y)         | Hit 52-week low
+                 |            | -10.9% (6M)         |
+SBI              | 21.01%     | Data limited         | Strong loan book
+Axis Bank        | 8.29%      | +9.9% (1Y)          | Gross advances +14% to 11.70L Cr
+                 |            | +5.4% (6M)          | OUTPERFORMER
+Kotak Mahindra   | 7.92%      | Data limited         | Net advances +16% to 4.80L Cr
+IndusInd Bank    | ~2%        | -27.17% single day   | Derivatives fraud Rs 1,900 Cr
+                 |            | (Mar 2025 crash)     | MFI NPAs at 13%
+                 |            |                     | Net loss Rs 2,300 Cr in Q4 FY25
+                 |            |                     | CEO + Deputy CEO resigned
+
+---------- NPA CONCERNS ----------
+- IndusInd Bank: Net NPAs grew 121 bps YoY to 3.13%
+- IndusInd MFI book NPAs: ~13%
+- Iran war creating potential NPA risk across banking sector
+- Banks with strong balance sheets, low NPAs, high CASA expected to be resilient
+- Recovery timeline for IndusInd: estimated 2 years to recover crisis losses
+
+---------- RBI RATE DECISIONS ----------
+Timeline:
+- Feb 2025: Repo rate cut 25 bps to 6.25%
+- Apr 2025: Cut 25 bps to 6.00%
+- Jun 2025: Cut 50 bps to 5.50% (3rd consecutive cut)
+- Dec 2025: Cut 25 bps to 5.25% (believed to be final in cycle)
+- Feb 2026: HELD at 5.25% (unanimous, neutral stance)
+- Apr 8, 2026: Next MPC decision expected
+
+Key data:
+- Total easing in cycle: 125 bps (from 6.50% to 5.25%)
+- GDP growth projection: 7.4% for FY26
+- CPI inflation projection: 2.1%
+- Dec 2025 cut likely final unless material growth downturn
+
+---------- FII SELLING IN BANKING ----------
+- Financials accounted for 60% of total FPI outflows in worst fortnight
+- Banking sector was the single largest category of foreign selling
+- FII share in NSE-listed companies: 17.22% (vs DII: 17.62% - DII overtook FII)
+
+
+================================================================================
+3. KEY MACRO EVENTS
+================================================================================
+
+---------- IRAN WAR (Started Feb 28, 2026) ----------
+
+Timeline:
+- Feb 27, 2026: India VIX at 13.70 (pre-war calm)
+- Feb 28, 2026: "Operation Epic Fury" - US/Israeli strikes on Iran
+- Mar 2, 2026: Indian markets open to carnage:
+  * Sensex crashed 2,743 points
+  * Nifty fell 533 points
+  * India VIX surged 19.48% to 16.45
+- Mar 4, 2026: Strait of Hormuz closure announced
+- Mar 8, 2026: Brent crude crosses $100/bbl (first time in 4 years)
+- Mar 17-19, 2026: Oil peaks - Dubai crude hits record $166/bbl
+- Mar 23, 2026: India VIX hits intraday high of 27.17
+- Mar 30, 2026: Nifty hits intraday low of 22,283.85
+- End March: India VIX at ~28.47 (100%+ spike since Feb 27)
+
+Market Impact:
+- NIFTY fell 7% from Feb 28 levels within weeks
+- March 2026: NIFTY down 11.4% (2,850 points)
+- Worst monthly fall since COVID-19 (March 2020)
+- Rs 51 lakh crore in market cap erased in March alone
+
+---------- CRUDE OIL PRICES ----------
+
+Date              | Brent Crude ($/bbl)
+------------------|---------------------
+Feb 27, 2026      | ~$72
+Mar 2, 2026       | $80-82 (+10-13%)
+Mar 8, 2026       | $100+ (crossed)
+Mid-Mar 2026      | $120+ (peak period)
+Mar 19, 2026      | Dubai crude: $166 (record)
+Mar 30, 2026      | ~$107
+Apr 1, 2026       | $105.27
+
+Impact on India:
+- India imports 85-90% of crude oil
+- Strait of Hormuz handles 20% of global oil transport
+- Hormuz closure cut Gulf oil production by ~10 mb/d
+- GDP forecast of 7.0-7.4% faces "considerable downside risk"
+- Record largest supply disruption in history of global oil markets
+
+---------- SEBI RULE CHANGES ----------
+
+Effective: September 1, 2025 (August 28 first expiry)
+
+Changes:
+- NSE weekly expiry shifted from Thursday to Tuesday
+- BSE adopted Thursday
+- Only ONE weekly expiry per exchange per benchmark index
+- All derivatives contracts affected: NIFTY, BANKNIFTY, FINNIFTY,
+  MIDCPNIFTY, NIFTYNXT50, all single-stock F&O
+
+Rationale:
+- SEBI research: 90% of retail F&O traders lost money
+- Retail losses: Rs 1.81 trillion over 3 years
+- Multiple weekly expiries intensified short-term speculation
+
+---------- FII/DII FLOWS ----------
+
+Month          | FII (Net)              | DII (Net)
+---------------|------------------------|------------------------
+Oct 2024       | -Rs 94,017 Cr (prev    |
+               |  record outflow)       |
+Early 2025     | -Rs 1 lakh Cr+ (by     | Strong buying
+               |  mid-Feb 2025)         |
+Apr 2025       | +Rs 4,200 Cr (turned   |
+               |  net buyer briefly)    |
+Mar 2026       | -Rs 1.14 LAKH CRORE    | +Rs 1.28 LAKH CRORE
+               | ($12.3 billion)        |
+               | WORST EVER MONTHLY     | (absorbed FII selling)
+               | OUTFLOW                |
+               | Net seller ALL 17      |
+               | trading sessions       |
+
+Key data points:
+- Mar 2026 FII outflow exceeded previous record (Oct 2024) by 21%
+- FPI selling: every single trading session in March was net sell
+- Mutual funds deployed ~Rs 80,000 Cr during March correction
+- DII holding in NSE companies: 17.62% (surpassed FII's 17.22%)
+- Monthly SIP inflows: ~Rs 29,845 Cr (Feb 2026)
+- FY26 cumulative SIP inflows (till Dec 2025): Rs 2.56 lakh crore
+- Mutual funds drive 65% of DII inflows in FY26
+
+Sector-wise FII selling:
+- FMCG: Rs 12,497 Cr outflows over four fortnights
+- IT: sustained selling pressure
+- Oil & Gas: sustained selling pressure
+- Financials: 60% of total outflows in worst fortnight
+
+---------- US FED DECISIONS ----------
+
+Timeline:
+- Sep 2024: Fed began cutting (from 5.25-5.50%)
+- Total cuts through Dec 2025: 175 bps
+- Dec 2025: Cut 25 bps to 3.50-3.75%
+- Jan 2026: Held steady at 3.50-3.75%
+- Mar 2026: Held steady at 3.50-3.75% (2nd consecutive hold)
+- Forecast: 1 rate cut expected in 2026
+- Iran war creates inflationary pressure -> "higher for longer" risk
+
+---------- GLOBAL MARKET CORRELATION (March 2026) ----------
+
+Index          | March 2026 Performance
+---------------|------------------------
+NIFTY 50       | -11.4%
+S&P 500        | -5.1% (worst month since Mar 2025)
+NASDAQ         | -5.0% (entered correction; Q1: -7%)
+Dow Jones      | Entered correction territory
+
+Global correlation observations:
+- 5 consecutive weeks of losses for Dow and S&P 500
+- Gold AND bonds dropped alongside stocks (no safe haven worked)
+- Emerging markets hit harder than developed markets
+- India underperformed US markets due to oil import dependency
+
+---------- INDIAN RUPEE ----------
+
+Date              | USD/INR
+------------------|----------
+Jan 2026          | ~90.78 (record low)
+Feb 5, 2026       | ~90.09 (best in period)
+Mar 17, 2026      | ~92.59
+Mar 28, 2026      | ~94.34 (worst in period)
+INR depreciation in 2026: -2.22% (and accelerating)
+
+
+================================================================================
+4. SECTOR ROTATION PATTERNS
+================================================================================
+
+---------- SECTOR PERFORMANCE (FY26 / CY2025 DATA) ----------
+
+Sector              | Return      | Category
+--------------------|-------------|------------------
+PSU Banks           | +27.67%     | OUTPERFORMER
+Metal               | +24.02%     | OUTPERFORMER
+Auto                | +21.86%     | OUTPERFORMER
+Finance             | +17.11%     | MODERATE
+Bank Nifty          | +16.49%     | MODERATE (pre-March)
+Pharma              | -2.14%      | UNDERPERFORMER
+FMCG                | -2.81%      | UNDERPERFORMER
+IT                  | -9.71%      | WORST PERFORMER
+
+Note: Above data is CY2025 / early FY26. The March 2026 crash hit
+cyclicals hard, changing the picture significantly.
+
+---------- POST-CRASH SECTOR STATUS (Oct 2025 - Mar 2026) ----------
+
+Sector              | Performance           | Notes
+---------------------|-----------------------|---------------------------
+IT                  | -12.7% since Oct 2025 | Worst sectoral performer
+                    |                       | AI disruption fears
+                    |                       | Weak global tech spending
+FMCG                | -5.7% since Oct 2025  | Supposed defensive, failed
+Pharma              | -1.8% since Oct 2025  | Slight defensive quality
+                    |                       | P/E compressed 39.8x->32.5x
+Energy (ONGC etc.)  | ONGC +15% YTD 2026   | CONTRA BET - oil beneficiary
+                    |                       | Outperformed Sensex -12.8%
+Banking             | -15% in March alone   | FII selling epicenter
+Metal               | -3.31% (single day)   | Worst on crash days
+Realty              | Lagging quadrant       | Underperformer
+Consumer/FMCG       | Lagging quadrant       | Underperformer
+
+---------- SECTOR ROTATION SUMMARY ----------
+
+DEFENSIVE SECTORS THAT FAILED:
+- IT: DOWN 12.7% (worst, not defensive at all)
+- FMCG: DOWN 5.7% (traditional defensive failed)
+- Pharma: DOWN 1.8% (only marginally better)
+
+CONTRA PLAYS (RISING WHILE MARKET FELL):
+- Oil & Energy upstream: ONGC +15% YTD (beneficiary of $100+ crude)
+- Defence stocks: BEL +33% (geopolitical premium)
+- Some metal names: Hindalco held up
+
+SECTORS LEADING THE DECLINE:
+- Banking/Financials: -15% in March (FII selling epicenter)
+- IT: Structural decline (AI fears + weak demand)
+- Aviation: IndiGo -32.9% (fuel cost sensitivity)
+- Retail: Trent -44% from highs
+
+KEY INSIGHT: Traditional defensive playbook (buy FMCG/Pharma in crash)
+did NOT work in this cycle. Oil/energy and defence were the true defensives.
+
+
+================================================================================
+5. EXPIRY DAY BEHAVIOR (TUESDAY SHIFT)
+================================================================================
+
+---------- STRUCTURAL CHANGE ----------
+
+Old System: Thursday weekly expiry (25-year tradition)
+New System: Tuesday weekly expiry (effective Sep 1, 2025)
+BSE: Thursday expiry
+
+---------- TUESDAY vs THURSDAY EXPIRY DIFFERENCES ----------
+
+Parameter           | Thursday (Old)         | Tuesday (New)
+--------------------|------------------------|------------------------
+Weekend decay       | Wed->Thu (1 day theta) | Fri->Tue (3 days theta)
+                    |                        | Sat+Sun+Mon decay
+Peak volatility     | Wed-Thu                | Mon-Tue
+Theta acceleration  | Gradual into Thu       | Sharp Mon morning drop
+Premium collapse    | Moderate               | 50-80% on expiry day
+Seller advantage    | Standard               | Enhanced (3-day decay)
+Buyer shock         | Moderate               | Severe Mon morning gap
+
+---------- WEEKEND THETA DECAY (FRI -> TUE = 3 DAYS) ----------
+
+Key dynamics:
+- Option premiums soften toward end of trading week (professional
+  sellers sell IV on Friday afternoon)
+- Monday morning: premiums drop sharply reflecting Sat+Sun+Mon decay
+- Tuesday (expiry day): remaining theta collapses 40-60% in final hours
+- Net effect: Option buyers face massive erosion over the weekend
+
+Practical data:
+- If option has 10 days to expiry: ~Rs 3/day theta
+- 2 days before expiry: ~Rs 10-15/day theta
+- Expiry day (Tuesday): 50-80% premium collapse even without price move
+
+---------- MAX PAIN PINNING ----------
+
+- Max Pain = strike where option BUYERS lose the most money
+- High Open Interest (OI) strikes create "pin risk"
+- Price gravitates toward max pain on expiry day
+- Mechanism: Market maker hedging (gamma exposure) at high OI strikes
+- Studies confirm stocks tend to gravitate toward high OI strikes on expiry
+
+---------- GAMMA EXPOSURE ON EXPIRY DAYS ----------
+
+- ATM options: Delta can jump from 0.5 to 0.8 with just a 50-point
+  Nifty move on Tuesday morning
+- Option sellers face MAXIMUM gamma risk on Tuesday
+- A small adverse move can wipe out entire week's premium collection
+- Tuesday sees 50% higher volume and extreme volatility
+- Gamma risk peaks for ATM options on expiry day
+
+---------- TRADING STRATEGY IMPLICATIONS ----------
+
+Day of Week  | Strategy Bias
+-------------|------------------
+Wednesday    | Buy premium (cheaper, less decay pressure)
+Thursday     | Moderate (position building)
+Friday       | Sell premium (capture weekend decay)
+Monday       | Sell premium (aggressive decay, but gap risk)
+Tuesday      | Extreme volatility, gamma scalping, expiry trades
+
+KEY MODEL PARAMETERS:
+- Friday close -> Monday open: expect 2-3 days of theta priced out
+- Monday-Tuesday: Favor selling strategies with tight controls
+- Thursday-Friday: Favor buying strategies (less aggressive decay)
+- Max pain convergence: track Friday close vs max pain level
+- Gamma flip point: monitor where net gamma changes sign
+
+
+================================================================================
+6. VIX BEHAVIOR
+================================================================================
+
+---------- VIX RANGE (52 WEEKS) ----------
+
+Metric              | Value
+--------------------|------------------
+52-Week Low         | 8.72
+52-Week High        | 28.91
+Normal Range        | 13 - 35
+Pre-war (Feb 27)    | 13.70
+Post-war day 1      | 16.45 (+19.48%)
+Peak (Mar 23)       | 27.17 (intraday)
+Late March          | 28.47
+Total spike         | +100%+ from Feb 27
+
+---------- VIX SPIKE EVENTS ----------
+
+Event                    | Date           | VIX Move        | Nifty Impact
+-------------------------|----------------|-----------------|------------------
+Budget 2026 anxiety      | Jan 30, 2026   | Spike (level NA) | Sensex/Nifty fell
+Iran War Day 1           | Mar 2, 2026    | 13.70 -> 16.45  | Nifty -533 pts
+                         |                | (+19.48%)       | Sensex -2,743 pts
+Hormuz closure           | Mar 4-8, 2026  | Continued rise   | Oil crosses $100
+Peak war uncertainty     | Mar 23, 2026   | 27.17 (intra)   | Near panic levels
+Month-end + FY26 close   | Mar 30, 2026   | ~28.47          | Nifty low 22,283
+
+---------- HISTORICAL VIX PATTERNS ----------
+
+- After extreme VIX spikes: Nifty rebounds in 75% of cases
+- April 2025 example: VIX spike followed by Nifty +12.5% over 4 weeks
+- VIX above 25: historically marks capitulation/bottom zone
+- VIX below 12: historically marks complacency/top zone
+
+---------- VIX TERM STRUCTURE ----------
+
+Note: India does not have listed VIX futures, so term structure is
+implied from options at different expiries.
+
+General framework:
+- Contango (normal): Longer-dated IV > near-term IV (84% of time)
+- Backwardation (stress): Near-term IV > longer-dated IV (16% of time)
+- March 2026: LIKELY BACKWARDATION given VIX spike to 27+
+  (near-term fear exceeding long-term expectations)
+
+KEY MODEL PARAMETERS:
+- VIX < 12: Complacency zone, consider protective puts
+- VIX 13-20: Normal trading range
+- VIX 20-25: Elevated risk, widen stop-losses
+- VIX > 25: Capitulation zone, historical bounce probability 75%
+- VIX spike > 50% in < 5 days: High probability of mean reversion
+  within 4-6 weeks
+
+
+================================================================================
+7. TRADING MODEL PARAMETERS (SUMMARY OF ACTIONABLE DATA)
+================================================================================
+
+---------- CRITICAL LEVELS ----------
+
+NIFTY 50:
+- All-Time High: 26,373
+- Key Support (March 2026 low): 22,283
+- Correction depth: -15.5% peak to trough
+- Current (early Apr 2026): ~22,000-22,500 zone
+
+BANKNIFTY:
+- All-Time High: 61,764
+- 52-Week Low: 49,156 (or 47,702)
+- Current: ~51,548
+- Correction depth: ~16.5%
+
+---------- CORRELATION MATRIX (APPROXIMATE) ----------
+
+Factor                   | NIFTY Correlation
+-------------------------|--------------------
+Brent Crude Oil          | -0.7 to -0.8 (inverse, strong)
+USD/INR                  | -0.6 to -0.7 (inverse)
+India VIX                | -0.85 to -0.9 (inverse, very strong)
+FII Net Flows            | +0.7 to +0.8 (positive, strong)
+S&P 500                  | +0.5 to +0.6 (positive, moderate)
+DII Flows                | Countercyclical (buys on dips)
+
+---------- KEY THRESHOLDS FOR SIGNALS ----------
+
+Signal Type       | Threshold                        | Historical Outcome
+------------------|----------------------------------|-------------------------
+VIX Spike         | >25                              | 75% bounce within 4-6 wk
+FII Monthly Sale  | >Rs 50,000 Cr                    | Extreme stress
+FII Monthly Sale  | >Rs 1 Lakh Cr                    | Capitulation (only 2x ever)
+Oil Price         | >$100/bbl Brent                  | India macro stress
+Oil Price         | >$120/bbl Brent                  | Severe; GDP hit likely
+INR/USD           | >92                              | Currency stress zone
+RBI Repo Rate     | Currently 5.25%                  | At/near floor of cycle
+Monthly SIP       | ~Rs 30,000 Cr/month              | Structural DII support
+
+---------- WEEKLY EXPIRY (TUESDAY) MODEL INPUTS ----------
+
+Day          | Key Metric                    | Strategy Signal
+-------------|-------------------------------|---------------------------
+Wednesday    | OI buildup begins             | Watch call/put writing
+Thursday     | OI direction clarifies        | Trend day, follow OI
+Friday       | Weekend theta pricing starts  | Short straddle opportunity
+             | Professionals sell IV         |
+Saturday     | Theta decays (market closed)  | Premium eroding for buyers
+Sunday       | Theta decays (market closed)  | Premium eroding for buyers
+Monday       | Gap open, theta shock         | Sell premium if gap matches
+             | 2-3 day decay priced in       | direction; buy if reversal
+Tuesday      | EXPIRY - max gamma risk       | Gamma scalp ATM; track
+             | 40-60% premium collapse       | max pain for pin target
+             | 50% higher volume             |
+
+---------- SECTOR PLAYBOOK BY REGIME ----------
+
+Regime               | Buy/Overweight           | Sell/Underweight
+----------------------|--------------------------|---------------------------
+Oil spike + war       | ONGC, Oil India, Defence  | Aviation, FMCG, Paint
+                      | (BEL, HAL)               | IT, Banking
+FII selling wave      | DII-supported: Large-cap  | Mid/Small caps, High-beta
+                      | defensive NBFCs           |
+Rate cut cycle        | Banks, Real Estate, Auto  | Cash-rich IT, Pharma
+VIX > 25              | Net long (4-6 week view)  | Reduce short exposure
+Post-crash recovery   | PSU Banks, Metal, Auto    | IT (structural decline)
+
+---------- RISK FACTORS STILL ACTIVE (AS OF APR 5, 2026) ----------
+
+1. Iran war ongoing - no ceasefire yet
+2. Strait of Hormuz partially closed
+3. Brent crude at $105+ (still elevated)
+4. FII selling may continue
+5. INR under pressure (94+ vs USD)
+6. RBI MPC meeting Apr 6-8 (rate decision Apr 8)
+7. Global recession risk from oil shock
+8. Indian GDP forecast at risk of downgrade
+9. Q4 FY26 earnings season starting (bank NPAs in focus)
+10. Election calendar uncertainty
+
+---------- SOURCES ----------
+
+Data compiled from: NSE India, NSDL FPI Reports, Business Standard,
+Business Today, CNBC, Bloomberg, Upstox, Angel One, ICICIdirect,
+5paisa, Groww, TradingView, Yahoo Finance, IEA Oil Market Reports,
+US Federal Reserve, RBI Monetary Policy Statements, SEBI Circulars,
+AMFI SIP data, Samco, PL Capital, Smart-Investing.in, Multibagg.ai
+
+================================================================================
+END OF REPORT
+================================================================================

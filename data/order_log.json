@@ -1,0 +1,15 @@
+[
+  {
+    "order_id": "",
+    "symbol": "NIFTY2642124350PE",
+    "side": "BUY",
+    "qty": 260,
+    "product": "MIS",
+    "status": "FAILED",
+    "fill_price": 0.0,
+    "placed_at": "2026-04-16T10:45:04.729253",
+    "filled_at": null,
+    "attempts": 3,
+    "error": "No order_id returned"
+  }
+]

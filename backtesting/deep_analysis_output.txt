@@ -1,0 +1,967 @@
+==========================================================================================
+NIFTY DEEP DAY-BY-DAY ANALYSIS — LAST 6 MONTHS
+==========================================================================================
+Downloading real NIFTY data from Yahoo Finance (2025-10-01 to 2026-04-06)...
+Real data loaded: 123 trading days | NIFTY 22183-26373 | VIX 9.1-27.9
+  Date range: 2025-10-01 to 2026-04-02
+
+Total trading days in analysis window: 123
+
+==========================================================================================
+DAY-BY-DAY DETAIL
+==========================================================================================
+
+2025-10-01 (Wednesday) | UP | O:24620.6 H:24867.9 L:24605.9 C:24836.3 | VIX:10.3 (LOW)
+  Range: 1.06% | S:24600 R:24700
+  Best PUT: +0.052% (exit@10:00 MORNING)
+  Best CALL: +1.040% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.162% | First30min: 2% of day move
+
+2025-10-03 (Friday) | UP | O:24759.6 H:24904.8 L:24747.6 C:24894.2 | VIX:10.1 (LOW)
+  Range: 0.64% | S:24700 R:24800
+  Best PUT: +0.057% (exit@10:00 MORNING)
+  Best CALL: +0.590% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.046% | First30min: 5% of day move
+
+2025-10-06 (Monday) | UP | O:24916.6 H:25095.9 L:24881.7 C:25077.7 | VIX:10.2 (LOW)
+  Range: 0.86% | S:24900 R:25000
+  Best PUT: +0.141% (exit@10:00 MORNING)
+  Best CALL: +0.718% (exit@14:15 AFTERNOON_LATE)
+  Best BTST: +0.071% | First30min: 14% of day move
+  Round 500s touched: [25000]
+
+2025-10-07 (Tuesday) | UP | O:25085.3 H:25220.9 L:25076.3 C:25108.3 | VIX:10.1 (LOW)
+  Range: 0.58% | S:25000 R:25100
+  Best PUT: +0.055% (exit@10:00 MORNING)
+  Best CALL: +0.547% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.453% | First30min: 41% of day move
+
+2025-10-08 (Wednesday) | DOWN | O:25079.8 H:25192.5 L:25008.5 C:25046.2 | VIX:10.3 (LOW)
+  Range: 0.73% | S:25050 R:25100
+  Best PUT: +0.286% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.434% (exit@10:00 MORNING)
+  Best BTST: +0.153% | First30min: 231% of day move
+
+2025-10-09 (Thursday [EXPIRY]) | UP | O:25074.3 H:25199.2 L:25024.3 C:25181.8 | VIX:10.1 (LOW)
+  Range: 0.70% | S:25050 R:25100
+  Best PUT: +0.174% (exit@10:00 MORNING)
+  Best CALL: +0.520% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.091% | First30min: 28% of day move
+
+2025-10-10 (Friday) | UP | O:25167.7 H:25330.8 L:25156.8 C:25285.3 | VIX:10.1 (LOW)
+  Range: 0.69% | S:25100 R:25200
+  Best PUT: +0.058% (exit@09:45 MORNING_OPEN)
+  Best CALL: +0.651% (exit@14:00 AFTERNOON_LATE)
+  Best BTST: +0.182% | First30min: 12% of day move
+
+2025-10-13 (Monday) | UP | O:25177.3 H:25267.3 L:25152.3 C:25227.3 | VIX:11.0 (LOW)
+  Range: 0.46% | S:25150 R:25200
+  Best PUT: +0.092% (exit@10:00 MORNING)
+  Best CALL: +0.327% (exit@13:15 AFTERNOON_EARLY)
+  Best BTST: +0.109% | First30min: 34% of day move
+
+2025-10-14 (Tuesday) | DOWN | O:25277.6 H:25310.3 L:25060.6 C:25145.5 | VIX:11.2 (LOW)
+  Range: 0.99% | S:25200 R:25300
+  Best PUT: +0.847% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.140% (exit@10:00 MORNING)
+  Best BTST: +0.327% | First30min: 13% of day move
+
+2025-10-15 (Wednesday) | UP | O:25181.9 H:25365.2 L:25159.3 C:25323.6 | VIX:10.5 (LOW)
+  Range: 0.82% | S:25150 R:25200
+  Best PUT: +0.088% (exit@10:00 MORNING)
+  Best CALL: +0.726% (exit@14:00 AFTERNOON_LATE)
+  Best BTST: +0.162% | First30min: 8% of day move
+
+2025-10-16 (Thursday [EXPIRY]) | UP | O:25394.9 H:25625.4 L:25376.8 C:25585.3 | VIX:10.9 (LOW)
+  Range: 0.98% | S:25300 R:25400
+  Best PUT: +0.062% (exit@09:45 MORNING_OPEN)
+  Best CALL: +0.923% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.172% | First30min: 8% of day move
+  Round 500s touched: [25500]
+
+2025-10-17 (Friday) | UP | O:25546.8 H:25781.5 L:25508.6 C:25709.8 | VIX:11.6 (LOW)
+  Range: 1.07% | S:25500 R:25600
+  Best PUT: +0.145% (exit@10:00 MORNING)
+  Best CALL: +0.906% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.265% | First30min: 14% of day move
+
+2025-10-20 (Monday) | UP | O:25824.6 H:25926.2 L:25788.5 C:25843.2 | VIX:11.4 (LOW)
+  Range: 0.53% | S:25800 R:25900
+  Best PUT: +0.117% (exit@10:00 MORNING)
+  Best CALL: +0.415% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.342% | First30min: 103% of day move
+
+2025-10-21 (Tuesday) | DOWN | O:25901.2 H:25934.3 L:25825.8 C:25868.6 | VIX:11.3 (LOW)
+  Range: 0.42% | S:25900 R:25950
+  Best PUT: +0.294% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.133% (exit@10:00 MORNING)
+  Best BTST: +0.169% | First30min: 69% of day move
+
+2025-10-23 (Thursday [EXPIRY]) | DOWN | O:26057.2 H:26104.2 L:25862.4 C:25891.4 | VIX:11.7 (LOW)
+  Range: 0.93% | S:26000 R:26100 | Gap +0.73% (REVERSAL)
+  Best PUT: +0.748% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.154% (exit@10:00 MORNING)
+  Best BTST: +0.112% | First30min: 19% of day move
+  Round 500s touched: [26000]
+
+2025-10-24 (Friday) | DOWN | O:25935.1 H:25944.2 L:25718.2 C:25795.2 | VIX:11.6 (LOW)
+  Range: 0.87% | S:25900 R:26000
+  Best PUT: +0.815% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.041% (exit@09:45 MORNING_OPEN)
+  Best BTST: +0.278% | First30min: 8% of day move
+
+2025-10-27 (Monday) | UP | O:25843.2 H:26005.9 L:25827.0 C:25966.1 | VIX:11.9 (LOW)
+  Range: 0.69% | S:25800 R:25900
+  Best PUT: +0.077% (exit@10:00 MORNING)
+  Best CALL: +0.633% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.157% | First30min: 4% of day move
+  Round 500s touched: [26000]
+
+2025-10-28 (Tuesday) | DOWN | O:25939.9 H:26041.7 L:25810.1 C:25936.2 | VIX:11.9 (LOW)
+  Range: 0.89% | S:25900 R:25950
+  Best PUT: +0.472% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.378% (exit@10:00 MORNING)
+  Best BTST: +0.460% | First30min: 1862% of day move
+  Round 500s touched: [26000]
+
+2025-10-29 (Wednesday) | UP | O:25982.0 H:26097.8 L:25960.3 C:26053.9 | VIX:12.0 (LOW)
+  Range: 0.53% | S:25950 R:26000
+  Best PUT: +0.065% (exit@10:00 MORNING)
+  Best CALL: +0.475% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.197% | First30min: 12% of day move
+  Round 500s touched: [26000]
+
+2025-10-30 (Thursday [EXPIRY]) | DOWN | O:25984.4 H:26032.1 L:25845.2 C:25877.8 | VIX:12.1 (LOW)
+  Range: 0.72% | S:25950 R:26000
+  Best PUT: +0.534% (exit@13:45 AFTERNOON_EARLY)
+  Best CALL: +0.197% (exit@10:00 MORNING)
+  Best BTST: +0.124% | First30min: 28% of day move
+  Round 500s touched: [26000]
+
+2025-10-31 (Friday) | DOWN | O:25863.8 H:25953.8 L:25711.2 C:25722.1 | VIX:12.1 (LOW)
+  Range: 0.94% | S:25850 R:25900
+  Best PUT: +0.607% (exit@14:15 AFTERNOON_LATE)
+  Best CALL: +0.321% (exit@10:00 MORNING)
+  Best BTST: +0.060% | First30min: 39% of day move
+
+2025-11-03 (Monday) | UP | O:25696.8 H:25803.1 L:25645.5 C:25763.3 | VIX:12.7 (LOW)
+  Range: 0.61% | S:25600 R:25700
+  Best PUT: +0.215% (exit@10:00 MORNING)
+  Best CALL: +0.421% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.162% | First30min: 70% of day move
+
+2025-11-04 (Tuesday [EXPIRY]) | DOWN | O:25744.8 H:25787.4 L:25578.4 C:25597.7 | VIX:12.6 (LOW)
+  Range: 0.81% | S:25700 R:25750
+  Best PUT: +0.667% (exit@13:45 AFTERNOON_EARLY)
+  Best CALL: +0.179% (exit@10:00 MORNING)
+  Best BTST: +0.096% | First30min: 22% of day move
+
+2025-11-06 (Thursday) | DOWN | O:25593.3 H:25679.2 L:25491.6 C:25509.7 | VIX:12.4 (LOW)
+  Range: 0.73% | S:25500 R:25600
+  Best PUT: +0.394% (exit@14:00 AFTERNOON_LATE)
+  Best CALL: +0.347% (exit@10:00 MORNING)
+  Best BTST: +0.068% | First30min: 60% of day move
+  Round 500s touched: [25500]
+
+2025-11-07 (Friday) | UP | O:25433.8 H:25551.2 L:25318.4 C:25492.3 | VIX:12.6 (LOW)
+  Range: 0.92% | S:25400 R:25500
+  Best PUT: +0.433% (exit@10:00 MORNING)
+  Best CALL: +0.469% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.238% | First30min: 132% of day move
+  Round 500s touched: [25500]
+
+2025-11-10 (Monday) | UP | O:25503.5 H:25653.4 L:25503.5 C:25574.3 | VIX:12.3 (LOW)
+  Range: 0.59% | S:25500 R:25550
+  Best PUT: +0.007% (exit@09:30 MORNING_OPEN)
+  Best CALL: +0.587% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.307% | First30min: 4% of day move
+
+2025-11-11 (Tuesday [EXPIRY]) | UP | O:25617.0 H:25715.8 L:25449.2 C:25694.9 | VIX:12.5 (LOW)
+  Range: 1.04% | S:25600 R:25650
+  Best PUT: +0.673% (exit@10:00 MORNING)
+  Best CALL: +0.402% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.097% | First30min: 156% of day move
+  Round 500s touched: [25500]
+
+2025-11-12 (Wednesday) | UP | O:25834.3 H:25934.6 L:25781.2 C:25875.8 | VIX:12.1 (LOW)
+  Range: 0.59% | S:25800 R:25900 | Gap +0.54% (CONTINUATION)
+  Best PUT: +0.209% (exit@10:00 MORNING)
+  Best CALL: +0.400% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.238% | First30min: 82% of day move
+
+2025-11-13 (Thursday) | DOWN | O:25906.1 H:26010.7 L:25808.4 C:25879.2 | VIX:12.2 (LOW)
+  Range: 0.78% | S:25900 R:25950
+  Best PUT: +0.384% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.388% (exit@10:00 MORNING)
+  Best BTST: +0.281% | First30min: 251% of day move
+  Round 500s touched: [26000]
+
+2025-11-14 (Friday) | UP | O:25767.9 H:25940.2 L:25740.8 C:25910.1 | VIX:11.9 (LOW)
+  Range: 0.77% | S:25700 R:25800
+  Best PUT: +0.120% (exit@10:00 MORNING)
+  Best CALL: +0.675% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.123% | First30min: 14% of day move
+
+2025-11-17 (Monday) | UP | O:25948.2 H:26024.2 L:25906.3 C:26013.4 | VIX:11.8 (LOW)
+  Range: 0.45% | S:25950 R:25950
+  Best PUT: +0.150% (exit@10:15 MORNING)
+  Best CALL: +0.335% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.084% | First30min: 39% of day move
+  Round 500s touched: [26000]
+
+2025-11-18 (Tuesday [EXPIRY]) | DOWN | O:26021.8 H:26029.8 L:25876.5 C:25910.1 | VIX:12.1 (LOW)
+  Range: 0.59% | S:26000 R:26050
+  Best PUT: +0.583% (exit@13:45 AFTERNOON_EARLY)
+  Best CALL: +0.028% (exit@09:45 MORNING_OPEN)
+  Best BTST: +0.154% | First30min: 6% of day move
+  Round 500s touched: [26000]
+
+2025-11-19 (Wednesday) | UP | O:25918.1 H:26074.7 L:25856.2 C:26052.7 | VIX:12.0 (LOW)
+  Range: 0.84% | S:25900 R:25950
+  Best PUT: +0.214% (exit@10:00 MORNING)
+  Best CALL: +0.658% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.138% | First30min: 29% of day move
+  Round 500s touched: [26000]
+
+2025-11-20 (Thursday) | UP | O:26132.1 H:26246.7 L:26063.2 C:26192.2 | VIX:12.1 (LOW)
+  Range: 0.70% | S:26100 R:26200
+  Best PUT: +0.230% (exit@10:00 MORNING)
+  Best CALL: +0.436% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.205% | First30min: 77% of day move
+
+2025-11-21 (Friday) | DOWN | O:26109.6 H:26179.2 L:26052.2 C:26068.2 | VIX:13.6 (NORMAL_LOW)
+  Range: 0.49% | S:26100 R:26200
+  Best PUT: +0.234% (exit@14:15 AFTERNOON_LATE)
+  Best CALL: +0.274% (exit@10:00 MORNING)
+  Best BTST: +0.076% | First30min: 93% of day move
+
+2025-11-24 (Monday) | DOWN | O:26122.8 H:26142.8 L:25912.2 C:25959.5 | VIX:13.2 (NORMAL_LOW)
+  Range: 0.88% | S:26100 R:26200
+  Best PUT: +0.805% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.093% (exit@10:00 MORNING)
+  Best BTST: +0.182% | First30min: 6% of day move
+  Round 500s touched: [26000]
+
+2025-11-25 (Tuesday [EXPIRY]) | DOWN | O:25998.5 H:26032.6 L:25857.5 C:25884.8 | VIX:12.2 (LOW)
+  Range: 0.67% | S:25950 R:26000
+  Best PUT: +0.558% (exit@13:45 AFTERNOON_EARLY)
+  Best CALL: +0.130% (exit@10:00 MORNING)
+  Best BTST: +0.121% | First30min: 4% of day move
+  Round 500s touched: [26000]
+
+2025-11-26 (Wednesday) | UP | O:25842.9 H:26215.2 L:25842.9 C:26205.3 | VIX:12.0 (LOW)
+  Range: 1.44% | S:25800 R:25850
+  Best PUT: +0.000% (exit@09:15 MORNING_OPEN)
+  Best CALL: +1.461% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.058% | First30min: 0% of day move
+  Round 500s touched: [26000]
+
+2025-11-27 (Thursday) | DOWN | O:26261.2 H:26310.4 L:26141.9 C:26215.6 | VIX:11.8 (LOW)
+  Range: 0.64% | S:26200 R:26300
+  Best PUT: +0.452% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.204% (exit@10:00 MORNING)
+  Best BTST: +0.279% | First30min: 81% of day move
+
+2025-11-28 (Friday) | DOWN | O:26237.4 H:26280.8 L:26172.4 C:26202.9 | VIX:11.6 (LOW)
+  Range: 0.41% | S:26200 R:26300
+  Best PUT: +0.251% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.157% (exit@10:15 MORNING)
+  Best BTST: +0.120% | First30min: 86% of day move
+
+2025-12-01 (Monday) | DOWN | O:26325.8 H:26325.8 L:26124.2 C:26175.8 | VIX:11.6 (LOW)
+  Range: 0.77% | S:26300 R:26400
+  Best PUT: +0.753% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.000% (exit@09:15 MORNING_OPEN)
+  Best BTST: +0.185% | First30min: 4% of day move
+
+2025-12-02 (Tuesday [EXPIRY]) | DOWN | O:26087.9 H:26154.6 L:25997.8 C:26032.2 | VIX:11.2 (LOW)
+  Range: 0.60% | S:26000 R:26100
+  Best PUT: +0.373% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.244% (exit@10:00 MORNING)
+  Best BTST: +0.159% | First30min: 73% of day move
+  Round 500s touched: [26000]
+
+2025-12-03 (Wednesday) | DOWN | O:26004.9 H:26066.4 L:25891.0 C:25986.0 | VIX:11.2 (LOW)
+  Range: 0.67% | S:26000 R:26000
+  Best PUT: +0.435% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.252% (exit@10:00 MORNING)
+  Best BTST: +0.364% | First30min: 203% of day move
+  Round 500s touched: [26000]
+
+2025-12-04 (Thursday) | UP | O:25981.8 H:26098.2 L:25938.9 C:26033.8 | VIX:10.8 (LOW)
+  Range: 0.61% | S:25950 R:26000
+  Best PUT: +0.182% (exit@10:00 MORNING)
+  Best CALL: +0.459% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.258% | First30min: 59% of day move
+  Round 500s touched: [26000]
+
+2025-12-05 (Friday) | UP | O:25999.8 H:26202.6 L:25985.3 C:26186.4 | VIX:10.3 (LOW)
+  Range: 0.84% | S:26000 R:26000
+  Best PUT: +0.043% (exit@10:00 MORNING)
+  Best CALL: +0.765% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.046% | First30min: 4% of day move
+  Round 500s touched: [26000]
+
+2025-12-08 (Monday) | DOWN | O:26159.8 H:26178.7 L:25892.2 C:25960.6 | VIX:11.1 (LOW)
+  Range: 1.09% | S:26100 R:26200
+  Best PUT: +1.059% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.067% (exit@10:00 MORNING)
+  Best BTST: +0.301% | First30min: 8% of day move
+  Round 500s touched: [26000]
+
+2025-12-09 (Tuesday [EXPIRY]) | DOWN | O:25867.1 H:25923.7 L:25728.0 C:25839.7 | VIX:10.9 (LOW)
+  Range: 0.76% | S:25800 R:25900
+  Best PUT: +0.548% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.230% (exit@10:00 MORNING)
+  Best BTST: +0.444% | First30min: 108% of day move
+
+2025-12-10 (Wednesday) | DOWN | O:25864.1 H:25947.7 L:25734.6 C:25758.0 | VIX:10.9 (LOW)
+  Range: 0.82% | S:25800 R:25900
+  Best PUT: +0.498% (exit@13:45 AFTERNOON_EARLY)
+  Best CALL: +0.352% (exit@10:00 MORNING)
+  Best BTST: +0.088% | First30min: 52% of day move
+
+2025-12-11 (Thursday) | UP | O:25771.4 H:25922.8 L:25693.2 C:25898.6 | VIX:10.4 (LOW)
+  Range: 0.89% | S:25750 R:25800
+  Best PUT: +0.317% (exit@10:00 MORNING)
+  Best CALL: +0.597% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.103% | First30min: 38% of day move
+
+2025-12-12 (Friday) | UP | O:25971.2 H:26057.6 L:25938.4 C:26046.9 | VIX:10.1 (LOW)
+  Range: 0.46% | S:25900 R:26000
+  Best PUT: +0.108% (exit@10:00 MORNING)
+  Best CALL: +0.334% (exit@14:00 AFTERNOON_LATE)
+  Best BTST: +0.042% | First30min: 19% of day move
+  Round 500s touched: [26000]
+
+2025-12-15 (Monday) | UP | O:25930.1 H:26047.2 L:25904.8 C:26027.3 | VIX:10.2 (LOW)
+  Range: 0.55% | S:25900 R:26000
+  Best PUT: +0.097% (exit@10:00 MORNING)
+  Best CALL: +0.482% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.107% | First30min: 16% of day move
+  Round 500s touched: [26000]
+
+2025-12-16 (Tuesday [EXPIRY]) | DOWN | O:25951.5 H:25980.8 L:25834.3 C:25860.1 | VIX:10.1 (LOW)
+  Range: 0.56% | S:25900 R:26000
+  Best PUT: +0.464% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.118% (exit@09:45 MORNING_OPEN)
+  Best BTST: +0.112% | First30min: 34% of day move
+
+2025-12-17 (Wednesday) | DOWN | O:25902.4 H:25929.2 L:25770.3 C:25818.6 | VIX:9.8 (VERY_LOW)
+  Range: 0.61% | S:25900 R:26000
+  Best PUT: +0.500% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.113% (exit@10:00 MORNING)
+  Best BTST: +0.177% | First30min: 28% of day move
+
+2025-12-18 (Thursday) | UP | O:25764.7 H:25902.3 L:25726.3 C:25815.6 | VIX:9.7 (VERY_LOW)
+  Range: 0.68% | S:25750 R:25800
+  Best PUT: +0.164% (exit@10:00 MORNING)
+  Best CALL: +0.558% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.358% | First30min: 57% of day move
+
+2025-12-19 (Friday) | UP | O:25911.5 H:25993.3 L:25880.4 C:25966.4 | VIX:9.5 (VERY_LOW)
+  Range: 0.44% | S:25900 R:26000
+  Best PUT: +0.107% (exit@10:15 MORNING)
+  Best CALL: +0.315% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.103% | First30min: 49% of day move
+
+2025-12-22 (Monday) | UP | O:26055.8 H:26180.7 L:26047.8 C:26172.4 | VIX:9.7 (VERY_LOW)
+  Range: 0.51% | S:26000 R:26100
+  Best PUT: +0.022% (exit@09:45 MORNING_OPEN)
+  Best CALL: +0.487% (exit@15:15 AFTERNOON_LATE)
+  Best BTST: +0.040% | First30min: 5% of day move
+
+2025-12-23 (Tuesday [EXPIRY]) | DOWN | O:26205.2 H:26233.6 L:26119.1 C:26177.2 | VIX:9.4 (VERY_LOW)
+  Range: 0.44% | S:26200 R:26200
+  Best PUT: +0.320% (exit@13:45 AFTERNOON_EARLY)
+  Best CALL: +0.131% (exit@10:00 MORNING)
+  Best BTST: +0.213% | First30min: 39% of day move
+
+2025-12-24 (Wednesday) | DOWN | O:26170.7 H:26236.4 L:26123.0 C:26142.1 | VIX:9.2 (VERY_LOW)
+  Range: 0.43% | S:26100 R:26200
+  Best PUT: +0.190% (exit@14:00 AFTERNOON_LATE)
+  Best CALL: +0.248% (exit@10:15 MORNING)
+  Best BTST: +0.081% | First30min: 157% of day move
+
+2025-12-26 (Friday) | DOWN | O:26121.2 H:26144.2 L:26008.6 C:26042.3 | VIX:9.1 (VERY_LOW)
+  Range: 0.52% | S:26100 R:26200
+  Best PUT: +0.436% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.098% (exit@10:15 MORNING)
+  Best BTST: +0.134% | First30min: 18% of day move
+
+2025-12-29 (Monday) | DOWN | O:26063.3 H:26106.8 L:25920.3 C:25942.1 | VIX:9.7 (VERY_LOW)
+  Range: 0.72% | S:26000 R:26100
+  Best PUT: +0.541% (exit@14:00 AFTERNOON_LATE)
+  Best CALL: +0.192% (exit@10:00 MORNING)
+  Best BTST: +0.076% | First30min: 16% of day move
+  Round 500s touched: [26000]
+
+2025-12-30 (Tuesday [EXPIRY]) | DOWN | O:25940.9 H:25976.8 L:25878.0 C:25938.8 | VIX:9.7 (VERY_LOW)
+  Range: 0.38% | S:25950 R:26000
+  Best PUT: +0.248% (exit@13:15 AFTERNOON_EARLY)
+  Best CALL: +0.146% (exit@10:15 MORNING)
+  Best BTST: +0.226% | First30min: 1189% of day move
+
+2025-12-31 (Wednesday) | UP | O:25971.1 H:26187.9 L:25969.0 C:26129.6 | VIX:9.5 (VERY_LOW)
+  Range: 0.84% | S:25950 R:26000
+  Best PUT: +0.043% (exit@09:30 MORNING_OPEN)
+  Best CALL: +0.844% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.231% | First30min: 7% of day move
+  Round 500s touched: [26000]
+
+2026-01-01 (Thursday) | DOWN | O:26173.3 H:26197.6 L:26113.4 C:26146.6 | VIX:9.5 (VERY_LOW)
+  Range: 0.32% | S:26100 R:26200
+  Best PUT: +0.239% (exit@13:45 AFTERNOON_EARLY)
+  Best CALL: +0.092% (exit@10:15 MORNING)
+  Best BTST: +0.137% | First30min: 63% of day move
+
+2026-01-02 (Friday) | UP | O:26155.1 H:26340.0 L:26118.4 C:26328.6 | VIX:9.4 (VERY_LOW)
+  Range: 0.85% | S:26100 R:26200
+  Best PUT: +0.137% (exit@10:00 MORNING)
+  Best CALL: +0.733% (exit@14:00 AFTERNOON_LATE)
+  Best BTST: +0.070% | First30min: 18% of day move
+
+2026-01-05 (Monday) | DOWN | O:26333.7 H:26373.2 L:26210.1 C:26250.3 | VIX:10.0 (LOW)
+  Range: 0.62% | S:26300 R:26350
+  Best PUT: +0.500% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.149% (exit@10:00 MORNING)
+  Best BTST: +0.184% | First30min: 35% of day move
+
+2026-01-06 (Tuesday [EXPIRY]) | DOWN | O:26189.7 H:26273.9 L:26124.8 C:26178.7 | VIX:10.0 (LOW)
+  Range: 0.57% | S:26100 R:26200
+  Best PUT: +0.275% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.349% (exit@10:00 MORNING)
+  Best BTST: +0.233% | First30min: 446% of day move
+
+2026-01-07 (Wednesday) | DOWN | O:26143.1 H:26187.2 L:26067.9 C:26140.8 | VIX:9.9 (VERY_LOW)
+  Range: 0.46% | S:26100 R:26200
+  Best PUT: +0.305% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.189% (exit@10:00 MORNING)
+  Best BTST: +0.297% | First30min: 1418% of day move
+
+2026-01-08 (Thursday) | DOWN | O:26106.5 H:26133.2 L:25858.4 C:25876.8 | VIX:10.6 (LOW)
+  Range: 1.05% | S:26100 R:26200
+  Best PUT: +0.966% (exit@13:45 AFTERNOON_EARLY)
+  Best CALL: +0.101% (exit@10:00 MORNING)
+  Best BTST: +0.087% | First30min: 9% of day move
+  Round 500s touched: [26000]
+
+2026-01-09 (Friday) | DOWN | O:25840.4 H:25940.6 L:25623.0 C:25683.3 | VIX:10.9 (LOW)
+  Range: 1.23% | S:25800 R:25900
+  Best PUT: +0.864% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.371% (exit@10:00 MORNING)
+  Best BTST: +0.258% | First30min: 42% of day move
+
+2026-01-12 (Monday) | UP | O:25669.1 H:25813.2 L:25473.4 C:25790.2 | VIX:11.4 (LOW)
+  Range: 1.32% | S:25600 R:25700
+  Best PUT: +0.761% (exit@10:00 MORNING)
+  Best CALL: +0.567% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.094% | First30min: 107% of day move
+  Round 500s touched: [25500]
+
+2026-01-13 (Tuesday [EXPIRY]) | DOWN | O:25897.3 H:25899.8 L:25603.3 C:25732.3 | VIX:11.2 (LOW)
+  Range: 1.14% | S:25800 R:25900
+  Best PUT: +1.144% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.019% (exit@09:45 MORNING_OPEN)
+  Best BTST: +0.512% | First30min: 3% of day move
+
+2026-01-14 (Wednesday) | UP | O:25648.6 H:25791.8 L:25603.9 C:25665.6 | VIX:11.3 (LOW)
+  Range: 0.73% | S:25600 R:25700
+  Best PUT: +0.151% (exit@10:00 MORNING)
+  Best CALL: +0.566% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.496% | First30min: 124% of day move
+
+2026-01-16 (Friday) | DOWN | O:25696.1 H:25873.5 L:25662.4 C:25694.3 | VIX:11.4 (LOW)
+  Range: 0.82% | S:25700 R:25700
+  Best PUT: +0.117% (exit@14:15 AFTERNOON_LATE)
+  Best CALL: +0.725% (exit@10:00 MORNING)
+  Best BTST: +0.111% | First30min: 6921% of day move
+
+2026-01-19 (Monday) | DOWN | O:25653.1 H:25653.3 L:25494.3 C:25585.5 | VIX:11.8 (LOW)
+  Range: 0.62% | S:25650 R:25700
+  Best PUT: +0.630% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.032% (exit@09:45 MORNING_OPEN)
+  Best BTST: +0.368% | First30min: 12% of day move
+  Round 500s touched: [25500]
+
+2026-01-20 (Tuesday [EXPIRY]) | DOWN | O:25580.3 H:25585.0 L:25171.3 C:25232.5 | VIX:12.7 (LOW)
+  Range: 1.62% | S:25500 R:25600
+  Best PUT: +1.621% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.027% (exit@09:45 MORNING_OPEN)
+  Best BTST: +0.265% | First30min: 2% of day move
+  Round 500s touched: [25500]
+
+2026-01-21 (Wednesday) | UP | O:25141.0 H:25300.9 L:24919.8 C:25157.5 | VIX:13.8 (NORMAL_LOW)
+  Range: 1.52% | S:25100 R:25200
+  Best PUT: +0.881% (exit@10:00 MORNING)
+  Best CALL: +0.608% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.539% | First30min: 898% of day move
+  Round 500s touched: [25000]
+
+2026-01-22 (Thursday) | DOWN | O:25344.2 H:25435.8 L:25168.5 C:25289.9 | VIX:13.4 (NORMAL_LOW)
+  Range: 1.05% | S:25300 R:25400 | Gap +0.74% (REVERSAL)
+  Best PUT: +0.635% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.364% (exit@10:00 MORNING)
+  Best BTST: +0.424% | First30min: 108% of day move
+
+2026-01-23 (Friday) | DOWN | O:25344.6 H:25347.9 L:25025.3 C:25048.7 | VIX:14.2 (NORMAL_LOW)
+  Range: 1.27% | S:25300 R:25400
+  Best PUT: +1.309% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.007% (exit@09:30 MORNING_OPEN)
+  Best BTST: +0.143% | First30min: 2% of day move
+
+2026-01-27 (Tuesday [EXPIRY]) | UP | O:25063.3 H:25246.7 L:24932.6 C:25175.4 | VIX:14.4 (NORMAL_LOW)
+  Range: 1.25% | S:25050 R:25100
+  Best PUT: +0.511% (exit@10:00 MORNING)
+  Best CALL: +0.723% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.274% | First30min: 79% of day move
+  Round 500s touched: [25000]
+
+2026-01-28 (Wednesday) | UP | O:25258.8 H:25372.1 L:25187.7 C:25342.8 | VIX:13.5 (NORMAL_LOW)
+  Range: 0.73% | S:25200 R:25300
+  Best PUT: +0.293% (exit@10:00 MORNING)
+  Best CALL: +0.440% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.107% | First30min: 59% of day move
+
+2026-01-29 (Thursday) | UP | O:25345.0 H:25458.2 L:25159.8 C:25418.9 | VIX:13.4 (NORMAL_LOW)
+  Range: 1.18% | S:25300 R:25350
+  Best PUT: +0.716% (exit@10:00 MORNING)
+  Best CALL: +0.444% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.152% | First30min: 152% of day move
+
+2026-01-30 (Friday) | UP | O:25247.6 H:25370.7 L:25213.7 C:25320.7 | VIX:13.6 (NORMAL_LOW)
+  Range: 0.62% | S:25200 R:25300 | Gap -0.67% (REVERSAL)
+  Best PUT: +0.156% (exit@10:00 MORNING)
+  Best CALL: +0.499% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.209% | First30min: 32% of day move
+
+2026-02-02 (Monday) | UP | O:24796.5 H:25108.1 L:24679.4 C:25088.4 | VIX:13.9 (NORMAL_LOW)
+  Range: 1.73% | S:24700 R:24800 | Gap -2.07% (REVERSAL)
+  Best PUT: +0.473% (exit@10:00 MORNING)
+  Best CALL: +1.261% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.083% | First30min: 24% of day move
+  Round 500s touched: [25000]
+
+2026-02-03 (Tuesday [EXPIRY]) | DOWN | O:26308.1 H:26341.2 L:25641.3 C:25727.6 | VIX:12.9 (LOW)
+  Range: 2.66% | S:26300 R:26400 | Gap +4.86% (REVERSAL)
+  Best PUT: +2.569% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.116% (exit@10:00 MORNING)
+  Best BTST: +0.372% | First30min: 4% of day move
+  Round 500s touched: [26000]
+
+2026-02-04 (Wednesday) | UP | O:25675.1 H:25818.6 L:25563.9 C:25776.0 | VIX:12.2 (LOW)
+  Range: 0.99% | S:25650 R:25700
+  Best PUT: +0.401% (exit@10:00 MORNING)
+  Best CALL: +0.563% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.169% | First30min: 87% of day move
+
+2026-02-05 (Thursday) | DOWN | O:25755.9 H:25757.7 L:25579.5 C:25642.8 | VIX:12.2 (LOW)
+  Range: 0.69% | S:25700 R:25800
+  Best PUT: +0.665% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.041% (exit@10:00 MORNING)
+  Best BTST: +0.227% | First30min: 3% of day move
+
+2026-02-06 (Friday) | UP | O:25605.8 H:25703.9 L:25491.9 C:25693.7 | VIX:11.9 (LOW)
+  Range: 0.83% | S:25600 R:25700
+  Best PUT: +0.421% (exit@10:00 MORNING)
+  Best CALL: +0.406% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.062% | First30min: 94% of day move
+  Round 500s touched: [25500]
+
+2026-02-09 (Monday) | DOWN | O:25888.7 H:25922.2 L:25780.9 C:25867.3 | VIX:12.2 (LOW)
+  Range: 0.55% | S:25800 R:25900 | Gap +0.76% (REVERSAL)
+  Best PUT: +0.454% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.121% (exit@10:00 MORNING)
+  Best BTST: +0.373% | First30min: 80% of day move
+
+2026-02-10 (Tuesday [EXPIRY]) | UP | O:25922.7 H:25989.4 L:25870.4 C:25935.2 | VIX:11.7 (LOW)
+  Range: 0.46% | S:25900 R:26000
+  Best PUT: +0.204% (exit@10:00 MORNING)
+  Best CALL: +0.217% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.168% | First30min: 190% of day move
+
+2026-02-11 (Wednesday) | DOWN | O:25997.4 H:26009.4 L:25899.8 C:25953.8 | VIX:11.6 (LOW)
+  Range: 0.42% | S:25900 R:26000
+  Best PUT: +0.380% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.052% (exit@10:00 MORNING)
+  Best BTST: +0.213% | First30min: 29% of day move
+  Round 500s touched: [26000]
+
+2026-02-12 (Thursday) | DOWN | O:25906.7 H:25906.7 L:25752.4 C:25807.2 | VIX:11.7 (LOW)
+  Range: 0.60% | S:25900 R:25950
+  Best PUT: +0.607% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.000% (exit@09:15 MORNING_OPEN)
+  Best BTST: +0.225% | First30min: 5% of day move
+
+2026-02-13 (Friday) | DOWN | O:25571.2 H:25630.3 L:25444.3 C:25471.1 | VIX:13.3 (NORMAL_LOW)
+  Range: 0.73% | S:25500 R:25600 | Gap -0.91% (CONTINUATION)
+  Best PUT: +0.520% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.236% (exit@10:00 MORNING)
+  Best BTST: +0.129% | First30min: 38% of day move
+  Round 500s touched: [25500]
+
+2026-02-16 (Monday) | UP | O:25423.6 H:25697.0 L:25372.7 C:25682.8 | VIX:13.3 (NORMAL_LOW)
+  Range: 1.28% | S:25400 R:25500
+  Best PUT: +0.215% (exit@10:00 MORNING)
+  Best CALL: +1.081% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.061% | First30min: 13% of day move
+  Round 500s touched: [25500]
+
+2026-02-17 (Tuesday [EXPIRY]) | UP | O:25637.9 H:25764.4 L:25570.3 C:25725.4 | VIX:12.7 (LOW)
+  Range: 0.76% | S:25600 R:25700
+  Best PUT: +0.247% (exit@10:15 MORNING)
+  Best CALL: +0.462% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.121% | First30min: 42% of day move
+
+2026-02-18 (Wednesday) | UP | O:25752.7 H:25828.1 L:25645.2 C:25819.3 | VIX:12.2 (LOW)
+  Range: 0.71% | S:25700 R:25800
+  Best PUT: +0.394% (exit@10:00 MORNING)
+  Best CALL: +0.330% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.071% | First30min: 112% of day move
+
+2026-02-19 (Thursday) | DOWN | O:25873.3 H:25885.3 L:25388.8 C:25454.3 | VIX:13.5 (NORMAL_LOW)
+  Range: 1.92% | S:25800 R:25900
+  Best PUT: +1.852% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.036% (exit@10:00 MORNING)
+  Best BTST: +0.237% | First30min: 2% of day move
+  Round 500s touched: [25500]
+
+2026-02-20 (Friday) | UP | O:25406.6 H:25663.6 L:25379.8 C:25571.2 | VIX:14.4 (NORMAL_LOW)
+  Range: 1.12% | S:25400 R:25400
+  Best PUT: +0.092% (exit@10:00 MORNING)
+  Best CALL: +1.008% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.356% | First30min: 10% of day move
+  Round 500s touched: [25500]
+
+2026-02-23 (Monday) | UP | O:25678.4 H:25771.4 L:25609.3 C:25713.0 | VIX:14.2 (NORMAL_LOW)
+  Range: 0.63% | S:25650 R:25700
+  Best PUT: +0.240% (exit@10:00 MORNING)
+  Best CALL: +0.386% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.251% | First30min: 145% of day move
+
+2026-02-24 (Tuesday [EXPIRY]) | DOWN | O:25641.8 H:25641.8 L:25327.6 C:25424.7 | VIX:14.1 (NORMAL_LOW)
+  Range: 1.23% | S:25600 R:25700
+  Best PUT: +1.214% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.016% (exit@09:45 MORNING_OPEN)
+  Best BTST: +0.372% | First30min: 2% of day move
+  Round 500s touched: [25500]
+
+2026-02-25 (Wednesday) | DOWN | O:25512.6 H:25652.6 L:25428.2 C:25482.5 | VIX:13.5 (NORMAL_LOW)
+  Range: 0.88% | S:25500 R:25600
+  Best PUT: +0.358% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.553% (exit@10:00 MORNING)
+  Best BTST: +0.240% | First30min: 311% of day move
+  Round 500s touched: [25500]
+
+2026-02-26 (Thursday) | DOWN | O:25556.3 H:25572.9 L:25400.9 C:25496.6 | VIX:13.1 (NORMAL_LOW)
+  Range: 0.67% | S:25500 R:25600
+  Best PUT: +0.581% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.087% (exit@10:00 MORNING)
+  Best BTST: +0.349% | First30min: 25% of day move
+  Round 500s touched: [25500]
+
+2026-02-27 (Friday) | DOWN | O:25459.8 H:25476.4 L:25141.3 C:25178.7 | VIX:13.7 (NORMAL_LOW)
+  Range: 1.32% | S:25450 R:25500
+  Best PUT: +1.244% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.070% (exit@10:00 MORNING)
+  Best BTST: +0.142% | First30min: 4% of day move
+
+2026-03-02 (Monday) | UP | O:24659.2 H:24989.3 L:24603.5 C:24865.7 | VIX:17.1 (NORMAL_HIGH)
+  Range: 1.56% | S:24600 R:24700 | Gap -2.06% (REVERSAL)
+  Best PUT: +0.209% (exit@10:00 MORNING)
+  Best CALL: +1.326% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.482% | First30min: 20% of day move
+
+2026-03-04 (Wednesday) | UP | O:24388.8 H:24602.4 L:24305.4 C:24480.5 | VIX:21.1 (HIGH)
+  Range: 1.22% | S:24300 R:24400 | Gap -1.92% (REVERSAL)
+  Best PUT: +0.322% (exit@10:00 MORNING)
+  Best CALL: +0.861% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.481% | First30min: 68% of day move
+  Round 500s touched: [24500]
+
+2026-03-05 (Thursday) | UP | O:24615.9 H:24854.2 L:24529.4 C:24765.9 | VIX:17.9 (NORMAL_HIGH)
+  Range: 1.32% | S:24600 R:24700 | Gap +0.55% (CONTINUATION)
+  Best PUT: +0.336% (exit@10:00 MORNING)
+  Best CALL: +0.975% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.362% | First30min: 40% of day move
+
+2026-03-06 (Friday) | DOWN | O:24656.4 H:24700.9 L:24415.8 C:24450.4 | VIX:19.9 (NORMAL_HIGH)
+  Range: 1.16% | S:24600 R:24700
+  Best PUT: +0.970% (exit@13:45 AFTERNOON_EARLY)
+  Best CALL: +0.140% (exit@10:00 MORNING)
+  Best BTST: +0.136% | First30min: 9% of day move
+  Round 500s touched: [24500]
+
+2026-03-09 (Monday) | UP | O:23868.1 H:24078.2 L:23697.8 C:24028.1 | VIX:23.4 (HIGH)
+  Range: 1.59% | S:23800 R:23900 | Gap -2.38% (REVERSAL)
+  Best PUT: +0.727% (exit@10:00 MORNING)
+  Best CALL: +0.900% (exit@13:45 AFTERNOON_EARLY)
+  Best BTST: +0.228% | First30min: 75% of day move
+  Round 500s touched: [24000]
+
+2026-03-10 (Tuesday [EXPIRY]) | DOWN | O:24280.8 H:24303.8 L:24079.9 C:24261.6 | VIX:18.9 (NORMAL_HIGH)
+  Range: 0.92% | S:24200 R:24300 | Gap +1.05% (REVERSAL)
+  Best PUT: +0.805% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.099% (exit@10:00 MORNING)
+  Best BTST: +0.732% | First30min: 93% of day move
+
+2026-03-11 (Wednesday) | DOWN | O:24231.8 H:24299.0 L:23834.3 C:23866.8 | VIX:21.1 (HIGH)
+  Range: 1.92% | S:24200 R:24250
+  Best PUT: +1.632% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.219% (exit@10:00 MORNING)
+  Best BTST: +0.128% | First30min: 14% of day move
+  Round 500s touched: [24000]
+
+2026-03-12 (Thursday) | DOWN | O:23674.8 H:23833.2 L:23556.3 C:23639.2 | VIX:21.5 (HIGH)
+  Range: 1.17% | S:23600 R:23700 | Gap -0.80% (CONTINUATION)
+  Best PUT: +0.494% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.664% (exit@10:00 MORNING)
+  Best BTST: +0.345% | First30min: 292% of day move
+
+2026-03-13 (Friday) | DOWN | O:23462.5 H:23492.4 L:23112.0 C:23151.1 | VIX:22.6 (HIGH)
+  Range: 1.62% | S:23400 R:23500 | Gap -0.75% (CONTINUATION)
+  Best PUT: +1.485% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.145% (exit@10:00 MORNING)
+  Best BTST: +0.160% | First30min: 8% of day move
+
+2026-03-16 (Monday) | UP | O:23116.1 H:23502.0 L:22955.2 C:23408.8 | VIX:21.6 (HIGH)
+  Range: 2.37% | S:23100 R:23200
+  Best PUT: +0.736% (exit@10:00 MORNING)
+  Best CALL: +1.654% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.382% | First30min: 38% of day move
+  Round 500s touched: [23000, 23500]
+
+2026-03-17 (Tuesday [EXPIRY]) | UP | O:23493.2 H:23656.8 L:23346.6 C:23581.2 | VIX:19.8 (NORMAL_HIGH)
+  Range: 1.32% | S:23400 R:23500
+  Best PUT: +0.606% (exit@10:00 MORNING)
+  Best CALL: +0.665% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.289% | First30min: 100% of day move
+  Round 500s touched: [23500]
+
+2026-03-18 (Wednesday) | UP | O:23632.9 H:23862.2 L:23618.4 C:23777.8 | VIX:18.7 (NORMAL_HIGH)
+  Range: 1.03% | S:23600 R:23650
+  Best PUT: +0.056% (exit@09:45 MORNING_OPEN)
+  Best CALL: +0.960% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.344% | First30min: 9% of day move
+
+2026-03-19 (Thursday) | DOWN | O:23197.8 H:23378.7 L:22930.3 C:23002.2 | VIX:22.8 (HIGH)
+  Range: 1.93% | S:23150 R:23200 | Gap -2.44% (CONTINUATION)
+  Best PUT: +1.159% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.743% (exit@10:00 MORNING)
+  Best BTST: +0.319% | First30min: 63% of day move
+  Round 500s touched: [23000]
+
+2026-03-20 (Friday) | UP | O:23110.2 H:23345.2 L:23067.6 C:23114.5 | VIX:22.8 (HIGH)
+  Range: 1.20% | S:23100 R:23200
+  Best PUT: +0.182% (exit@10:00 MORNING)
+  Best CALL: +0.985% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.957% | First30min: 775% of day move
+
+2026-03-23 (Monday) | DOWN | O:22824.3 H:22851.7 L:22471.2 C:22512.7 | VIX:26.7 (VERY_HIGH)
+  Range: 1.67% | S:22800 R:22900 | Gap -1.26% (CONTINUATION)
+  Best PUT: +1.543% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.101% (exit@10:00 MORNING)
+  Best BTST: +0.180% | First30min: 7% of day move
+  Round 500s touched: [22500]
+
+2026-03-24 (Tuesday [EXPIRY]) | UP | O:22878.4 H:23057.3 L:22624.2 C:22912.4 | VIX:24.7 (HIGH)
+  Range: 1.89% | S:22800 R:22900 | Gap +1.62% (CONTINUATION)
+  Best PUT: +1.107% (exit@10:00 MORNING)
+  Best CALL: +0.785% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.632% | First30min: 481% of day move
+  Round 500s touched: [23000]
+
+2026-03-25 (Wednesday) | UP | O:23064.4 H:23465.3 L:23063.2 C:23306.4 | VIX:24.6 (HIGH)
+  Range: 1.74% | S:23000 R:23100 | Gap +0.66% (CONTINUATION)
+  Best PUT: +0.045% (exit@10:00 MORNING)
+  Best CALL: +1.732% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.671% | First30min: 2% of day move
+
+2026-03-27 (Friday) | DOWN | O:23173.6 H:23186.1 L:22804.6 C:22819.6 | VIX:26.8 (VERY_HIGH)
+  Range: 1.65% | S:23150 R:23200 | Gap -0.57% (CONTINUATION)
+  Best PUT: +1.612% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.035% (exit@09:45 MORNING_OPEN)
+  Best BTST: +0.086% | First30min: 2% of day move
+  Round 500s touched: [23000]
+
+2026-03-30 (Monday) | DOWN | O:22549.7 H:22714.1 L:22283.8 C:22331.4 | VIX:27.9 (VERY_HIGH)
+  Range: 1.91% | S:22500 R:22600 | Gap -1.18% (CONTINUATION)
+  Best PUT: +1.172% (exit@14:00 AFTERNOON_LATE)
+  Best CALL: +0.728% (exit@10:00 MORNING)
+  Best BTST: +0.206% | First30min: 50% of day move
+  Round 500s touched: [22500]
+
+2026-04-01 (Wednesday) | DOWN | O:22899.0 H:22941.3 L:22618.6 C:22679.4 | VIX:25.0 (VERY_HIGH)
+  Range: 1.41% | S:22800 R:22900 | Gap +2.54% (REVERSAL)
+  Best PUT: +1.213% (exit@13:30 AFTERNOON_EARLY)
+  Best CALL: +0.190% (exit@10:00 MORNING)
+  Best BTST: +0.258% | First30min: 12% of day move
+
+2026-04-02 (Thursday) | UP | O:22383.4 H:22782.3 L:22182.6 C:22713.1 | VIX:25.5 (VERY_HIGH)
+  Range: 2.68% | S:22350 R:22400 | Gap -1.31% (REVERSAL)
+  Best PUT: +0.889% (exit@10:00 MORNING)
+  Best CALL: +1.781% (exit@13:30 AFTERNOON_EARLY)
+  Best BTST: +0.303% | First30min: 40% of day move
+  Round 500s touched: [22500]
+
+
+==========================================================================================
+SUMMARY STATISTICS
+==========================================================================================
+
+─── AVERAGE DAILY RANGE (%) BY DAY OF WEEK ───
+  Monday      : Mean=0.982%  Median=0.720%  StdDev=0.540%  Count=25
+  Tuesday     : Mean=0.940%  Median=0.785%  StdDev=0.535%  Count=24
+  Wednesday   : Mean=0.926%  Median=0.820%  StdDev=0.407%  Count=25
+  Thursday    : Mean=0.997%  Median=0.780%  StdDev=0.536%  Count=23
+  Friday      : Mean=0.903%  Median=0.845%  StdDev=0.344%  Count=26
+
+─── UP vs DOWN DAY RATIO BY DAY OF WEEK ───
+  Monday      : UP=16  DOWN=9  UP%=64.0%  (n=25)
+  Tuesday     : UP=7  DOWN=17  UP%=29.2%  (n=24)
+  Wednesday   : UP=15  DOWN=10  UP%=60.0%  (n=25)
+  Thursday    : UP=9  DOWN=14  UP%=39.1%  (n=23)
+  Friday      : UP=13  DOWN=13  UP%=50.0%  (n=26)
+
+─── PUT OPTIMAL EXIT WINDOW DISTRIBUTION ───
+  MORNING_OPEN        :   7 days (  5.7%) | Avg move: +0.035%
+  MORNING             :  53 days ( 43.1%) | Avg move: +0.298%
+  MIDDAY              :   0 days (  0.0%) | Avg move: +0.000%
+  AFTERNOON_EARLY     :  56 days ( 45.5%) | Avg move: +0.771%
+  AFTERNOON_LATE      :   7 days (  5.7%) | Avg move: +0.465%
+
+─── CALL OPTIMAL EXIT WINDOW DISTRIBUTION ───
+  MORNING_OPEN        :  11 days (  8.9%) | Avg move: +0.029%
+  MORNING             :  52 days ( 42.3%) | Avg move: +0.236%
+  MIDDAY              :   0 days (  0.0%) | Avg move: +0.000%
+  AFTERNOON_EARLY     :  54 days ( 43.9%) | Avg move: +0.712%
+  AFTERNOON_LATE      :   6 days (  4.9%) | Avg move: +0.608%
+
+─── GAP CONTINUATION vs REVERSAL (|gap| > 0.5%) ───
+  GAP_UP: 10 days | Continuation=4 (40.0%) | Reversal=6 (60.0%)
+    Avg |gap|: 1.41%
+  GAP_DOWN: 13 days | Continuation=7 (53.8%) | Reversal=6 (46.2%)
+    Avg |gap|: 1.41%
+
+─── GAP ANALYSIS BY SIZE BUCKET ───
+  0.3-0.5%: 22 days | Cont=12 Rev=10 | Cont%=55%
+  0.5-0.8%:  9 days | Cont=5 Rev=4 | Cont%=56%
+  0.8-1.2%:  4 days | Cont=3 Rev=1 | Cont%=75%
+     >1.2%: 10 days | Cont=3 Rev=7 | Cont%=30%
+
+─── ROUND NUMBER TESTS ───
+  Days touching a round 500 level: 55/123 (44.7%)
+  Days touching a round 100 level: 122/123 (99.2%)
+
+  Most-tested 500-levels:
+    26000: 24 days (19.5%)
+    25500: 15 days (12.2%)
+    25000: 4 days (3.3%)
+    23000: 4 days (3.3%)
+    22500: 3 days (2.4%)
+    24500: 2 days (1.6%)
+    24000: 2 days (1.6%)
+    23500: 2 days (1.6%)
+
+─── VIX REGIME vs DAILY RANGE ───
+  VERY_LOW    : AvgRange=0.554% | MedRange=0.510% | AvgPUT=+0.250% | AvgCALL=+0.319% | UP%=38% | n=13
+  LOW         : AvgRange=0.796% | MedRange=0.730% | AvgPUT=+0.422% | AvgCALL=+0.381% | UP%=50% | n=70
+  NORMAL_LOW  : AvgRange=1.079% | MedRange=1.120% | AvgPUT=+0.649% | AvgCALL=+0.431% | UP%=47% | n=19
+  NORMAL_HIGH : AvgRange=1.218% | MedRange=1.240% | AvgPUT=+0.497% | AvgCALL=+0.694% | UP%=67% | n=6
+  HIGH        : AvgRange=1.665% | MedRange=1.680% | AvgPUT=+0.789% | AvgCALL=+0.869% | UP%=60% | n=10
+  VERY_HIGH   : AvgRange=1.864% | MedRange=1.670% | AvgPUT=+1.286% | AvgCALL=+0.567% | UP%=20% | n=5
+
+─── EXPIRY DAY (TUESDAY) vs NON-EXPIRY ───
+  EXPIRY DAYS (n=24):
+    Avg Range: 0.958%  Median: 0.785%
+    Avg PUT move: +0.677%  Avg CALL move: +0.287%
+    UP days: 33.3%  DOWN days: 66.7%
+    Avg VIX: 12.9
+  NON-EXPIRY DAYS (n=99):
+    Avg Range: 0.946%  Median: 0.820%
+    Avg PUT move: +0.467%  Avg CALL move: +0.483%
+    UP days: 52.5%  DOWN days: 47.5%
+    Avg VIX: 13.6
+
+─── CONSECUTIVE UP/DOWN DAY PATTERNS ───
+  UP streaks:   count=30  avg_len=2.0  max=5  distribution: {1: np.int64(15), 2: np.int64(5), 3: np.int64(6), 4: np.int64(3), 5: np.int64(1)}
+  DOWN streaks: count=29  avg_len=2.2  max=5  distribution: {1: np.int64(14), 2: np.int64(4), 3: np.int64(6), 4: np.int64(2), 5: np.int64(3)}
+
+  After 2+ consecutive UP days:
+    Next day UP: 15/30 (50.0%)
+    Next day DOWN: 15/30 (50.0%)
+
+  After 2+ consecutive DOWN days:
+    Next day UP: 15/34 (44.1%)
+    Next day DOWN: 19/34 (55.9%)
+
+  After 3+ consecutive UP days (15 instances):
+    Continues UP: 5 (33.3%)  Reverses DOWN: 10 (66.7%)
+  After 3+ consecutive DOWN days (19 instances):
+    Reverses UP: 11 (57.9%)  Continues DOWN: 8 (42.1%)
+
+─── FIRST 30 MIN vs REST OF DAY ───
+  Avg % of day's move in first 30 min: 58.4%
+  Median: 31.5%
+  Days where first 30 min > 50% of total move: 42/117 (35.9%)
+  Days where first 30 min > 80% of total move: 28/117 (23.9%)
+  UP days — first 30 min captures: 56.9% (median 37.6%)
+  DOWN days — first 30 min captures: 59.9% (median 27.9%)
+
+─── OVERALL BEST TRADE OPPORTUNITIES ───
+  Average best PUT move (if entered at open): +0.508%
+  Average best CALL move (if entered at open): +0.445%
+  Average best BTST move: +0.226%
+  Median best PUT: +0.394%
+  Median best CALL: +0.378%
+  Median best BTST: +0.182%
+
+  Days with PUT move > 1%: 16 (13.0%)
+  Days with CALL move > 1%: 9 (7.3%)
+
+─── MONTHLY BREAKDOWN ───
+  2025-10: 21 days | AvgRange=0.767% | AvgVIX=11.1 | UP=62% | PUT=+0.276% CALL=+0.489% BTST=+0.195%
+  2025-11: 19 days | AvgRange=0.734% | AvgVIX=12.3 | UP=53% | PUT=+0.346% CALL=+0.402% BTST=+0.159%
+  2025-12: 22 days | AvgRange=0.645% | AvgVIX=10.2 | UP=41% | PUT=+0.339% CALL=+0.320% BTST=+0.175%
+  2026-01: 20 days | AvgRange=0.948% | AvgVIX=11.8 | UP=40% | PUT=+0.611% CALL=+0.350% BTST=+0.248%
+  2026-02: 20 days | AvgRange=1.009% | AvgVIX=12.9 | UP=45% | PUT=+0.657% CALL=+0.352% BTST=+0.211%
+  2026-03: 19 days | AvgRange=1.536% | AvgVIX=22.1 | UP=53% | PUT=+0.800% CALL=+0.722% BTST=+0.375%
+  2026-04: 2 days | AvgRange=2.045% | AvgVIX=25.2 | UP=50% | PUT=+1.051% CALL=+0.985% BTST=+0.280%
+
+─── BEST TRADE TYPE BY DAY OF WEEK ───
+  Monday      : PUT=+0.469% CALL=+0.523% BTST=+0.201% -> Best=CALL
+  Tuesday     : PUT=+0.684% CALL=+0.262% BTST=+0.292% -> Best=PUT
+  Wednesday   : PUT=+0.360% CALL=+0.571% BTST=+0.243% -> Best=CALL
+  Thursday    : PUT=+0.556% CALL=+0.440% BTST=+0.227% -> Best=PUT
+  Friday      : PUT=+0.482% CALL=+0.421% BTST=+0.174% -> Best=PUT
+
+─── RSI-BASED PATTERNS ───
+  Oversold (<30)      :  19 days | UP%=52.6% | AvgRange=1.419%
+  Bearish (30-50)     :  45 days | UP%=46.7% | AvgRange=1.034%
+  Bullish (50-70)     :  46 days | UP%=50.0% | AvgRange=0.718%
+  Overbought (>70)    :  13 days | UP%=46.2% | AvgRange=0.778%
+
+─── BIG MOVE DAYS (Range > 1.5%) ───
+  Count: 17 out of 123 days (13.8%)
+  Average VIX on big days: 20.7
+  UP: 47% DOWN: 53%
+  Top 10 biggest range days:
+    2026-04-02 (Thursday) Range=2.68% UP VIX=25.5 PUT=+0.889% CALL=+1.781%
+    2026-02-03 (Tuesday) Range=2.66% DOWN VIX=12.9 PUT=+2.569% CALL=+0.116%
+    2026-03-16 (Monday) Range=2.37% UP VIX=21.6 PUT=+0.736% CALL=+1.654%
+    2026-03-19 (Thursday) Range=1.93% DOWN VIX=22.8 PUT=+1.159% CALL=+0.743%
+    2026-03-11 (Wednesday) Range=1.92% DOWN VIX=21.1 PUT=+1.632% CALL=+0.219%
+    2026-02-19 (Thursday) Range=1.92% DOWN VIX=13.5 PUT=+1.852% CALL=+0.036%
+    2026-03-30 (Monday) Range=1.91% DOWN VIX=27.9 PUT=+1.172% CALL=+0.728%
+    2026-03-24 (Tuesday) Range=1.89% UP VIX=24.7 PUT=+1.107% CALL=+0.785%
+    2026-03-25 (Wednesday) Range=1.74% UP VIX=24.6 PUT=+0.045% CALL=+1.732%
+    2026-02-02 (Monday) Range=1.73% UP VIX=13.9 PUT=+0.473% CALL=+1.261%
+
+─── SMA POSITION CORRELATION ───
+  Above SMA20 & SMA50         :  56 days | UP%=48.2% | Range=0.685% | PUT=+0.318% CALL=+0.375%
+  Below SMA20 & SMA50         :  46 days | UP%=47.8% | Range=1.321% | PUT=+0.752% CALL=+0.566%
+  Mixed (between SMAs)        :  21 days | UP%=52.4% | Range=0.835% | PUT=+0.478% CALL=+0.365%
+
+==========================================================================================
+ANALYSIS COMPLETE
+==========================================================================================

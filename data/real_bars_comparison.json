@@ -1,0 +1,62 @@
+{
+  "V3": {
+    "version": "V3",
+    "net_pnl": 266060,
+    "return_pct": 133.0,
+    "total_trades": 170,
+    "winning_trades": 71,
+    "losing_trades": 99,
+    "win_rate": 41.8,
+    "sharpe": 5.45,
+    "profit_factor": 1.5,
+    "max_drawdown": 13.03,
+    "avg_win": 11171,
+    "avg_loss": -5324,
+    "final_equity": 466060
+  },
+  "V4": {
+    "version": "V4",
+    "net_pnl": 240303,
+    "return_pct": 120.2,
+    "total_trades": 177,
+    "winning_trades": 73,
+    "losing_trades": 104,
+    "win_rate": 41.2,
+    "sharpe": 4.36,
+    "profit_factor": 1.44,
+    "max_drawdown": 16.65,
+    "avg_win": 10717,
+    "avg_loss": -5212,
+    "final_equity": 440303
+  },
+  "V6": {
+    "version": "V6",
+    "net_pnl": 89297,
+    "return_pct": 44.6,
+    "total_trades": 43,
+    "winning_trades": 23,
+    "losing_trades": 20,
+    "win_rate": 53.5,
+    "sharpe": 3.17,
+    "profit_factor": 1.62,
+    "max_drawdown": 12.95,
+    "avg_win": 10119,
+    "avg_loss": -7172,
+    "final_equity": 289297
+  },
+  "V7": {
+    "version": "V7",
+    "net_pnl": 57633,
+    "return_pct": 28.8,
+    "total_trades": 61,
+    "winning_trades": 29,
+    "losing_trades": 32,
+    "win_rate": 47.5,
+    "sharpe": 2.07,
+    "profit_factor": 1.35,
+    "max_drawdown": 17.67,
+    "avg_win": 7673,
+    "avg_loss": -5152,
+    "final_equity": 257633
+  }
+}

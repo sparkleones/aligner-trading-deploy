@@ -1,0 +1,580 @@
+{
+  "sp500_rules": {
+    "s&p_up_gt_1pct": {
+      "action": "BUY_CALL",
+      "win_rate": 66.7,
+      "count": 9,
+      "mean_ret_pct": 0.395,
+      "significant": 0
+    },
+    "s&p_up_0.5pct_1pct": {
+      "action": "BUY_CALL",
+      "win_rate": 65.4,
+      "count": 26,
+      "mean_ret_pct": 0.201,
+      "significant": 0
+    },
+    "s&p_up_0_0.5pct": {
+      "action": "BUY_CALL",
+      "win_rate": 69.0,
+      "count": 29,
+      "mean_ret_pct": 0.142,
+      "significant": 0
+    },
+    "s&p_down_0_0.5pct": {
+      "action": "BUY_PUT",
+      "win_rate": 64.3,
+      "count": 28,
+      "mean_ret_pct": -0.172,
+      "significant": 0
+    },
+    "s&p_down_0.5pct_1pct": {
+      "action": "BUY_PUT",
+      "win_rate": 46.2,
+      "count": 13,
+      "mean_ret_pct": -0.106,
+      "significant": 0
+    },
+    "s&p_down_gt_1pct": {
+      "action": "BUY_PUT",
+      "win_rate": 87.5,
+      "count": 16,
+      "mean_ret_pct": -0.963,
+      "significant": 1
+    }
+  },
+  "nasdaq_rules": {
+    "nasdaq_up_gt_1pct": {
+      "action": "BUY_CALL",
+      "win_rate": 83.3,
+      "count": 18,
+      "mean_ret_pct": 0.484,
+      "significant": 1
+    },
+    "nasdaq_up_0.5pct_1pct": {
+      "action": "BUY_CALL",
+      "win_rate": 53.8,
+      "count": 26,
+      "mean_ret_pct": 0.068,
+      "significant": 0
+    },
+    "nasdaq_down_gt_0.5pct": {
+      "action": "BUY_PUT",
+      "win_rate": 66.7,
+      "count": 36,
+      "mean_ret_pct": -0.412,
+      "significant": 1
+    },
+    "nasdaq_down_gt_1pct": {
+      "action": "BUY_PUT",
+      "win_rate": 77.3,
+      "count": 22,
+      "mean_ret_pct": -0.769,
+      "significant": 1
+    }
+  },
+  "oil_rules": {
+    "oil_spike_gt_2pct": {
+      "action": "BUY_PUT",
+      "win_rate": 60.0,
+      "count": 25,
+      "mean_ret_pct": -0.362,
+      "significant": 0
+    },
+    "oil_up_1pct_2pct": {
+      "action": "BUY_CALL",
+      "win_rate": 57.9,
+      "count": 19,
+      "mean_ret_pct": 0.08,
+      "significant": 0
+    },
+    "oil_up_0_1pct": {
+      "action": "BUY_PUT",
+      "win_rate": 38.5,
+      "count": 26,
+      "mean_ret_pct": -0.022,
+      "significant": 0
+    },
+    "oil_down_0_1pct": {
+      "action": "BUY_PUT",
+      "win_rate": 52.2,
+      "count": 23,
+      "mean_ret_pct": -0.031,
+      "significant": 0
+    },
+    "oil_down_1pct_2pct": {
+      "action": "BUY_CALL",
+      "win_rate": 57.1,
+      "count": 14,
+      "mean_ret_pct": 0.087,
+      "significant": 0
+    },
+    "oil_drop_gt_2pct": {
+      "action": "BUY_PUT",
+      "win_rate": 57.1,
+      "count": 14,
+      "mean_ret_pct": -0.078,
+      "significant": 0
+    }
+  },
+  "gold_rules": {
+    "gold_up_gt_1pct": {
+      "action": "BUY_PUT",
+      "win_rate": 46.2,
+      "count": 39,
+      "mean_ret_pct": -0.189,
+      "significant": 0
+    },
+    "gold_up_0_1pct": {
+      "action": "BUY_CALL",
+      "win_rate": 45.5,
+      "count": 33,
+      "mean_ret_pct": 0.049,
+      "significant": 0
+    },
+    "gold_down_0_1pct": {
+      "action": "BUY_PUT",
+      "win_rate": 53.8,
+      "count": 26,
+      "mean_ret_pct": -0.191,
+      "significant": 0
+    },
+    "gold_down_gt_1pct": {
+      "action": "BUY_CALL",
+      "win_rate": 60.9,
+      "count": 23,
+      "mean_ret_pct": 0.088,
+      "significant": 0
+    }
+  },
+  "vix_rules": {
+    "vix_spike_gt_10pct": {
+      "action": "BUY_PUT",
+      "win_rate": 100.0,
+      "count": 10,
+      "mean_ret_pct": -1.648,
+      "significant": 1
+    },
+    "vix_up_5pct_10pct": {
+      "action": "BUY_PUT",
+      "win_rate": 83.3,
+      "count": 12,
+      "mean_ret_pct": -0.718,
+      "significant": 1
+    },
+    "vix_up_0_5pct": {
+      "action": "BUY_PUT",
+      "win_rate": 51.4,
+      "count": 35,
+      "mean_ret_pct": -0.061,
+      "significant": 0
+    },
+    "vix_down_0_5pct": {
+      "action": "BUY_CALL",
+      "win_rate": 62.7,
+      "count": 51,
+      "mean_ret_pct": 0.154,
+      "significant": 1
+    },
+    "vix_drop_gt_5pct": {
+      "action": "BUY_CALL",
+      "win_rate": 90.9,
+      "count": 11,
+      "mean_ret_pct": 0.988,
+      "significant": 1
+    }
+  },
+  "usdinr_rules": {
+    "inr_weakens_gt_0.5pct": {
+      "action": "BUY_PUT",
+      "win_rate": 66.7,
+      "count": 9,
+      "mean_ret_pct": -0.039,
+      "significant": 0
+    },
+    "inr_weakens_0_0.5pct": {
+      "action": "BUY_PUT",
+      "win_rate": 47.0,
+      "count": 66,
+      "mean_ret_pct": -0.066,
+      "significant": 0
+    },
+    "inr_strengthens_0_0.5pct": {
+      "action": "BUY_PUT",
+      "win_rate": 55.3,
+      "count": 38,
+      "mean_ret_pct": -0.177,
+      "significant": 0
+    },
+    "inr_strengthens_gt_0.5pct": {
+      "action": "BUY_CALL",
+      "win_rate": 87.5,
+      "count": 8,
+      "mean_ret_pct": 0.345,
+      "significant": 0
+    }
+  },
+  "combined_rules": {
+    "s&p_up_gt0.5pct_plus_oil_down_gt1pct_bullish": {
+      "action": "BUY_CALL",
+      "win_rate": 60.0,
+      "count": 10,
+      "mean_ret_pct": 0.307,
+      "significant": 0
+    },
+    "s&p_down_gt0.5pct_plus_oil_up_gt1pct_bearish": {
+      "action": "BUY_PUT",
+      "win_rate": 69.2,
+      "count": 13,
+      "mean_ret_pct": -0.709,
+      "significant": 1
+    },
+    "s&p_up_gt0.5pct_plus_oil_up_gt1pct_mixed": {
+      "action": "BUY_PUT",
+      "win_rate": 54.5,
+      "count": 11,
+      "mean_ret_pct": -0.066,
+      "significant": 0
+    },
+    "s&p_down_gt0.5pct_plus_oil_down_gt1pct_risk_off": {
+      "action": "BUY_PUT",
+      "win_rate": 50.0,
+      "count": 4,
+      "mean_ret_pct": -0.212,
+      "significant": 0
+    },
+    "s&p_up_gt0.5pct_plus_gold_down_risk_on": {
+      "action": "BUY_CALL",
+      "win_rate": 90.0,
+      "count": 10,
+      "mean_ret_pct": 0.846,
+      "significant": 1
+    },
+    "s&p_down_gt0.5pct_plus_gold_up_gt1pct_flight": {
+      "action": "BUY_PUT",
+      "win_rate": 66.7,
+      "count": 6,
+      "mean_ret_pct": -0.768,
+      "significant": 0
+    }
+  },
+  "asian_market_rules": {
+    "nikkei_up_gt_1pct": {
+      "action": "BUY_PUT",
+      "win_rate": 46.3,
+      "count": 41,
+      "mean_ret_pct": -0.155,
+      "significant": 0
+    },
+    "nikkei_down_gt_1pct": {
+      "action": "BUY_CALL",
+      "win_rate": 46.9,
+      "count": 32,
+      "mean_ret_pct": 0.016,
+      "significant": 0
+    },
+    "hang_seng_up_gt_1pct": {
+      "action": "BUY_PUT",
+      "win_rate": 55.0,
+      "count": 20,
+      "mean_ret_pct": -0.117,
+      "significant": 0
+    },
+    "hang_seng_down_gt_1pct": {
+      "action": "BUY_CALL",
+      "win_rate": 55.6,
+      "count": 27,
+      "mean_ret_pct": 0.125,
+      "significant": 0
+    }
+  },
+  "us10y_rules": {},
+  "sentiment_score_actions": {
+    "sentiment_plus2_to_plus3_bullish": {
+      "action": "BUY_CALL",
+      "win_rate": 33.3,
+      "count": 3,
+      "mean_ret_pct": 0.715,
+      "significant": 0
+    },
+    "sentiment_plus1_to_plus2_mild_bull": {
+      "action": "BUY_CALL",
+      "win_rate": 66.7,
+      "count": 21,
+      "mean_ret_pct": 0.132,
+      "significant": 0
+    },
+    "sentiment_1_to_plus1_neutral": {
+      "action": "BUY_PUT",
+      "win_rate": 42.6,
+      "count": 61,
+      "mean_ret_pct": -0.009,
+      "significant": 0
+    },
+    "sentiment_1_to_2_mild_bear": {
+      "action": "BUY_PUT",
+      "win_rate": 56.5,
+      "count": 23,
+      "mean_ret_pct": -0.189,
+      "significant": 0
+    },
+    "sentiment_2_to_3_bearish": {
+      "action": "BUY_PUT",
+      "win_rate": 87.5,
+      "count": 8,
+      "mean_ret_pct": -0.306,
+      "significant": 1
+    },
+    "sentiment_lt=_3_strongly_bearish": {
+      "action": "BUY_PUT",
+      "win_rate": 100.0,
+      "count": 4,
+      "mean_ret_pct": -2.134,
+      "significant": 1
+    }
+  },
+  "sentiment_score_logic": {
+    "sp500_up_gt_1pct": "+2",
+    "sp500_up_gt_0.5pct": "+1",
+    "sp500_down_gt_0.5pct": "-1",
+    "sp500_down_gt_1pct": "-2",
+    "oil_up_gt_2pct": "-1",
+    "oil_down_gt_2pct": "+1",
+    "gold_up_gt_1pct": "-0.5 (risk-off)",
+    "gold_down_gt_1pct": "+0.5"
+  },
+  "correlation_stats": {
+    "sp500_ret": {
+      "pearson_r": 0.3976,
+      "pearson_p": 0.0,
+      "spearman_r": 0.3813,
+      "spearman_p": 0.0,
+      "n": 121
+    },
+    "nasdaq_ret": {
+      "pearson_r": 0.3344,
+      "pearson_p": 0.0002,
+      "spearman_r": 0.316,
+      "spearman_p": 0.0004,
+      "n": 121
+    },
+    "dow_ret": {
+      "pearson_r": 0.4354,
+      "pearson_p": 0.0,
+      "spearman_r": 0.3554,
+      "spearman_p": 0.0001,
+      "n": 121
+    },
+    "nikkei_ret": {
+      "pearson_r": -0.1462,
+      "pearson_p": 0.1097,
+      "spearman_r": -0.1101,
+      "spearman_p": 0.2294,
+      "n": 121
+    },
+    "hangseng_ret": {
+      "pearson_r": -0.1079,
+      "pearson_p": 0.2388,
+      "spearman_r": -0.0609,
+      "spearman_p": 0.5068,
+      "n": 121
+    },
+    "oil_ret": {
+      "pearson_r": -0.2285,
+      "pearson_p": 0.0117,
+      "spearman_r": -0.0715,
+      "spearman_p": 0.436,
+      "n": 121
+    },
+    "gold_ret": {
+      "pearson_r": -0.0344,
+      "pearson_p": 0.7079,
+      "spearman_r": -0.0371,
+      "spearman_p": 0.6864,
+      "n": 121
+    },
+    "us10y_ret": {
+      "pearson_r": -0.2128,
+      "pearson_p": 0.0191,
+      "spearman_r": -0.1267,
+      "spearman_p": 0.1662,
+      "n": 121
+    },
+    "india_vix_chg": {
+      "pearson_r": -0.6993,
+      "pearson_p": 0.0,
+      "spearman_r": -0.5944,
+      "spearman_p": 0.0,
+      "n": 121
+    },
+    "usdinr_ret": {
+      "pearson_r": -0.0156,
+      "pearson_p": 0.8653,
+      "spearman_r": 0.0214,
+      "spearman_p": 0.8155,
+      "n": 121
+    },
+    "sentiment_score": {
+      "pearson_r": 0.4171,
+      "pearson_p": 0.0,
+      "spearman_r": 0.2946,
+      "spearman_p": 0.001,
+      "n": 122
+    }
+  },
+  "metadata": {
+    "period": "2025-10-01 to 2026-04-05",
+    "nifty_trading_days": 122,
+    "symbols_loaded": [
+      "NIFTY",
+      "INDIA_VIX",
+      "SP500",
+      "NASDAQ",
+      "DOW",
+      "NIKKEI",
+      "HANG_SENG",
+      "CRUDE_OIL",
+      "GOLD",
+      "USD_INR",
+      "US_10Y"
+    ],
+    "generated_at": "2026-04-05T12:26:03.698925"
+  },
+  "top_actionable_rules": [
+    {
+      "rank": 1,
+      "action": "BUY_PUT",
+      "signal": "VIX spike > 10%",
+      "win_rate": 100.0,
+      "count": 10,
+      "mean_ret_pct": -1.648,
+      "est_pnl_per_trade": 4531.0
+    },
+    {
+      "rank": 2,
+      "action": "BUY_CALL",
+      "signal": "VIX drop > 5%",
+      "win_rate": 90.9,
+      "count": 11,
+      "mean_ret_pct": 0.988,
+      "est_pnl_per_trade": 2716.0
+    },
+    {
+      "rank": 3,
+      "action": "BUY_CALL",
+      "signal": "S&P up >0.5% + Gold down (RISK-ON)",
+      "win_rate": 90.0,
+      "count": 10,
+      "mean_ret_pct": 0.846,
+      "est_pnl_per_trade": 2325.0
+    },
+    {
+      "rank": 4,
+      "action": "BUY_PUT",
+      "signal": "S&P down > 1%",
+      "win_rate": 87.5,
+      "count": 16,
+      "mean_ret_pct": -0.963,
+      "est_pnl_per_trade": 2647.0
+    },
+    {
+      "rank": 5,
+      "action": "BUY_CALL",
+      "signal": "INR strengthens > 0.5%",
+      "win_rate": 87.5,
+      "count": 8,
+      "mean_ret_pct": 0.345,
+      "est_pnl_per_trade": 948.0
+    },
+    {
+      "rank": 6,
+      "action": "BUY_PUT",
+      "signal": "Sentiment -2 to -3 (BEARISH)",
+      "win_rate": 87.5,
+      "count": 8,
+      "mean_ret_pct": -0.306,
+      "est_pnl_per_trade": 840.0
+    },
+    {
+      "rank": 7,
+      "action": "BUY_CALL",
+      "signal": "NASDAQ up > 1%",
+      "win_rate": 83.3,
+      "count": 18,
+      "mean_ret_pct": 0.484,
+      "est_pnl_per_trade": 1330.0
+    },
+    {
+      "rank": 8,
+      "action": "BUY_PUT",
+      "signal": "VIX up 5%-10%",
+      "win_rate": 83.3,
+      "count": 12,
+      "mean_ret_pct": -0.718,
+      "est_pnl_per_trade": 1976.0
+    },
+    {
+      "rank": 9,
+      "action": "BUY_PUT",
+      "signal": "NASDAQ down > 1%",
+      "win_rate": 77.3,
+      "count": 22,
+      "mean_ret_pct": -0.769,
+      "est_pnl_per_trade": 2115.0
+    },
+    {
+      "rank": 10,
+      "action": "BUY_PUT",
+      "signal": "S&P down >0.5% + Oil up >1% (BEARISH)",
+      "win_rate": 69.2,
+      "count": 13,
+      "mean_ret_pct": -0.709,
+      "est_pnl_per_trade": 1950.0
+    },
+    {
+      "rank": 11,
+      "action": "BUY_CALL",
+      "signal": "S&P up 0-0.5%",
+      "win_rate": 69.0,
+      "count": 29,
+      "mean_ret_pct": 0.142,
+      "est_pnl_per_trade": 391.0
+    },
+    {
+      "rank": 12,
+      "action": "BUY_CALL",
+      "signal": "S&P up > 1%",
+      "win_rate": 66.7,
+      "count": 9,
+      "mean_ret_pct": 0.395,
+      "est_pnl_per_trade": 1087.0
+    },
+    {
+      "rank": 13,
+      "action": "BUY_PUT",
+      "signal": "NASDAQ down > 0.5%",
+      "win_rate": 66.7,
+      "count": 36,
+      "mean_ret_pct": -0.412,
+      "est_pnl_per_trade": 1133.0
+    },
+    {
+      "rank": 14,
+      "action": "BUY_PUT",
+      "signal": "INR weakens > 0.5%",
+      "win_rate": 66.7,
+      "count": 9,
+      "mean_ret_pct": -0.039,
+      "est_pnl_per_trade": 108.0
+    },
+    {
+      "rank": 15,
+      "action": "BUY_PUT",
+      "signal": "S&P down >0.5% + Gold up >1% (FLIGHT)",
+      "win_rate": 66.7,
+      "count": 6,
+      "mean_ret_pct": -0.768,
+      "est_pnl_per_trade": 2113.0
+    }
+  ]
+}

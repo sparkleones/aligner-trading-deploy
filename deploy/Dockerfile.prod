@@ -1,0 +1,54 @@
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║  Aligner Trading System — Production Dockerfile                             ║
+# ║  Autonomous NIFTY options engine + PWA dashboard                            ║
+# ║  Target: Any cloud VPS (DigitalOcean, Hetzner, AWS Lightsail)               ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+FROM python:3.11-slim-bookworm
+
+# System deps + TA-Lib C library (required by ta-lib Python package)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl wget build-essential \
+    && wget -q https://github.com/TA-Lib/ta-lib/releases/download/v0.4.0/ta-lib-0.4.0-src.tar.gz \
+    && tar -xzf ta-lib-0.4.0-src.tar.gz \
+    && cd ta-lib && ./configure --prefix=/usr && make && make install \
+    && cd .. && rm -rf ta-lib ta-lib-0.4.0-src.tar.gz \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python deps (cached layer)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code — DO NOT copy .env (injected at runtime via env_file)
+COPY config/ ./config/
+COPY orchestrator/ ./orchestrator/
+COPY risk_management/ ./risk_management/
+COPY backtesting/ ./backtesting/
+COPY broker/ ./broker/
+COPY dashboard/ ./dashboard/
+COPY scoring/ ./scoring/
+COPY live_trading/ ./live_trading/
+COPY data/models/ ./data/models/
+COPY run_autonomous.py .
+COPY main.py .
+
+# Create data/logs directories
+RUN mkdir -p /app/data /app/data/daily_reports /app/logs
+
+# Environment
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+
+# Expose ports: 8501 = PWA dashboard
+EXPOSE 8501
+
+# Health check via FastAPI
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+    CMD curl -f http://localhost:8501/health || exit 1
+
+# Start both engine + dashboard
+COPY deploy/start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+CMD ["/app/start.sh"]

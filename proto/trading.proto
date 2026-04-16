@@ -1,0 +1,184 @@
+syntax = "proto3";
+
+package trading;
+
+// ─── Market Data Messages ───────────────────────────────────────────────────
+
+message TickData {
+  string symbol = 1;
+  double last_price = 2;
+  double bid_price = 3;
+  double ask_price = 4;
+  int64 bid_qty = 5;
+  int64 ask_qty = 6;
+  double open = 7;
+  double high = 8;
+  double low = 9;
+  double close = 10;
+  int64 volume = 11;
+  double oi = 12;
+  int64 timestamp_ms = 13;
+  string instrument_token = 14;
+  double strike_price = 15;
+  string option_type = 16;  // "CE" or "PE"
+  string expiry = 17;
+}
+
+message OHLCVBar {
+  string symbol = 1;
+  double open = 2;
+  double high = 3;
+  double low = 4;
+  double close = 5;
+  int64 volume = 6;
+  double oi = 7;
+  int64 timestamp_ms = 8;
+  int32 interval_minutes = 9;
+}
+
+// ─── Order Messages ─────────────────────────────────────────────────────────
+
+enum OrderSide {
+  BUY = 0;
+  SELL = 1;
+}
+
+enum OrderType {
+  MARKET = 0;
+  LIMIT = 1;
+  SL = 2;
+  SL_M = 3;
+}
+
+enum ProductType {
+  NRML = 0;
+  MIS = 1;
+}
+
+message OrderRequest {
+  string request_id = 1;
+  string symbol = 2;
+  string exchange = 3;
+  OrderSide side = 4;
+  OrderType order_type = 5;
+  int32 quantity = 6;
+  double price = 7;
+  double trigger_price = 8;
+  ProductType product = 9;
+  string tag = 10;
+  double strike_price = 11;
+  string option_type = 12;
+  string expiry = 13;
+}
+
+message OrderResponse {
+  string request_id = 1;
+  string order_id = 2;
+  bool success = 3;
+  string message = 4;
+  int64 timestamp_ms = 5;
+  double latency_ms = 6;
+}
+
+message CancelRequest {
+  string order_id = 1;
+}
+
+message SquareOffRequest {
+  string reason = 1;
+}
+
+message SquareOffResponse {
+  bool success = 1;
+  int32 orders_cancelled = 2;
+  int32 positions_closed = 3;
+  string message = 4;
+}
+
+// ─── Strategy Signals ───────────────────────────────────────────────────────
+
+message StrategySignal {
+  string strategy_id = 1;
+  string symbol = 2;
+  OrderSide side = 3;
+  int32 quantity = 4;
+  double target_price = 5;
+  double stop_loss = 6;
+  double confidence = 7;
+  string rationale = 8;
+  int64 timestamp_ms = 9;
+}
+
+// ─── Portfolio State ────────────────────────────────────────────────────────
+
+message Position {
+  string symbol = 1;
+  int32 quantity = 2;
+  double average_price = 3;
+  double last_price = 4;
+  double pnl = 5;
+  double unrealized_pnl = 6;
+  string product = 7;
+}
+
+message PortfolioState {
+  repeated Position positions = 1;
+  double total_mtm = 2;
+  double total_capital = 3;
+  double used_margin = 4;
+  double available_margin = 5;
+  int64 timestamp_ms = 6;
+}
+
+// ─── Risk Management ────────────────────────────────────────────────────────
+
+message RiskStatus {
+  double daily_pnl = 1;
+  double daily_pnl_pct = 2;
+  double max_loss_threshold_pct = 3;
+  bool kill_switch_active = 4;
+  int32 open_positions = 5;
+  int32 pending_orders = 6;
+}
+
+// ─── Service Definitions ────────────────────────────────────────────────────
+
+// Rust execution engine exposes this to the Python strategy layer
+service ExecutionEngine {
+  // Submit an order (will be sliced if needed)
+  rpc SubmitOrder(OrderRequest) returns (OrderResponse);
+
+  // Cancel an existing order
+  rpc CancelOrder(CancelRequest) returns (OrderResponse);
+
+  // Emergency: cancel all orders and square off all positions
+  rpc SquareOffAll(SquareOffRequest) returns (SquareOffResponse);
+
+  // Stream live tick data to the strategy layer
+  rpc StreamTicks(TickSubscription) returns (stream TickData);
+
+  // Stream OHLCV bars
+  rpc StreamBars(BarSubscription) returns (stream OHLCVBar);
+
+  // Get current portfolio state
+  rpc GetPortfolio(Empty) returns (PortfolioState);
+
+  // Get risk status
+  rpc GetRiskStatus(Empty) returns (RiskStatus);
+}
+
+// Python strategy layer exposes this to receive signals
+service StrategyService {
+  rpc SendSignal(StrategySignal) returns (OrderResponse);
+}
+
+message TickSubscription {
+  repeated string symbols = 1;
+}
+
+message BarSubscription {
+  repeated string symbols = 1;
+  int32 interval_minutes = 2;
+}
+
+message Empty {}

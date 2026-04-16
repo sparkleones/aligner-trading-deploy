@@ -1,0 +1,34 @@
+{
+  "date": "2026-04-10",
+  "generated_at": "2026-04-10T18:04:35.146548",
+  "total_trades": 1,
+  "open_positions": 0,
+  "btst_positions": 0,
+  "daily_pnl": 2561.0,
+  "trades": [
+    {
+      "symbol": "NIFTY2641324000CE",
+      "side": "BUY",
+      "qty": 130,
+      "entry_price": 154,
+      "order_id": "260410220785827",
+      "strategy": "v14_production",
+      "entry_type": "",
+      "product": "MIS",
+      "entry_time": "2026-04-10T11:22:46.374054",
+      "current_price": 154,
+      "unrealized_pnl": 0.0,
+      "metadata": {},
+      "exit_price": 173.7,
+      "realized_pnl": 2560.9999999999986,
+      "exit_reason": "broker_auto_squareoff",
+      "exit_time": "2026-04-10T18:04:35.145550",
+      "hold_minutes": 401.8
+    }
+  ],
+  "btst": [],
+  "winners": 1,
+  "losers": 0,
+  "win_rate": 100.0,
+  "avg_pnl": 2561.0
+}

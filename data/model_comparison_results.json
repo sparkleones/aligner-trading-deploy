@@ -1,0 +1,513 @@
+{
+  "test_date": "2026-04-06T01:00:51.185870",
+  "periods": {
+    "Apr 2025 (OOS)": {
+      "1_BASELINE": {
+        "return_pct": 96.92,
+        "total_pnl": 193847.0,
+        "max_dd": 17.78,
+        "sharpe": 2.78,
+        "profit_factor": 2.77,
+        "num_trades": 19,
+        "win_rate": 47.4,
+        "wins": 9,
+        "losses": 10,
+        "avg_pnl": 10202.0,
+        "best_trade": 253423.0,
+        "worst_trade": -24848.0,
+        "monthly": {
+          "2025-04": 193846.59156836072
+        },
+        "all_months_positive": true
+      },
+      "2_FULL_ENSEMBLE": {
+        "return_pct": 187.99,
+        "total_pnl": 375973.0,
+        "max_dd": 8.97,
+        "sharpe": 5.13,
+        "profit_factor": 4.97,
+        "num_trades": 19,
+        "win_rate": 42.1,
+        "wins": 8,
+        "losses": 11,
+        "avg_pnl": 19788.0,
+        "best_trade": 253423.0,
+        "worst_trade": -13987.0,
+        "monthly": {
+          "2025-04": 375973.03269589273
+        },
+        "all_months_positive": true
+      },
+      "3_MULTI_TF": {
+        "return_pct": 161.4,
+        "total_pnl": 322808.0,
+        "max_dd": 9.26,
+        "sharpe": 4.49,
+        "profit_factor": 4.93,
+        "num_trades": 19,
+        "win_rate": 42.1,
+        "wins": 8,
+        "losses": 11,
+        "avg_pnl": 16990.0,
+        "best_trade": 253423.0,
+        "worst_trade": -12144.0,
+        "monthly": {
+          "2025-04": 322807.5826958928
+        },
+        "all_months_positive": true
+      },
+      "4_PUT_ONLY": {
+        "return_pct": 115.76,
+        "total_pnl": 231527.0,
+        "max_dd": 6.03,
+        "sharpe": 5.05,
+        "profit_factor": 7.24,
+        "num_trades": 9,
+        "win_rate": 44.4,
+        "wins": 4,
+        "losses": 5,
+        "avg_pnl": 25725.0,
+        "best_trade": 253423.0,
+        "worst_trade": -12144.0,
+        "monthly": {
+          "2025-04": 231526.63269589283
+        },
+        "all_months_positive": true
+      },
+      "5_DAY_FILTER": {
+        "return_pct": 147.61,
+        "total_pnl": 295227.0,
+        "max_dd": 6.68,
+        "sharpe": 5.54,
+        "profit_factor": 6.01,
+        "num_trades": 11,
+        "win_rate": 36.4,
+        "wins": 4,
+        "losses": 7,
+        "avg_pnl": 26839.0,
+        "best_trade": 253423.0,
+        "worst_trade": -12144.0,
+        "monthly": {
+          "2025-04": 295227.41389338695
+        },
+        "all_months_positive": true
+      },
+      "6_V2_OPTIMIZED": {
+        "return_pct": 120.4,
+        "total_pnl": 240809.0,
+        "max_dd": 6.03,
+        "sharpe": 6.66,
+        "profit_factor": 11.26,
+        "num_trades": 6,
+        "win_rate": 50.0,
+        "wins": 3,
+        "losses": 3,
+        "avg_pnl": 40135.0,
+        "best_trade": 253423.0,
+        "worst_trade": -12144.0,
+        "monthly": {
+          "2025-04": 240809.013893387
+        },
+        "all_months_positive": true
+      },
+      "7_V2+TRAIL_PCT": {
+        "return_pct": 150.05,
+        "total_pnl": 300107.0,
+        "max_dd": 5.24,
+        "sharpe": 8.36,
+        "profit_factor": 11.04,
+        "num_trades": 6,
+        "win_rate": 50.0,
+        "wins": 3,
+        "losses": 3,
+        "avg_pnl": 50018.0,
+        "best_trade": 253423.0,
+        "worst_trade": -13987.0,
+        "monthly": {
+          "2025-04": 300106.563893387
+        },
+        "all_months_positive": true
+      }
+    },
+    "Oct25-Apr26 (6M)": {
+      "1_BASELINE": {
+        "return_pct": 596.07,
+        "total_pnl": 1192138.0,
+        "max_dd": 15.21,
+        "sharpe": 4.23,
+        "profit_factor": 2.24,
+        "num_trades": 123,
+        "win_rate": 52.0,
+        "wins": 64,
+        "losses": 59,
+        "avg_pnl": 9692.0,
+        "best_trade": 191170.0,
+        "worst_trade": -36386.0,
+        "monthly": {
+          "2025-10": 281304.00000000006,
+          "2025-11": 185859.22327695845,
+          "2025-12": 2926.4999999999854,
+          "2026-01": 103356.81137596702,
+          "2026-02": 423291.9635699354,
+          "2026-03": 185104.66393142604,
+          "2026-04": 10295.299999999997
+        },
+        "all_months_positive": true
+      },
+      "2_FULL_ENSEMBLE": {
+        "return_pct": 689.25,
+        "total_pnl": 1378505.0,
+        "max_dd": 13.35,
+        "sharpe": 4.94,
+        "profit_factor": 2.54,
+        "num_trades": 123,
+        "win_rate": 48.8,
+        "wins": 60,
+        "losses": 63,
+        "avg_pnl": 11207.0,
+        "best_trade": 191170.0,
+        "worst_trade": -29057.0,
+        "monthly": {
+          "2025-10": 209404.25,
+          "2025-11": 176958.74609375003,
+          "2025-12": 4395.499999999985,
+          "2026-01": 242909.311375967,
+          "2026-02": 480038.3261522345,
+          "2026-03": 240298.76393142605,
+          "2026-04": 24500.39999999999
+        },
+        "all_months_positive": true
+      },
+      "3_MULTI_TF": {
+        "return_pct": 532.8,
+        "total_pnl": 1065606.0,
+        "max_dd": 17.6,
+        "sharpe": 3.84,
+        "profit_factor": 2.13,
+        "num_trades": 123,
+        "win_rate": 48.8,
+        "wins": 60,
+        "losses": 63,
+        "avg_pnl": 8663.0,
+        "best_trade": 191170.0,
+        "worst_trade": -36386.0,
+        "monthly": {
+          "2025-10": 209404.25,
+          "2025-11": 105702.49609375,
+          "2025-12": 2926.4999999999854,
+          "2026-01": 137453.31137596702,
+          "2026-02": 414719.8261522346,
+          "2026-03": 185104.66393142604,
+          "2026-04": 10295.299999999997
+        },
+        "all_months_positive": true
+      },
+      "4_PUT_ONLY": {
+        "return_pct": 373.47,
+        "total_pnl": 746939.0,
+        "max_dd": 31.87,
+        "sharpe": 4.38,
+        "profit_factor": 2.41,
+        "num_trades": 59,
+        "win_rate": 49.2,
+        "wins": 29,
+        "losses": 30,
+        "avg_pnl": 12660.0,
+        "best_trade": 191170.0,
+        "worst_trade": -36386.0,
+        "monthly": {
+          "2025-10": -9342.5,
+          "2025-11": -16265.503906249993,
+          "2025-12": -12339.0,
+          "2026-01": 157015.31137596702,
+          "2026-02": 432470.3261522346,
+          "2026-03": 185104.66393142604,
+          "2026-04": 10295.299999999997
+        },
+        "all_months_positive": false
+      },
+      "5_DAY_FILTER": {
+        "return_pct": 516.69,
+        "total_pnl": 1033383.0,
+        "max_dd": 25.1,
+        "sharpe": 5.39,
+        "profit_factor": 3.04,
+        "num_trades": 73,
+        "win_rate": 54.8,
+        "wins": 40,
+        "losses": 33,
+        "avg_pnl": 14156.0,
+        "best_trade": 191170.0,
+        "worst_trade": -34702.0,
+        "monthly": {
+          "2025-10": 112671.0,
+          "2025-11": -7396.503906249982,
+          "2025-12": -635.0000000000236,
+          "2026-01": 234451.938329092,
+          "2026-02": 540246.5634765625,
+          "2026-03": 164583.26015291913,
+          "2026-04": -10538.500000000005
+        },
+        "all_months_positive": false
+      },
+      "6_V2_OPTIMIZED": {
+        "return_pct": 452.97,
+        "total_pnl": 905940.0,
+        "max_dd": 21.89,
+        "sharpe": 7.98,
+        "profit_factor": 4.82,
+        "num_trades": 33,
+        "win_rate": 63.6,
+        "wins": 21,
+        "losses": 12,
+        "avg_pnl": 27453.0,
+        "best_trade": 191170.0,
+        "worst_trade": -34702.0,
+        "monthly": {
+          "2025-11": -3475.7499999999927,
+          "2026-01": 220107.563329092,
+          "2026-02": 535263.8134765625,
+          "2026-03": 164583.26015291913,
+          "2026-04": -10538.500000000005
+        },
+        "all_months_positive": false
+      },
+      "7_V2+TRAIL_PCT": {
+        "return_pct": 550.67,
+        "total_pnl": 1101347.0,
+        "max_dd": 16.97,
+        "sharpe": 10.1,
+        "profit_factor": 6.48,
+        "num_trades": 33,
+        "win_rate": 63.6,
+        "wins": 21,
+        "losses": 12,
+        "avg_pnl": 33374.0,
+        "best_trade": 191170.0,
+        "worst_trade": -24380.0,
+        "monthly": {
+          "2025-11": 46181.00000000001,
+          "2026-01": 304984.563329092,
+          "2026-02": 561666.8134765625,
+          "2026-03": 202588.76015291916,
+          "2026-04": -14074.500000000004
+        },
+        "all_months_positive": false
+      }
+    },
+    "Jan-Apr 2026 (3M)": {
+      "1_BASELINE": {
+        "return_pct": 361.02,
+        "total_pnl": 722049.0,
+        "max_dd": 33.12,
+        "sharpe": 4.16,
+        "profit_factor": 2.32,
+        "num_trades": 61,
+        "win_rate": 50.8,
+        "wins": 31,
+        "losses": 30,
+        "avg_pnl": 11837.0,
+        "best_trade": 191170.0,
+        "worst_trade": -36386.0,
+        "monthly": {
+          "2026-01": 103356.81137596702,
+          "2026-02": 423291.9635699354,
+          "2026-03": 185104.66393142604,
+          "2026-04": 10295.299999999997
+        },
+        "all_months_positive": true
+      },
+      "2_FULL_ENSEMBLE": {
+        "return_pct": 493.87,
+        "total_pnl": 987747.0,
+        "max_dd": 23.38,
+        "sharpe": 5.77,
+        "profit_factor": 3.07,
+        "num_trades": 61,
+        "win_rate": 50.8,
+        "wins": 31,
+        "losses": 30,
+        "avg_pnl": 16193.0,
+        "best_trade": 191170.0,
+        "worst_trade": -29057.0,
+        "monthly": {
+          "2026-01": 242909.311375967,
+          "2026-02": 480038.3261522345,
+          "2026-03": 240298.76393142605,
+          "2026-04": 24500.39999999999
+        },
+        "all_months_positive": true
+      },
+      "3_MULTI_TF": {
+        "return_pct": 373.79,
+        "total_pnl": 747573.0,
+        "max_dd": 30.52,
+        "sharpe": 4.34,
+        "profit_factor": 2.45,
+        "num_trades": 61,
+        "win_rate": 50.8,
+        "wins": 31,
+        "losses": 30,
+        "avg_pnl": 12255.0,
+        "best_trade": 191170.0,
+        "worst_trade": -36386.0,
+        "monthly": {
+          "2026-01": 137453.31137596702,
+          "2026-02": 414719.8261522346,
+          "2026-03": 185104.66393142604,
+          "2026-04": 10295.299999999997
+        },
+        "all_months_positive": true
+      },
+      "4_PUT_ONLY": {
+        "return_pct": 392.44,
+        "total_pnl": 784886.0,
+        "max_dd": 29.2,
+        "sharpe": 5.17,
+        "profit_factor": 2.83,
+        "num_trades": 50,
+        "win_rate": 52.0,
+        "wins": 26,
+        "losses": 24,
+        "avg_pnl": 15698.0,
+        "best_trade": 191170.0,
+        "worst_trade": -36386.0,
+        "monthly": {
+          "2026-01": 157015.31137596702,
+          "2026-02": 432470.3261522346,
+          "2026-03": 185104.66393142604,
+          "2026-04": 10295.299999999997
+        },
+        "all_months_positive": true
+      },
+      "5_DAY_FILTER": {
+        "return_pct": 464.37,
+        "total_pnl": 928743.0,
+        "max_dd": 14.71,
+        "sharpe": 7.84,
+        "profit_factor": 5.22,
+        "num_trades": 36,
+        "win_rate": 66.7,
+        "wins": 24,
+        "losses": 12,
+        "avg_pnl": 25798.0,
+        "best_trade": 191170.0,
+        "worst_trade": -31742.0,
+        "monthly": {
+          "2026-01": 234451.938329092,
+          "2026-02": 540246.5634765625,
+          "2026-03": 164583.26015291913,
+          "2026-04": -10538.500000000005
+        },
+        "all_months_positive": false
+      },
+      "6_V2_OPTIMIZED": {
+        "return_pct": 454.71,
+        "total_pnl": 909416.0,
+        "max_dd": 15.14,
+        "sharpe": 8.91,
+        "profit_factor": 5.99,
+        "num_trades": 29,
+        "win_rate": 65.5,
+        "wins": 19,
+        "losses": 10,
+        "avg_pnl": 31359.0,
+        "best_trade": 191170.0,
+        "worst_trade": -31742.0,
+        "monthly": {
+          "2026-01": 220107.563329092,
+          "2026-02": 535263.8134765625,
+          "2026-03": 164583.26015291913,
+          "2026-04": -10538.500000000005
+        },
+        "all_months_positive": false
+      },
+      "7_V2+TRAIL_PCT": {
+        "return_pct": 527.58,
+        "total_pnl": 1055166.0,
+        "max_dd": 10.09,
+        "sharpe": 10.72,
+        "profit_factor": 7.66,
+        "num_trades": 29,
+        "win_rate": 65.5,
+        "wins": 19,
+        "losses": 10,
+        "avg_pnl": 36385.0,
+        "best_trade": 191170.0,
+        "worst_trade": -23532.0,
+        "monthly": {
+          "2026-01": 304984.563329092,
+          "2026-02": 561666.8134765625,
+          "2026-03": 202588.76015291916,
+          "2026-04": -14074.500000000004
+        },
+        "all_months_positive": false
+      }
+    }
+  },
+  "ranking": [
+    {
+      "model": "7_V2+TRAIL_PCT",
+      "avg_return": 409.4333333333334,
+      "avg_sharpe": 9.726666666666667,
+      "avg_pf": 8.393333333333333,
+      "avg_dd": 10.766666666666666,
+      "avg_wr": 59.699999999999996,
+      "score": 81.63915555555555
+    },
+    {
+      "model": "6_V2_OPTIMIZED",
+      "avg_return": 342.6933333333333,
+      "avg_sharpe": 7.8500000000000005,
+      "avg_pf": 7.3566666666666665,
+      "avg_dd": 14.353333333333333,
+      "avg_wr": 59.699999999999996,
+      "score": 57.749833333333335
+    },
+    {
+      "model": "5_DAY_FILTER",
+      "avg_return": 376.22333333333336,
+      "avg_sharpe": 6.256666666666667,
+      "avg_pf": 4.756666666666667,
+      "avg_dd": 15.496666666666668,
+      "avg_wr": 52.633333333333326,
+      "score": 29.76087777777778
+    },
+    {
+      "model": "4_PUT_ONLY",
+      "avg_return": 293.89000000000004,
+      "avg_sharpe": 4.866666666666666,
+      "avg_pf": 4.16,
+      "avg_dd": 22.366666666666664,
+      "avg_wr": 48.53333333333333,
+      "score": 20.24533333333333
+    },
+    {
+      "model": "2_FULL_ENSEMBLE",
+      "avg_return": 457.0366666666667,
+      "avg_sharpe": 5.28,
+      "avg_pf": 3.526666666666667,
+      "avg_dd": 15.233333333333334,
+      "avg_wr": 47.23333333333333,
+      "score": 18.620800000000003
+    },
+    {
+      "model": "3_MULTI_TF",
+      "avg_return": 355.99666666666667,
+      "avg_sharpe": 4.223333333333334,
+      "avg_pf": 3.17,
+      "avg_dd": 19.126666666666665,
+      "avg_wr": 47.23333333333333,
+      "score": 13.387966666666667
+    },
+    {
+      "model": "1_BASELINE",
+      "avg_return": 351.33666666666664,
+      "avg_sharpe": 3.723333333333333,
+      "avg_pf": 2.4433333333333334,
+      "avg_dd": 22.036666666666665,
+      "avg_wr": 50.06666666666666,
+      "score": 9.097344444444444
+    }
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "best_entry_window": {
+    "BUY_CALL": "late_morning",
+    "BUY_PUT": "first_hour"
+  },
+  "best_entry_details": {
+    "BUY_CALL": {
+      "window_name": "Late Morning (10:00-11:15)",
+      "sharpe": 0.92,
+      "win_rate": 43.4,
+      "avg_pnl": 342.49
+    },
+    "BUY_PUT": {
+      "window_name": "First Hour (9:15-10:00)",
+      "sharpe": 2.33,
+      "win_rate": 45.1,
+      "avg_pnl": 916.63
+    }
+  },
+  "gap_rules": {
+    "gap_up_best_action": "BUY_PUT",
+    "gap_down_best_action": "BUY_PUT",
+    "flat_open_best_action": "BUY_PUT",
+    "gap_up_win_rate": 33.3,
+    "gap_down_win_rate": 47.8,
+    "flat_open_win_rate": 47.4
+  },
+  "orb_rules": {
+    "high_breakout_buy_call": {
+      "enabled": false,
+      "win_rate": 23.3,
+      "avg_pnl": -1748.84,
+      "trades": 60
+    },
+    "low_breakout_buy_put": {
+      "enabled": false,
+      "win_rate": 24.2,
+      "avg_pnl": -1296.54,
+      "trades": 62
+    },
+    "no_breakout_days_pct": 0.0,
+    "both_breakout_days_pct": 68.9
+  },
+  "wait_30min_analysis": {
+    "Immediate Entry (Bar 1)": {
+      "trades": 244,
+      "win_rate": 41.0,
+      "avg_pnl": 235.05,
+      "total_pnl": 57351.97,
+      "call_trades": 122,
+      "put_trades": 122,
+      "call_avg": -278.44,
+      "put_avg": 748.54
+    },
+    "After 30 Min (Bar 3)": {
+      "trades": 244,
+      "win_rate": 45.1,
+      "avg_pnl": 504.91,
+      "total_pnl": 123196.89,
+      "call_trades": 122,
+      "put_trades": 122,
+      "call_avg": 93.18,
+      "put_avg": 916.63
+    },
+    "Direction-Based (Bar 3)": {
+      "trades": 122,
+      "win_rate": 14.8,
+      "avg_pnl": -2366.14,
+      "total_pnl": -288668.82,
+      "call_trades": 54,
+      "put_trades": 68,
+      "call_avg": -3527.48,
+      "put_avg": -1443.9
+    }
+  },
+  "timing_stats": {
+    "first_hour_BUY_CALL": {
+      "window": "First Hour (9:15-10:00)",
+      "trades": 122,
+      "win_rate": 45.1,
+      "avg_pnl": 93.18,
+      "total_pnl": 11368.54,
+      "sharpe": 0.26,
+      "max_win": 20157.59,
+      "max_loss": -9698.0,
+      "profit_factor": 1.04
+    },
+    "first_hour_BUY_PUT": {
+      "window": "First Hour (9:15-10:00)",
+      "trades": 122,
+      "win_rate": 45.1,
+      "avg_pnl": 916.63,
+      "total_pnl": 111828.35,
+      "sharpe": 2.33,
+      "max_win": 31520.02,
+      "max_loss": -7903.62,
+      "profit_factor": 1.51
+    },
+    "late_morning_BUY_CALL": {
+      "window": "Late Morning (10:00-11:15)",
+      "trades": 122,
+      "win_rate": 43.4,
+      "avg_pnl": 342.49,
+      "total_pnl": 41783.98,
+      "sharpe": 0.92,
+      "max_win": 21719.78,
+      "max_loss": -9248.21,
+      "profit_factor": 1.15
+    },
+    "late_morning_BUY_PUT": {
+      "window": "Late Morning (10:00-11:15)",
+      "trades": 122,
+      "win_rate": 43.4,
+      "avg_pnl": 905.97,
+      "total_pnl": 110528.47,
+      "sharpe": 2.23,
+      "max_win": 31903.24,
+      "max_loss": -8244.23,
+      "profit_factor": 1.49
+    },
+    "midday_BUY_CALL": {
+      "window": "Midday (11:15-12:30)",
+      "trades": 122,
+      "win_rate": 36.9,
+      "avg_pnl": -639.62,
+      "total_pnl": -78034.03,
+      "sharpe": -2.54,
+      "max_win": 18076.26,
+      "max_loss": -9563.11,
+      "profit_factor": 0.66
+    },
+    "midday_BUY_PUT": {
+      "window": "Midday (11:15-12:30)",
+      "trades": 122,
+      "win_rate": 33.6,
+      "avg_pnl": 51.19,
+      "total_pnl": 6245.77,
+      "sharpe": 0.17,
+      "max_win": 28240.0,
+      "max_loss": -7381.28,
+      "profit_factor": 1.03
+    },
+    "early_afternoon_BUY_CALL": {
+      "window": "Early Afternoon (12:30-1:45)",
+      "trades": 122,
+      "win_rate": 23.0,
+      "avg_pnl": -1364.11,
+      "total_pnl": -166421.26,
+      "sharpe": -10.0,
+      "max_win": 6930.49,
+      "max_loss": -7273.31,
+      "profit_factor": 0.2
+    },
+    "early_afternoon_BUY_PUT": {
+      "window": "Early Afternoon (12:30-1:45)",
+      "trades": 122,
+      "win_rate": 29.5,
+      "avg_pnl": -693.44,
+      "total_pnl": -84600.0,
+      "sharpe": -5.65,
+      "max_win": 6358.85,
+      "max_loss": -6016.61,
+      "profit_factor": 0.42
+    },
+    "late_afternoon_BUY_CALL": {
+      "window": "Late Afternoon (1:45-3:30)",
+      "trades": 122,
+      "win_rate": 10.7,
+      "avg_pnl": -1350.96,
+      "total_pnl": -164817.5,
+      "sharpe": -17.63,
+      "max_win": 2045.0,
+      "max_loss": -6643.63,
+      "profit_factor": 0.05
+    },
+    "late_afternoon_BUY_PUT": {
+      "window": "Late Afternoon (1:45-3:30)",
+      "trades": 122,
+      "win_rate": 7.4,
+      "avg_pnl": -1113.51,
+      "total_pnl": -135847.67,
+      "sharpe": -13.9,
+      "max_win": 7579.68,
+      "max_loss": -3503.45,
+      "profit_factor": 0.11
+    }
+  },
+  "metadata": {
+    "study_period": "2025-10-01 to 2026-04-05",
+    "lot_size": 65,
+    "capital": 200000,
+    "dte": 2,
+    "strike_interval": 50,
+    "generated_at": "2026-04-05T12:25:23.960493"
+  }
+}

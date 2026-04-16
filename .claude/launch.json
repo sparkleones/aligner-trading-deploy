@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dashboard",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "streamlit", "run", "dashboard/live_dashboard.py", "--server.headless", "true", "--server.port", "8505"],
+      "port": 8505
+    },
+    {
+      "name": "pwa",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "uvicorn", "dashboard.app:app", "--host", "0.0.0.0", "--port", "8510", "--reload"],
+      "port": 8510
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "_description": "ENSEMBLE STRATEGY — Combining 5 specialist agent learnings for maximum profit",
+  "_backtest_period": "Oct 2025 - Apr 2026 (122 trading days)",
+  "_capital": 200000,
+
+  "entry_rules": {
+    "composite_scoring": {
+      "vix_regime": {"weight": 3.0, "LOW": "BUY_CALL", "NORMAL": "BUY_PUT", "HIGH": "BUY_PUT"},
+      "trend_sma50": {"weight": 2.0, "below": "BUY_PUT", "above": "BUY_CALL"},
+      "trend_sma20": {"weight": 1.0, "below": "BUY_PUT", "above": "BUY_CALL"},
+      "rsi": {"weight": 1.5, "oversold_lt_30": "BUY_PUT", "overbought_gt_70": "BUY_PUT"},
+      "day_of_week": {"weight": 0.5, "Monday": "BUY_PUT", "Tuesday": "BUY_PUT", "Wednesday": "BUY_CALL", "Thursday": "BUY_PUT", "Friday": "BUY_CALL"},
+      "vix_spike": {"weight": 2.0, "spike_gt_15pct": "BUY_CALL"},
+      "momentum": {"weight": 1.0, "prev_down_gt_1pct": "BUY_CALL", "prev_up_gt_1pct": "BUY_PUT"},
+      "sr_proximity": {"weight": 1.0, "near_support": "BUY_CALL", "near_resistance": "BUY_PUT"},
+      "min_confidence": 0.25
+    },
+    "global_signal_boost": {
+      "_description": "Override/boost from overnight global markets (check before 9:15 AM)",
+      "vix_spike_gt_10pct": {"action": "BUY_PUT", "boost": 3.0, "win_rate": 100},
+      "vix_drop_gt_5pct": {"action": "BUY_CALL", "boost": 2.5, "win_rate": 91},
+      "sp500_down_gt_1pct": {"action": "BUY_PUT", "boost": 2.0, "win_rate": 88},
+      "sp500_up_gold_down_risk_on": {"action": "BUY_CALL", "boost": 2.0, "win_rate": 90},
+      "nasdaq_up_gt_1pct": {"action": "BUY_CALL", "boost": 1.5, "win_rate": 83},
+      "nasdaq_down_gt_1pct": {"action": "BUY_PUT", "boost": 1.5, "win_rate": 77},
+      "sentiment_bearish_lt_neg2": {"action": "BUY_PUT", "boost": 2.0, "win_rate": 88}
+    }
+  },
+
+  "timing_rules": {
+    "_description": "WHEN to enter during the day",
+    "BUY_CALL": {
+      "best_window": "late_morning",
+      "best_window_name": "10:00-11:15 AM",
+      "bar_range": [4, 8],
+      "sharpe": 0.92,
+      "win_rate": 43.4
+    },
+    "BUY_PUT": {
+      "best_window": "first_hour",
+      "best_window_name": "9:15-10:00 AM (after 30-min wait)",
+      "bar_range": [2, 3],
+      "sharpe": 2.33,
+      "win_rate": 45.1
+    },
+    "wait_30_minutes": true,
+    "never_enter_after_bar": 13,
+    "never_enter_after_time": "12:30 PM"
+  },
+
+  "strike_rules": {
+    "_description": "WHICH strike to buy",
+    "BUY_CALL": {
+      "LOW_VIX": {"strike_offset": -50, "label": "ITM_1 (ATM-50)", "avg_pnl": 1329, "delta": 0.635},
+      "NORMAL_VIX": {"strike_offset": 100, "label": "OTM_2 (ATM+100)", "avg_pnl": 233, "delta": 0.35},
+      "HIGH_VIX": {"strike_offset": 150, "label": "OTM_3 (ATM+150)", "avg_pnl": -24, "delta": 0.36, "note": "calls unprofitable in high VIX"}
+    },
+    "BUY_PUT": {
+      "LOW_VIX": {"strike_offset": 0, "label": "ATM", "avg_pnl": 281, "delta": 0.472},
+      "NORMAL_VIX": {"strike_offset": 50, "label": "ITM_1 (ATM+50)", "avg_pnl": 2302, "delta": 0.568},
+      "HIGH_VIX": {"strike_offset": 50, "label": "ITM_1 (ATM+50)", "avg_pnl": 3825, "delta": 0.537}
+    }
+  },
+
+  "sizing_rules": {
+    "_description": "HOW MANY lots to trade",
+    "strategy": "vix_adaptive_with_drawdown",
+    "base_risk_pct": 0.08,
+    "kelly_fraction": 0.5,
+    "vix_multipliers": {
+      "vix_below_12": 2.0,
+      "vix_12_to_15": 1.5,
+      "vix_15_to_20": 1.0,
+      "vix_20_to_25": 0.7,
+      "vix_25_to_30": 0.5,
+      "vix_above_30": 0.3
+    },
+    "drawdown_adjustment": {
+      "dd_gt_5pct": 0.5,
+      "dd_gt_10pct": 0.25,
+      "new_equity_high": 1.2
+    },
+    "max_lots": 27,
+    "lot_size": 65
+  },
+
+  "holding_rules": {
+    "_description": "HOW LONG to hold",
+    "BUY_CALL": {
+      "default": "partial",
+      "partial_description": "Exit half at +0.5% spot move, hold rest to EOD",
+      "vix_rules": {
+        "LOW": "partial",
+        "NORMAL": "intraday",
+        "HIGH": "hold2_days"
+      },
+      "trend_rules": {
+        "ABOVE_SMA50": "intraday",
+        "BELOW_SMA50": "hold2_days",
+        "NEAR_SMA50": "partial"
+      }
+    },
+    "BUY_PUT": {
+      "default": "hold2_days",
+      "hold2_description": "Hold overnight, exit next day close (Sharpe 6.87)",
+      "vix_rules": {
+        "LOW": "hold2_days",
+        "NORMAL": "hold2_days",
+        "HIGH": "scale_out"
+      },
+      "scale_out_description": "Exit 1/3 at +0.3%, 1/3 at +0.6%, hold 1/3 to EOD (Sharpe 11.43 in HIGH VIX)",
+      "trend_rules": {
+        "ABOVE_SMA50": "hold2_days",
+        "BELOW_SMA50": "scale_out",
+        "NEAR_SMA50": "hold2_days"
+      }
+    },
+    "overnight_gap": {
+      "avg_gap_pct": 0.57,
+      "continuation_rate": 54.2,
+      "high_vix_continuation": 66.7,
+      "verdict": "Hold overnight — gap continuation gives edge"
+    }
+  },
+
+  "exit_rules": {
+    "_description": "Dynamic exits based on S/R + trailing, NOT fixed premium %",
+    "BUY_CALL": {
+      "strategy": "sr_trail_combo",
+      "sharpe": 2.52,
+      "win_rate": 44.1,
+      "description": "Phase 1: S/R target (exit at resistance) + S/R stop (exit below support). Phase 2: After target hit, switch to 0.3% trailing to let profits run.",
+      "params": {
+        "trail_pct": 0.003,
+        "target": "nearest_resistance",
+        "stop": "nearest_support"
+      },
+      "stop_loss": "support_breach"
+    },
+    "BUY_PUT": {
+      "strategy": "trail_pct",
+      "sharpe": 5.22,
+      "win_rate": 49.0,
+      "params": {
+        "trail_pct": 0.003,
+        "min_bars_before_trail": 3
+      },
+      "stop_loss": "resistance_breach"
+    }
+  },
+
+  "sr_rules": {
+    "_description": "Support/Resistance levels from Agent 6 deep study",
+    "best_method": "round_numbers",
+    "method_ranking": ["round_numbers (90.7% WR)", "pdh_pdl_pdc (85.3%)", "price_clustering (87.4%)", "swing_points (87.6%)", "sma_sr (83.1%)"],
+    "sr_filter_impact": {
+      "BUY_PUT_sharpe_without_filter": 2.57,
+      "BUY_PUT_sharpe_with_filter": 6.89,
+      "BUY_CALL_sharpe_without_filter": -1.56,
+      "BUY_CALL_sharpe_with_filter": -0.61
+    },
+    "current_supports": [22500, 22200, 22000, 21500, 21000],
+    "current_resistances": [22800, 23000, 23450, 23500, 24000, 24500, 24700],
+    "immediate_support": 22500,
+    "immediate_resistance": 22800,
+    "sma20": 23440,
+    "sma50": 24675,
+    "pdh": 22782,
+    "pdl": 22183,
+    "strength_scoring": {
+      "touches_weight": 2.0,
+      "recency_weight": 3.0,
+      "round_500_bonus": 2.0,
+      "round_100_bonus": 1.0,
+      "dual_type_bonus": 2.0
+    }
+  },
+
+  "macro_context": {
+    "regime": "CRISIS_BEARISH",
+    "nifty_ath": 26373,
+    "current_nifty": 22713,
+    "decline_pct": 15.9,
+    "vix": 25.5,
+    "fii_trend": "HEAVY_SELLING",
+    "key_support": [22500, 22200, 22000],
+    "key_resistance": [22800, 23000, 23500],
+    "upcoming_event": "RBI MPC Apr 8"
+  },
+
+  "monday_april_7_trade_plan": {
+    "_description": "SPECIFIC PLAN FOR MONDAY — Updated with S/R levels from Agent 6",
+    "pre_market_checklist": [
+      "Check US market close (S&P, NASDAQ) — if S&P down >1%, strong BUY_PUT signal (88% WR)",
+      "Check crude oil — if Brent >$100, bearish for NIFTY",
+      "Check VIX change — if VIX spiked >10% since Friday, BUY_PUT 100% WR historically",
+      "Compute global sentiment score: S&P change + oil change + gold change",
+      "Check SGX Nifty / GIFT Nifty for gap direction"
+    ],
+    "base_signal": "BUY_PUT",
+    "base_confidence": 86,
+    "reasons": [
+      "VIX HIGH (25.5) -> BUY_PUT (+3.0)",
+      "Below SMA50 (24675) -> BUY_PUT (+2.0)",
+      "Below SMA20 (23440) -> BUY_PUT (+1.0)",
+      "Monday -> BUY_PUT (+0.5)",
+      "CRISIS_BEARISH macro -> bearish bias",
+      "FII heavy selling continues",
+      "Near resistance 22800 (only 87 pts) -> BUY_PUT S/R signal (+1.0)"
+    ],
+    "entry": {
+      "time": "9:45 AM (after 30-min wait)",
+      "strike": "NIFTY 22750 PE (ITM+50, delta 0.54)",
+      "action": "BUY",
+      "lots_initial": 4,
+      "qty": 260
+    },
+    "sr_levels": {
+      "immediate_support": 22500,
+      "immediate_resistance": 22800,
+      "strong_support": 22200,
+      "strong_resistance": 23000,
+      "pdl_friday": 22183,
+      "pdh_friday": 22782,
+      "sma20": 23440,
+      "sma50": 24675
+    },
+    "exit_plan": {
+      "strategy": "trail_pct (0.3% trailing from lowest spot)",
+      "if_high_vix_gt_25": "scale_out: 1/3 at +0.3%, 1/3 at +0.6%, hold 1/3",
+      "stop_loss": "If NIFTY breaks above 22800 (immediate resistance) — S/R-based stop",
+      "target": "22500 (immediate support, 213 pts below)",
+      "second_target": "22200 (strong support, 513 pts below)",
+      "time_exit": "If still holding after 16 bars (~4 hours), exit",
+      "hold_overnight": "YES — hold puts overnight if in profit (Sharpe 6.87)",
+      "tuesday_exit": "Exit remaining at Tuesday close"
+    },
+    "risk": {
+      "max_loss_per_trade": "Rs 36,728 (18.4% of capital)",
+      "vix_sizing_mult": 0.5,
+      "adjusted_lots": 2,
+      "adjusted_qty": 130,
+      "adjusted_max_loss": "Rs 18,364 (9.2% of capital)"
+    }
+  }
+}

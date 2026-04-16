@@ -1,0 +1,130 @@
+{
+  "vix_rules": {
+    "LOW": "BUY_CALL",
+    "NORMAL": "BUY_PUT",
+    "HIGH": "BUY_PUT"
+  },
+  "trend_rules": {
+    "above_sma50": "BUY_CALL",
+    "below_sma50": "BUY_PUT"
+  },
+  "rsi_rules": {
+    "oversold_lt_30": "BUY_PUT",
+    "neutral": "BUY_PUT",
+    "overbought_gt_70": "BUY_PUT"
+  },
+  "dow_rules": {
+    "Monday": "BUY_PUT",
+    "Tuesday": "BUY_PUT",
+    "Wednesday": "BUY_CALL",
+    "Thursday": "BUY_PUT",
+    "Friday": "BUY_CALL"
+  },
+  "momentum_rules": {
+    "prev_day_down_gt_1pct": "BUY_CALL",
+    "prev_day_flat": "BUY_PUT",
+    "prev_day_up_gt_1pct": "BUY_PUT"
+  },
+  "best_exit_per_action": {
+    "BUY_CALL": "sr_trail_combo",
+    "BUY_PUT": "trail_pct",
+    "SELL_CALL_SPREAD": "sr_trail_combo",
+    "SELL_PUT_SPREAD": "trail_pct"
+  },
+  "exit_strategy_params": {
+    "sr_trail": {
+      "description": "S/R stop + trailing stop at 40% retrace of peak profit",
+      "trailing_retrace": 0.4,
+      "min_profit_for_trail": 500
+    },
+    "sr_fixed": {
+      "description": "S/R stop only, hold to EOD otherwise"
+    },
+    "trail_pct": {
+      "description": "Trailing stop at 0.3% of spot from peak/trough",
+      "trail_pct": 0.003,
+      "min_bars_before_trail": 3
+    },
+    "sma_exit": {
+      "description": "Exit on SMA20 cross against direction",
+      "sma_period": 20,
+      "min_bars": 5
+    },
+    "vix_adaptive": {
+      "description": "VIX-weighted trailing: tighter in high VIX, wider in low",
+      "high_vix_trail_mult": 0.25,
+      "normal_vix_trail_mult": 0.35,
+      "low_vix_trail_mult": 0.45,
+      "high_vix_sr_buffer_pct": 0.002,
+      "normal_vix_sr_buffer_pct": 0.003,
+      "low_vix_sr_buffer_pct": 0.004,
+      "high_vix_profit_target_mult": 0.5
+    }
+  },
+  "rule_weights": {
+    "vix_regime": 3.0,
+    "trend_sma50": 2.0,
+    "trend_sma20": 1.0,
+    "rsi": 1.5,
+    "day_of_week": 0.5,
+    "vix_spike": 2.0,
+    "prev_momentum": 1.0,
+    "sr_proximity": 1.0
+  },
+  "risk_management": {
+    "risk_budget_pct": 0.08,
+    "max_loss_per_lot": 3250,
+    "capital": 200000.0
+  },
+  "macro_context": {
+    "current_regime": "CRISIS_BEARISH",
+    "nifty_ath": 26373,
+    "nifty_ath_date": "2026-01-05",
+    "decline_from_ath_pct": 15.9,
+    "iran_war_started": "2026-02-28",
+    "brent_crude": 94,
+    "fed_rate": "3.50-3.75",
+    "rbi_rate": 5.25,
+    "fii_march_selling_cr": -113810,
+    "fii_trend": "HEAVY_SELLING",
+    "key_support": [
+      22000,
+      21700,
+      21800
+    ],
+    "key_resistance": [
+      22800,
+      23000,
+      23500
+    ]
+  },
+  "today_recommendation": {
+    "action": "BUY_PUT",
+    "confidence": 0.86,
+    "exit_strategy": "trail_pct",
+    "scores": {
+      "BUY_CALL": 1.0,
+      "BUY_PUT": 6.0,
+      "SELL_CALL_SPREAD": 0.0,
+      "SELL_PUT_SPREAD": 0.0
+    },
+    "conditions": {
+      "spot": 22713.0,
+      "vix": 25.5,
+      "vix_regime": "HIGH",
+      "rsi": 38.4,
+      "above_sma50": false,
+      "above_sma20": false,
+      "day": "Sunday",
+      "support": 22500,
+      "resistance": 23100
+    }
+  },
+  "backtest_performance": {
+    "total_trades": 122,
+    "win_rate": 67.2,
+    "total_pnl": 1294043.0,
+    "return_pct": 647.02,
+    "max_drawdown": 10.12
+  }
+}

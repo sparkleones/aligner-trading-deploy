@@ -1,0 +1,281 @@
+{
+  "V6_3T": {
+    "name": "V6_3T",
+    "net_pnl": 75642,
+    "return_pct": 37.8,
+    "total_trades": 33,
+    "trades_per_day": 1.9,
+    "win_rate": 36.4,
+    "wins": 12,
+    "losses": 21,
+    "sharpe": 3.4,
+    "profit_factor": 1.44,
+    "max_drawdown": 26.5,
+    "avg_win": 20503,
+    "avg_loss": -8114,
+    "pnl_per_trade": 2292,
+    "btst_count": 2,
+    "btst_pnl": -204,
+    "avg_lots": 5.2,
+    "max_lots": 9,
+    "avg_qty": 335,
+    "final_equity": 275642,
+    "entry_type_stats": {
+      "sr_bounce_support": {
+        "count": 17,
+        "pnl": -24933.0,
+        "wins": 5
+      },
+      "orb_breakout_down": {
+        "count": 2,
+        "pnl": -35534.0,
+        "wins": 0
+      },
+      "composite": {
+        "count": 2,
+        "pnl": 52426.0,
+        "wins": 2
+      },
+      "sr_bounce_resistance": {
+        "count": 11,
+        "pnl": 25676.0,
+        "wins": 4
+      },
+      "orb_breakout_up": {
+        "count": 1,
+        "pnl": 58007.0,
+        "wins": 1
+      }
+    },
+    "exit_reason_stats": {
+      "sr_stop": {
+        "count": 11,
+        "pnl": -53788.0,
+        "wins": 0
+      },
+      "time_exit": {
+        "count": 5,
+        "pnl": 47781.0,
+        "wins": 3
+      },
+      "trail_stop": {
+        "count": 3,
+        "pnl": 28646.0,
+        "wins": 2
+      },
+      "expiry_close": {
+        "count": 6,
+        "pnl": 9724.0,
+        "wins": 3
+      },
+      "eod_close": {
+        "count": 8,
+        "pnl": 43279.0,
+        "wins": 4
+      }
+    }
+  },
+  "V7_5T": {
+    "name": "V7_5T",
+    "net_pnl": 54547,
+    "return_pct": 27.3,
+    "total_trades": 34,
+    "trades_per_day": 2.0,
+    "win_rate": 41.2,
+    "wins": 14,
+    "losses": 20,
+    "sharpe": 2.26,
+    "profit_factor": 1.34,
+    "max_drawdown": 27.2,
+    "avg_win": 15488,
+    "avg_loss": -8114,
+    "pnl_per_trade": 1604,
+    "btst_count": 3,
+    "btst_pnl": -235,
+    "avg_lots": 5.3,
+    "max_lots": 9,
+    "avg_qty": 342,
+    "final_equity": 254547,
+    "entry_type_stats": {
+      "orb_breakout_down": {
+        "count": 2,
+        "pnl": -33830.0,
+        "wins": 0
+      },
+      "sr_bounce_support": {
+        "count": 17,
+        "pnl": -18216.0,
+        "wins": 6
+      },
+      "composite": {
+        "count": 3,
+        "pnl": 72442.0,
+        "wins": 2
+      },
+      "sr_bounce_resistance": {
+        "count": 11,
+        "pnl": 1320.0,
+        "wins": 5
+      },
+      "orb_breakout_up": {
+        "count": 1,
+        "pnl": 32831.0,
+        "wins": 1
+      }
+    },
+    "exit_reason_stats": {
+      "trail_stop": {
+        "count": 10,
+        "pnl": 31368.0,
+        "wins": 3
+      },
+      "sr_stop": {
+        "count": 7,
+        "pnl": -36493.0,
+        "wins": 0
+      },
+      "expiry_close": {
+        "count": 4,
+        "pnl": -6426.0,
+        "wins": 1
+      },
+      "time_exit": {
+        "count": 11,
+        "pnl": 38277.0,
+        "wins": 8
+      },
+      "eod_close": {
+        "count": 2,
+        "pnl": 27821.0,
+        "wins": 2
+      }
+    }
+  },
+  "V8": {
+    "name": "V8",
+    "net_pnl": 73482,
+    "return_pct": 36.7,
+    "total_trades": 49,
+    "trades_per_day": 2.9,
+    "win_rate": 42.9,
+    "wins": 21,
+    "losses": 28,
+    "sharpe": 2.97,
+    "profit_factor": 1.33,
+    "max_drawdown": 25.8,
+    "avg_win": 14115,
+    "avg_loss": -7962,
+    "pnl_per_trade": 1500,
+    "btst_count": 4,
+    "btst_pnl": 6685,
+    "avg_lots": 4.7,
+    "max_lots": 9,
+    "avg_qty": 302,
+    "final_equity": 273482,
+    "entry_type_stats": {
+      "v8_indicator": {
+        "count": 49,
+        "pnl": 73482.0,
+        "wins": 21
+      }
+    },
+    "exit_reason_stats": {
+      "time_exit": {
+        "count": 18,
+        "pnl": 39579.0,
+        "wins": 10
+      },
+      "eod_close": {
+        "count": 9,
+        "pnl": 5779.0,
+        "wins": 5
+      },
+      "trail_stop": {
+        "count": 6,
+        "pnl": 47951.0,
+        "wins": 4
+      },
+      "expiry_close": {
+        "count": 5,
+        "pnl": 18775.0,
+        "wins": 2
+      },
+      "sr_stop": {
+        "count": 11,
+        "pnl": -38602.0,
+        "wins": 0
+      }
+    }
+  },
+  "V9_Hybrid": {
+    "name": "V9_Hybrid",
+    "net_pnl": 95862,
+    "return_pct": 47.9,
+    "total_trades": 53,
+    "trades_per_day": 3.1,
+    "win_rate": 45.3,
+    "wins": 24,
+    "losses": 29,
+    "sharpe": 4.11,
+    "profit_factor": 1.46,
+    "max_drawdown": 16.4,
+    "avg_win": 12706,
+    "avg_loss": -7210,
+    "pnl_per_trade": 1809,
+    "btst_count": 4,
+    "btst_pnl": 6692,
+    "avg_lots": 4.8,
+    "max_lots": 9,
+    "avg_qty": 312,
+    "final_equity": 295862,
+    "entry_type_stats": {
+      "v8_indicator": {
+        "count": 42,
+        "pnl": 86012.0,
+        "wins": 19
+      },
+      "orb_breakout_down": {
+        "count": 1,
+        "pnl": -9560.0,
+        "wins": 0
+      },
+      "sr_bounce_support": {
+        "count": 8,
+        "pnl": 7601.0,
+        "wins": 4
+      },
+      "sr_bounce_resistance": {
+        "count": 2,
+        "pnl": 11809.0,
+        "wins": 1
+      }
+    },
+    "exit_reason_stats": {
+      "time_exit": {
+        "count": 16,
+        "pnl": 84991.0,
+        "wins": 10
+      },
+      "trail_stop": {
+        "count": 6,
+        "pnl": 47951.0,
+        "wins": 4
+      },
+      "expiry_close": {
+        "count": 11,
+        "pnl": -6002.0,
+        "wins": 5
+      },
+      "eod_close": {
+        "count": 8,
+        "pnl": 16544.0,
+        "wins": 5
+      },
+      "sr_stop": {
+        "count": 12,
+        "pnl": -47622.0,
+        "wins": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "best_strategy": "Full Kelly",
+  "best_params": {
+    "initial_capital": 200000.0,
+    "lot_size": 65,
+    "method": "full_kelly",
+    "kelly_fraction": 0.5
+  },
+  "best_metrics": {
+    "return_pct": 6019.4,
+    "max_drawdown_pct": 3.52,
+    "sharpe_ratio": 11.0
+  },
+  "comparison": {
+    "drawdown-based": {
+      "final_equity": 10557632.0,
+      "return_pct": 5178.82,
+      "max_drawdown_pct": 1.96,
+      "sharpe_ratio": 9.69,
+      "largest_loss": -70793.0,
+      "below_150k_count": 0
+    },
+    "fixed_1_lot_65_qty": {
+      "final_equity": 682431.0,
+      "return_pct": 241.22,
+      "max_drawdown_pct": 0.57,
+      "sharpe_ratio": 11.83,
+      "largest_loss": -2667.0,
+      "below_150k_count": 0
+    },
+    "fixed_2_lots_130_qty": {
+      "final_equity": 1170667.0,
+      "return_pct": 485.33,
+      "max_drawdown_pct": 0.76,
+      "sharpe_ratio": 11.9,
+      "largest_loss": -5288.0,
+      "below_150k_count": 0
+    },
+    "fixed_frac_5pct": {
+      "final_equity": 7571977.0,
+      "return_pct": 3685.99,
+      "max_drawdown_pct": 2.15,
+      "sharpe_ratio": 8.43,
+      "largest_loss": -70793.0,
+      "below_150k_count": 0
+    },
+    "fixed_frac_8pct": {
+      "final_equity": 10616108.0,
+      "return_pct": 5208.05,
+      "max_drawdown_pct": 1.91,
+      "sharpe_ratio": 9.74,
+      "largest_loss": -70793.0,
+      "below_150k_count": 0
+    },
+    "fixed_frac_12pct": {
+      "final_equity": 12061182.0,
+      "return_pct": 5930.59,
+      "max_drawdown_pct": 2.74,
+      "sharpe_ratio": 10.84,
+      "largest_loss": -70793.0,
+      "below_150k_count": 0
+    },
+    "full_kelly": {
+      "final_equity": 12238800.0,
+      "return_pct": 6019.4,
+      "max_drawdown_pct": 3.52,
+      "sharpe_ratio": 11.0,
+      "largest_loss": -70793.0,
+      "below_150k_count": 0
+    },
+    "half_kelly": {
+      "final_equity": 12238800.0,
+      "return_pct": 6019.4,
+      "max_drawdown_pct": 3.52,
+      "sharpe_ratio": 11.0,
+      "largest_loss": -70793.0,
+      "below_150k_count": 0
+    },
+    "vix-adaptive": {
+      "final_equity": 12017616.0,
+      "return_pct": 5908.81,
+      "max_drawdown_pct": 2.96,
+      "sharpe_ratio": 10.79,
+      "largest_loss": -70793.0,
+      "below_150k_count": 0
+    },
+    "streak-based": {
+      "final_equity": 1745515.0,
+      "return_pct": 772.76,
+      "max_drawdown_pct": 1.25,
+      "sharpe_ratio": 9.63,
+      "largest_loss": -13148.0,
+      "below_150k_count": 0
+    }
+  },
+  "kelly_fraction": 0.5,
+  "half_kelly_fraction": 0.25,
+  "vix_adaptive_rules": {
+    "vix_below_12": {
+      "multiplier": 2.0,
+      "description": "Low VIX: options cheap, double position"
+    },
+    "vix_12_to_15": {
+      "multiplier": 1.5,
+      "description": "Normal-low: 1.5x position"
+    },
+    "vix_15_to_20": {
+      "multiplier": 1.0,
+      "description": "Normal: standard position"
+    },
+    "vix_20_to_25": {
+      "multiplier": 0.7,
+      "description": "High: reduce 30%"
+    },
+    "vix_25_to_30": {
+      "multiplier": 0.5,
+      "description": "Very high: half position"
+    },
+    "vix_above_30": {
+      "multiplier": 0.3,
+      "description": "Extreme: minimal position"
+    }
+  },
+  "simulation_params": {
+    "initial_capital": 200000.0,
+    "lot_size": 65,
+    "dte_days": 2.0,
+    "risk_free_rate": 0.07,
+    "period": "2025-10-01 to 2026-04-06"
+  }
+}

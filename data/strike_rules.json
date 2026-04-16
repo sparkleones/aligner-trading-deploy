@@ -1,0 +1,384 @@
+{
+  "best_strike": {
+    "BUY_CALL": "ATM",
+    "BUY_PUT": "ATM"
+  },
+  "vix_strike_rules": {
+    "LOW": {
+      "BUY_CALL": {
+        "best_strike": "ATM-50",
+        "best_avg_pnl": 1328.9,
+        "all_strikes": {
+          "ATM-50": {
+            "win_rate": 50.0,
+            "avg_pnl": 1328.9,
+            "risk_reward": 1.93,
+            "avg_premium": 108.1,
+            "avg_delta": 0.635
+          },
+          "ATM": {
+            "win_rate": 50.0,
+            "avg_pnl": 1294.1,
+            "risk_reward": 2.14,
+            "avg_premium": 78.8,
+            "avg_delta": 0.528
+          },
+          "ATM+50": {
+            "win_rate": 48.4,
+            "avg_pnl": 1158.9,
+            "risk_reward": 2.49,
+            "avg_premium": 55.7,
+            "avg_delta": 0.419
+          },
+          "ATM+100": {
+            "win_rate": 48.4,
+            "avg_pnl": 971.9,
+            "risk_reward": 2.68,
+            "avg_premium": 38.2,
+            "avg_delta": 0.318
+          },
+          "ATM+150": {
+            "win_rate": 46.8,
+            "avg_pnl": 768.5,
+            "risk_reward": 3.05,
+            "avg_premium": 25.3,
+            "avg_delta": 0.231
+          }
+        }
+      },
+      "BUY_PUT": {
+        "best_strike": "ATM",
+        "best_avg_pnl": 281.0,
+        "all_strikes": {
+          "ATM+50": {
+            "win_rate": 43.5,
+            "avg_pnl": 133.4,
+            "risk_reward": 1.41,
+            "avg_premium": 93.4,
+            "avg_delta": 0.581
+          },
+          "ATM": {
+            "win_rate": 43.5,
+            "avg_pnl": 281.0,
+            "risk_reward": 1.61,
+            "avg_premium": 67.0,
+            "avg_delta": 0.472
+          },
+          "ATM-50": {
+            "win_rate": 41.9,
+            "avg_pnl": 260.0,
+            "risk_reward": 1.8,
+            "avg_premium": 48.0,
+            "avg_delta": 0.368
+          },
+          "ATM-100": {
+            "win_rate": 41.9,
+            "avg_pnl": 194.2,
+            "risk_reward": 1.81,
+            "avg_premium": 34.1,
+            "avg_delta": 0.28
+          },
+          "ATM-150": {
+            "win_rate": 40.3,
+            "avg_pnl": 123.3,
+            "risk_reward": 1.87,
+            "avg_premium": 24.1,
+            "avg_delta": 0.208
+          }
+        }
+      }
+    },
+    "NORMAL": {
+      "BUY_CALL": {
+        "best_strike": "ATM+100",
+        "best_avg_pnl": 232.5,
+        "all_strikes": {
+          "ATM-50": {
+            "win_rate": 48.9,
+            "avg_pnl": -40.9,
+            "risk_reward": 1.03,
+            "avg_premium": 124.6,
+            "avg_delta": 0.606
+          },
+          "ATM": {
+            "win_rate": 48.9,
+            "avg_pnl": 138.9,
+            "risk_reward": 1.13,
+            "avg_premium": 96.2,
+            "avg_delta": 0.52
+          },
+          "ATM+50": {
+            "win_rate": 48.9,
+            "avg_pnl": 209.3,
+            "risk_reward": 1.2,
+            "avg_premium": 73.2,
+            "avg_delta": 0.432
+          },
+          "ATM+100": {
+            "win_rate": 46.7,
+            "avg_pnl": 232.5,
+            "risk_reward": 1.38,
+            "avg_premium": 54.8,
+            "avg_delta": 0.35
+          },
+          "ATM+150": {
+            "win_rate": 46.7,
+            "avg_pnl": 232.1,
+            "risk_reward": 1.45,
+            "avg_premium": 40.3,
+            "avg_delta": 0.276
+          }
+        }
+      },
+      "BUY_PUT": {
+        "best_strike": "ATM+50",
+        "best_avg_pnl": 2302.1,
+        "all_strikes": {
+          "ATM+50": {
+            "win_rate": 51.1,
+            "avg_pnl": 2302.1,
+            "risk_reward": 2.36,
+            "avg_premium": 112.7,
+            "avg_delta": 0.568
+          },
+          "ATM": {
+            "win_rate": 51.1,
+            "avg_pnl": 2260.7,
+            "risk_reward": 2.72,
+            "avg_premium": 86.3,
+            "avg_delta": 0.481
+          },
+          "ATM-50": {
+            "win_rate": 48.9,
+            "avg_pnl": 2019.1,
+            "risk_reward": 3.2,
+            "avg_premium": 66.9,
+            "avg_delta": 0.396
+          },
+          "ATM-100": {
+            "win_rate": 48.9,
+            "avg_pnl": 1729.3,
+            "risk_reward": 3.35,
+            "avg_premium": 52.0,
+            "avg_delta": 0.322
+          },
+          "ATM-150": {
+            "win_rate": 46.7,
+            "avg_pnl": 1443.7,
+            "risk_reward": 3.76,
+            "avg_premium": 40.4,
+            "avg_delta": 0.259
+          }
+        }
+      }
+    },
+    "HIGH": {
+      "BUY_CALL": {
+        "best_strike": "ATM+150",
+        "best_avg_pnl": -24.4,
+        "all_strikes": {
+          "ATM-50": {
+            "win_rate": 40.0,
+            "avg_pnl": -527.8,
+            "risk_reward": 1.29,
+            "avg_premium": 179.4,
+            "avg_delta": 0.573
+          },
+          "ATM": {
+            "win_rate": 40.0,
+            "avg_pnl": -257.0,
+            "risk_reward": 1.38,
+            "avg_premium": 151.5,
+            "avg_delta": 0.518
+          },
+          "ATM+50": {
+            "win_rate": 40.0,
+            "avg_pnl": -119.8,
+            "risk_reward": 1.44,
+            "avg_premium": 128.2,
+            "avg_delta": 0.463
+          },
+          "ATM+100": {
+            "win_rate": 40.0,
+            "avg_pnl": -54.5,
+            "risk_reward": 1.47,
+            "avg_premium": 108.4,
+            "avg_delta": 0.41
+          },
+          "ATM+150": {
+            "win_rate": 40.0,
+            "avg_pnl": -24.4,
+            "risk_reward": 1.48,
+            "avg_premium": 91.2,
+            "avg_delta": 0.36
+          }
+        }
+      },
+      "BUY_PUT": {
+        "best_strike": "ATM+50",
+        "best_avg_pnl": 3825.2,
+        "all_strikes": {
+          "ATM+50": {
+            "win_rate": 53.3,
+            "avg_pnl": 3825.2,
+            "risk_reward": 2.61,
+            "avg_premium": 163.8,
+            "avg_delta": 0.537
+          },
+          "ATM": {
+            "win_rate": 53.3,
+            "avg_pnl": 3708.0,
+            "risk_reward": 2.93,
+            "avg_premium": 138.4,
+            "avg_delta": 0.482
+          },
+          "ATM-50": {
+            "win_rate": 53.3,
+            "avg_pnl": 3319.4,
+            "risk_reward": 3.04,
+            "avg_premium": 120.2,
+            "avg_delta": 0.429
+          },
+          "ATM-100": {
+            "win_rate": 53.3,
+            "avg_pnl": 2845.4,
+            "risk_reward": 3.02,
+            "avg_premium": 105.4,
+            "avg_delta": 0.382
+          },
+          "ATM-150": {
+            "win_rate": 46.7,
+            "avg_pnl": 2343.7,
+            "risk_reward": 3.79,
+            "avg_premium": 93.1,
+            "avg_delta": 0.34
+          }
+        }
+      }
+    }
+  },
+  "risk_reward": {
+    "BUY_CALL": {
+      "ATM-50": {
+        "avg_premium": 123.0,
+        "avg_capital_per_lot": 7993.0,
+        "max_win": 19793.0,
+        "max_loss": -9643.0,
+        "win_loss_ratio": 1.38,
+        "leverage": 206.2,
+        "best_return_pct": 277.0,
+        "worst_return_pct": -99.2,
+        "breakeven_move_pct": 0.941
+      },
+      "ATM": {
+        "avg_premium": 94.1,
+        "avg_capital_per_lot": 6119.0,
+        "max_win": 18452.0,
+        "max_loss": -8390.0,
+        "win_loss_ratio": 1.5,
+        "leverage": 269.3,
+        "best_return_pct": 346.6,
+        "worst_return_pct": -99.4,
+        "breakeven_move_pct": 0.893
+      },
+      "ATM+50": {
+        "avg_premium": 71.1,
+        "avg_capital_per_lot": 4622.0,
+        "max_win": 16777.0,
+        "max_loss": -7290.0,
+        "win_loss_ratio": 1.64,
+        "leverage": 356.6,
+        "best_return_pct": 431.0,
+        "worst_return_pct": -99.5,
+        "breakeven_move_pct": 0.872
+      },
+      "ATM+100": {
+        "avg_premium": 52.9,
+        "avg_capital_per_lot": 3441.0,
+        "max_win": 14880.0,
+        "max_loss": -6365.0,
+        "win_loss_ratio": 1.76,
+        "leverage": 479.0,
+        "best_return_pct": 537.2,
+        "worst_return_pct": -99.6,
+        "breakeven_move_pct": 0.87
+      },
+      "ATM+150": {
+        "avg_premium": 38.9,
+        "avg_capital_per_lot": 2530.0,
+        "max_win": 12836.0,
+        "max_loss": -5531.0,
+        "win_loss_ratio": 1.87,
+        "leverage": 651.4,
+        "best_return_pct": 669.0,
+        "worst_return_pct": -99.7,
+        "breakeven_move_pct": 0.882
+      }
+    },
+    "BUY_PUT": {
+      "ATM+50": {
+        "avg_premium": 109.2,
+        "avg_capital_per_lot": 7098.0,
+        "max_win": 32967.0,
+        "max_loss": -7181.0,
+        "win_loss_ratio": 2.05,
+        "leverage": 232.2,
+        "best_return_pct": 481.3,
+        "worst_return_pct": -90.8,
+        "breakeven_move_pct": 0.885
+      },
+      "ATM": {
+        "avg_premium": 82.9,
+        "avg_capital_per_lot": 5390.0,
+        "max_win": 31397.0,
+        "max_loss": -5831.0,
+        "win_loss_ratio": 2.37,
+        "leverage": 305.8,
+        "best_return_pct": 605.3,
+        "worst_return_pct": -91.0,
+        "breakeven_move_pct": 0.85
+      },
+      "ATM-50": {
+        "avg_premium": 63.8,
+        "avg_capital_per_lot": 4149.0,
+        "max_win": 29373.0,
+        "max_loss": -4847.0,
+        "win_loss_ratio": 2.74,
+        "leverage": 397.3,
+        "best_return_pct": 736.8,
+        "worst_return_pct": -91.1,
+        "breakeven_move_pct": 0.856
+      },
+      "ATM-100": {
+        "avg_premium": 49.5,
+        "avg_capital_per_lot": 3214.0,
+        "max_win": 27099.0,
+        "max_loss": -4140.0,
+        "win_loss_ratio": 2.87,
+        "leverage": 512.8,
+        "best_return_pct": 888.2,
+        "worst_return_pct": -91.1,
+        "breakeven_move_pct": 0.882
+      },
+      "ATM-150": {
+        "avg_premium": 38.6,
+        "avg_capital_per_lot": 2508.0,
+        "max_win": 24634.0,
+        "max_loss": -3554.0,
+        "win_loss_ratio": 3.24,
+        "leverage": 657.0,
+        "best_return_pct": 1056.3,
+        "worst_return_pct": -91.0,
+        "breakeven_move_pct": 0.923
+      }
+    }
+  },
+  "study_params": {
+    "lot_size": 65,
+    "capital": 200000,
+    "dte": 2.0,
+    "period": "Oct 2025 - Apr 2026",
+    "total_trades": 1220,
+    "total_days": 122
+  }
+}

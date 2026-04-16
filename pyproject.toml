@@ -1,0 +1,15 @@
+[project]
+name = "indian-options-algo"
+version = "1.0.0"
+description = "Algorithmic trading system for Indian NSE index options (Nifty 50, Bank Nifty)"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

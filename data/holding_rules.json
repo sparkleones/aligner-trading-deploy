@@ -1,0 +1,144 @@
+{
+  "best_holding": {
+    "BUY_CALL": "partial",
+    "BUY_PUT": "hold2"
+  },
+  "vix_holding_rules": {
+    "LOW": {
+      "BUY_CALL": {
+        "strategy": "partial",
+        "sharpe": 0.1
+      },
+      "BUY_PUT": {
+        "strategy": "hold2",
+        "sharpe": 6.47
+      }
+    },
+    "NORMAL": {
+      "BUY_CALL": {
+        "strategy": "intraday",
+        "sharpe": 1.5
+      },
+      "BUY_PUT": {
+        "strategy": "hold2",
+        "sharpe": 8.55
+      }
+    },
+    "HIGH": {
+      "BUY_CALL": {
+        "strategy": "hold2",
+        "sharpe": 0.06
+      },
+      "BUY_PUT": {
+        "strategy": "scale_out",
+        "sharpe": 11.43
+      }
+    }
+  },
+  "scale_out_rules": {
+    "BUY_CALL": {
+      "scale_out_sharpe": -0.51,
+      "scale_out_avg": -132.4,
+      "partial_sharpe": -0.06,
+      "partial_avg": -16.79,
+      "recommended": "partial"
+    },
+    "BUY_PUT": {
+      "scale_out_sharpe": 6.19,
+      "scale_out_avg": 1449.03,
+      "partial_sharpe": 5.72,
+      "partial_avg": 1663.32,
+      "recommended": "scale_out"
+    }
+  },
+  "overnight_gap_stats": {
+    "gap_analysis": {
+      "avg_gap_pct": 0.5748,
+      "max_gap_pct": 4.8614,
+      "gap_up_pct": 44.4,
+      "gap_down_pct": 55.6,
+      "continuation_rate_pct": 54.2,
+      "reversal_rate_pct": 45.8,
+      "avg_gap_up": 0.5671,
+      "avg_gap_down": -0.581,
+      "LOW_avg_gap": 0.1807,
+      "LOW_continuation": 55.6,
+      "LOW_count": 27,
+      "NORMAL_avg_gap": 0.611,
+      "NORMAL_continuation": 46.7,
+      "NORMAL_count": 30,
+      "HIGH_avg_gap": 1.2119,
+      "HIGH_continuation": 66.7,
+      "HIGH_count": 15
+    },
+    "overnight_verdict": {
+      "BUY_CALL": {
+        "overnight_sharpe": -0.21,
+        "intraday_sharpe": -0.56,
+        "recommendation": "overnight",
+        "gap_risk_pct": 0.5748
+      },
+      "BUY_PUT": {
+        "overnight_sharpe": 6.87,
+        "intraday_sharpe": 4.87,
+        "recommendation": "overnight",
+        "gap_risk_pct": 0.5748
+      }
+    }
+  },
+  "trend_holding_rules": {
+    "ABOVE_SMA50": {
+      "BUY_CALL": {
+        "strategy": "intraday",
+        "sharpe": 9.17
+      },
+      "BUY_PUT": {
+        "strategy": "hold2",
+        "sharpe": -2.27
+      }
+    },
+    "BELOW_SMA50": {
+      "BUY_CALL": {
+        "strategy": "hold2",
+        "sharpe": -0.16
+      },
+      "BUY_PUT": {
+        "strategy": "scale_out",
+        "sharpe": 9.35
+      }
+    },
+    "NEAR_SMA50": {
+      "BUY_CALL": {
+        "strategy": "partial",
+        "sharpe": 0.78
+      },
+      "BUY_PUT": {
+        "strategy": "hold2",
+        "sharpe": 7.02
+      }
+    }
+  },
+  "theta_decay_by_vix": {
+    "LOW": {
+      "avg_theta_CE": -20.07,
+      "avg_theta_PE": -15.15,
+      "avg_daily_decay_pct_CE": 25.98,
+      "avg_daily_decay_pct_PE": 24.06,
+      "count": 28
+    },
+    "NORMAL": {
+      "avg_theta_CE": -26.05,
+      "avg_theta_PE": -21.26,
+      "avg_daily_decay_pct_CE": 26.31,
+      "avg_daily_decay_pct_PE": 23.71,
+      "count": 30
+    },
+    "HIGH": {
+      "avg_theta_CE": -38.32,
+      "avg_theta_PE": -34.03,
+      "avg_daily_decay_pct_CE": 25.38,
+      "avg_daily_decay_pct_PE": 24.64,
+      "count": 15
+    }
+  }
+}

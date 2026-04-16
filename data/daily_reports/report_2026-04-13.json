@@ -1,0 +1,87 @@
+{
+  "date": "2026-04-13",
+  "generated_at": "2026-04-13T15:28:00.846504",
+  "total_trades": 3,
+  "open_positions": 0,
+  "btst_positions": 0,
+  "daily_pnl": -44755.11,
+  "trades": [
+    {
+      "symbol": "NIFTY2641323900CE",
+      "side": "BUY",
+      "qty": 715,
+      "entry_price": 31.3,
+      "order_id": "adopted",
+      "strategy": "adopted_from_broker",
+      "entry_type": "adopted",
+      "product": "NRML",
+      "entry_time": "2026-04-13T14:04:25.511996",
+      "current_price": 31.1,
+      "unrealized_pnl": -143,
+      "opt_type": "CE",
+      "strike": 2641323900.0,
+      "metadata": {
+        "adopted": true,
+        "original_pnl": -143
+      },
+      "exit_price": 20.0,
+      "realized_pnl": -8079.500000000001,
+      "exit_reason": "broker_auto_squareoff",
+      "exit_time": "2026-04-13T14:08:25.663891",
+      "hold_minutes": 4.0
+    },
+    {
+      "symbol": "NIFTY2641323900CE",
+      "side": "BUY",
+      "qty": 975,
+      "entry_price": 21.26153846153846,
+      "order_id": "adopted",
+      "strategy": "adopted_from_broker",
+      "entry_type": "adopted",
+      "product": "NRML",
+      "entry_time": "2026-04-13T14:16:25.904420",
+      "current_price": 13.9,
+      "unrealized_pnl": -8079.5,
+      "opt_type": "CE",
+      "strike": 2641323900.0,
+      "metadata": {
+        "adopted": true,
+        "original_pnl": -8079.5
+      },
+      "exit_price": 7.45,
+      "realized_pnl": -13466.25,
+      "exit_reason": "broker_auto_squareoff",
+      "exit_time": "2026-04-13T14:44:28.360686",
+      "hold_minutes": 28.0
+    },
+    {
+      "symbol": "NIFTY2641323850CE",
+      "side": "BUY",
+      "qty": 585,
+      "entry_price": 32.296341463414635,
+      "order_id": "adopted",
+      "strategy": "adopted_from_broker",
+      "entry_type": "adopted",
+      "product": "NRML",
+      "entry_time": "2026-04-13T15:04:32.713842",
+      "current_price": 13.35,
+      "unrealized_pnl": -8645,
+      "opt_type": "CE",
+      "strike": 2641323850.0,
+      "metadata": {
+        "adopted": true,
+        "original_pnl": -8645
+      },
+      "exit_price": 7.75,
+      "realized_pnl": -14359.609756097561,
+      "exit_reason": "broker_auto_squareoff",
+      "exit_time": "2026-04-13T15:06:32.793670",
+      "hold_minutes": 2.0
+    }
+  ],
+  "btst": [],
+  "winners": 0,
+  "losers": 3,
+  "win_rate": 0.0,
+  "avg_pnl": -14918.37
+}

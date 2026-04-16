@@ -1,0 +1,1995 @@
+{
+  "summary": {
+    "net_pnl": 252115,
+    "return_pct": 126.1,
+    "total_trades": 388,
+    "trades_per_day": 3.7,
+    "win_rate": 41.8,
+    "sharpe": 3.71,
+    "profit_factor": 1.34,
+    "max_drawdown": 9.9
+  },
+  "analysis": {
+    "total_trades": 388,
+    "total_pnl": 252115.0,
+    "winners": 162,
+    "losers": 226,
+    "win_rate": 41.8,
+    "avg_win": 6100,
+    "avg_loss": -3257,
+    "exit_reasons": {
+      "supertrend_flip": {
+        "count": 95,
+        "pnl": -48916.0,
+        "wins": 30
+      },
+      "time_exit": {
+        "count": 123,
+        "pnl": 454183.0,
+        "wins": 78
+      },
+      "eod_close": {
+        "count": 76,
+        "pnl": 123628.0,
+        "wins": 37
+      },
+      "trail_stop": {
+        "count": 68,
+        "pnl": -279473.0,
+        "wins": 5
+      },
+      "expiry_close": {
+        "count": 26,
+        "pnl": 2693.0,
+        "wins": 12
+      }
+    },
+    "reason_win_rates": {
+      "high_vix_24.6": {
+        "in_winners": 1,
+        "in_losers": 0,
+        "win_rate": 100.0,
+        "total": 1
+      },
+      "low_vix_10.2": {
+        "in_winners": 1,
+        "in_losers": 0,
+        "win_rate": 100.0,
+        "total": 1
+      },
+      "low_vix_9.7": {
+        "in_winners": 4,
+        "in_losers": 0,
+        "win_rate": 100.0,
+        "total": 4
+      },
+      "high_vix_27.9": {
+        "in_winners": 2,
+        "in_losers": 0,
+        "win_rate": 100.0,
+        "total": 2
+      },
+      "low_vix_10.5": {
+        "in_winners": 1,
+        "in_losers": 0,
+        "win_rate": 100.0,
+        "total": 1
+      },
+      "low_vix_9.4": {
+        "in_winners": 2,
+        "in_losers": 0,
+        "win_rate": 100.0,
+        "total": 2
+      },
+      "rsi_oversold_10": {
+        "in_winners": 1,
+        "in_losers": 0,
+        "win_rate": 100.0,
+        "total": 1
+      },
+      "low_vix_12.0": {
+        "in_winners": 5,
+        "in_losers": 0,
+        "win_rate": 100.0,
+        "total": 5
+      },
+      "rsi_high_61": {
+        "in_winners": 1,
+        "in_losers": 0,
+        "win_rate": 100.0,
+        "total": 1
+      },
+      "high_vix_22.8": {
+        "in_winners": 3,
+        "in_losers": 1,
+        "win_rate": 75.0,
+        "total": 4
+      },
+      "high_vix_26.8": {
+        "in_winners": 2,
+        "in_losers": 1,
+        "win_rate": 66.7,
+        "total": 3
+      },
+      "low_vix_11.8": {
+        "in_winners": 2,
+        "in_losers": 1,
+        "win_rate": 66.7,
+        "total": 3
+      },
+      "ema_cross_down": {
+        "in_winners": 16,
+        "in_losers": 9,
+        "win_rate": 64.0,
+        "total": 25
+      },
+      "low_vix_11.9": {
+        "in_winners": 5,
+        "in_losers": 3,
+        "win_rate": 62.5,
+        "total": 8
+      },
+      "low_vix_10.9": {
+        "in_winners": 5,
+        "in_losers": 3,
+        "win_rate": 62.5,
+        "total": 8
+      },
+      "low_vix_10.1": {
+        "in_winners": 6,
+        "in_losers": 5,
+        "win_rate": 54.5,
+        "total": 11
+      },
+      "high_vix_21.6": {
+        "in_winners": 1,
+        "in_losers": 1,
+        "win_rate": 50.0,
+        "total": 2
+      },
+      "stoch_overbought": {
+        "in_winners": 4,
+        "in_losers": 4,
+        "win_rate": 50.0,
+        "total": 8
+      },
+      "high_vix_25.0": {
+        "in_winners": 1,
+        "in_losers": 1,
+        "win_rate": 50.0,
+        "total": 2
+      },
+      "low_vix_9.5": {
+        "in_winners": 2,
+        "in_losers": 2,
+        "win_rate": 50.0,
+        "total": 4
+      },
+      "high_vix_22.6": {
+        "in_winners": 1,
+        "in_losers": 1,
+        "win_rate": 50.0,
+        "total": 2
+      },
+      "ema_aligned_bear": {
+        "in_winners": 75,
+        "in_losers": 75,
+        "win_rate": 50.0,
+        "total": 150
+      },
+      "low_vix_10.3": {
+        "in_winners": 2,
+        "in_losers": 2,
+        "win_rate": 50.0,
+        "total": 4
+      },
+      "sr_reject_down": {
+        "in_winners": 59,
+        "in_losers": 63,
+        "win_rate": 48.4,
+        "total": 122
+      },
+      "macd_negative": {
+        "in_winners": 77,
+        "in_losers": 85,
+        "win_rate": 47.5,
+        "total": 162
+      },
+      "adx_strong_bear": {
+        "in_winners": 42,
+        "in_losers": 49,
+        "win_rate": 46.2,
+        "total": 91
+      },
+      "supertrend_bearish": {
+        "in_winners": 75,
+        "in_losers": 95,
+        "win_rate": 44.1,
+        "total": 170
+      },
+      "low_vix_11.7": {
+        "in_winners": 3,
+        "in_losers": 4,
+        "win_rate": 42.9,
+        "total": 7
+      },
+      "stoch_oversold": {
+        "in_winners": 3,
+        "in_losers": 4,
+        "win_rate": 42.9,
+        "total": 7
+      },
+      "macd_positive": {
+        "in_winners": 64,
+        "in_losers": 106,
+        "win_rate": 37.6,
+        "total": 170
+      },
+      "adx_strong_bull": {
+        "in_winners": 35,
+        "in_losers": 61,
+        "win_rate": 36.5,
+        "total": 96
+      },
+      "ema_aligned_bull": {
+        "in_winners": 51,
+        "in_losers": 91,
+        "win_rate": 35.9,
+        "total": 142
+      },
+      "supertrend_bullish": {
+        "in_winners": 64,
+        "in_losers": 115,
+        "win_rate": 35.8,
+        "total": 179
+      },
+      "sr_bounce_up": {
+        "in_winners": 41,
+        "in_losers": 79,
+        "win_rate": 34.2,
+        "total": 120
+      },
+      "low_vix_10.0": {
+        "in_winners": 1,
+        "in_losers": 2,
+        "win_rate": 33.3,
+        "total": 3
+      },
+      "stoch_overbought_cross": {
+        "in_winners": 1,
+        "in_losers": 2,
+        "win_rate": 33.3,
+        "total": 3
+      },
+      "stoch_oversold_cross": {
+        "in_winners": 1,
+        "in_losers": 2,
+        "win_rate": 33.3,
+        "total": 3
+      },
+      "low_vix_11.2": {
+        "in_winners": 2,
+        "in_losers": 4,
+        "win_rate": 33.3,
+        "total": 6
+      },
+      "low_vix_11.3": {
+        "in_winners": 1,
+        "in_losers": 2,
+        "win_rate": 33.3,
+        "total": 3
+      },
+      "ema_cross_up": {
+        "in_winners": 6,
+        "in_losers": 14,
+        "win_rate": 30.0,
+        "total": 20
+      },
+      "macd_bear_cross": {
+        "in_winners": 2,
+        "in_losers": 5,
+        "win_rate": 28.6,
+        "total": 7
+      },
+      "low_vix_11.6": {
+        "in_winners": 2,
+        "in_losers": 5,
+        "win_rate": 28.6,
+        "total": 7
+      },
+      "low_vix_11.4": {
+        "in_winners": 1,
+        "in_losers": 3,
+        "win_rate": 25.0,
+        "total": 4
+      },
+      "macd_bull_cross": {
+        "in_winners": 2,
+        "in_losers": 8,
+        "win_rate": 20.0,
+        "total": 10
+      },
+      "low_vix_9.2": {
+        "in_winners": 1,
+        "in_losers": 5,
+        "win_rate": 16.7,
+        "total": 6
+      },
+      "bb_upper_touch": {
+        "in_winners": 0,
+        "in_losers": 1,
+        "win_rate": 0.0,
+        "total": 1
+      },
+      "high_vix_23.4": {
+        "in_winners": 0,
+        "in_losers": 2,
+        "win_rate": 0.0,
+        "total": 2
+      },
+      "high_vix_25.5": {
+        "in_winners": 0,
+        "in_losers": 2,
+        "win_rate": 0.0,
+        "total": 2
+      },
+      "low_vix_9.9": {
+        "in_winners": 0,
+        "in_losers": 1,
+        "win_rate": 0.0,
+        "total": 1
+      },
+      "high_vix_21.1": {
+        "in_winners": 0,
+        "in_losers": 2,
+        "win_rate": 0.0,
+        "total": 2
+      },
+      "high_vix_21.5": {
+        "in_winners": 0,
+        "in_losers": 3,
+        "win_rate": 0.0,
+        "total": 3
+      },
+      "high_vix_24.7": {
+        "in_winners": 0,
+        "in_losers": 3,
+        "win_rate": 0.0,
+        "total": 3
+      },
+      "low_vix_11.0": {
+        "in_winners": 0,
+        "in_losers": 2,
+        "win_rate": 0.0,
+        "total": 2
+      },
+      "rsi_high_63": {
+        "in_winners": 0,
+        "in_losers": 1,
+        "win_rate": 0.0,
+        "total": 1
+      },
+      "low_vix_10.8": {
+        "in_winners": 0,
+        "in_losers": 2,
+        "win_rate": 0.0,
+        "total": 2
+      },
+      "low_vix_10.6": {
+        "in_winners": 0,
+        "in_losers": 2,
+        "win_rate": 0.0,
+        "total": 2
+      },
+      "low_vix_11.1": {
+        "in_winners": 0,
+        "in_losers": 2,
+        "win_rate": 0.0,
+        "total": 2
+      }
+    },
+    "supertrend_stats": {
+      "up_trend": {
+        "count": 198,
+        "pnl": 73076.0,
+        "win_rate": 39.4
+      },
+      "down_trend": {
+        "count": 190,
+        "pnl": 179039.0,
+        "win_rate": 44.2
+      }
+    },
+    "action_stats": {
+      "BUY_CALL": {
+        "count": 199,
+        "pnl": 44367.0,
+        "win_rate": 36.7
+      },
+      "BUY_PUT": {
+        "count": 189,
+        "pnl": 207748.0,
+        "win_rate": 47.1
+      }
+    },
+    "time_of_day": {
+      "10:00": {
+        "count": 74,
+        "pnl": -6608.0,
+        "wins": 24
+      },
+      "11:00": {
+        "count": 33,
+        "pnl": 75860.0,
+        "wins": 18
+      },
+      "12:00": {
+        "count": 31,
+        "pnl": -67647.0,
+        "wins": 5
+      },
+      "13:00": {
+        "count": 17,
+        "pnl": 19645.0,
+        "wins": 7
+      },
+      "14:00": {
+        "count": 66,
+        "pnl": 28387.0,
+        "wins": 30
+      },
+      "9:00": {
+        "count": 167,
+        "pnl": 202478.0,
+        "wins": 78
+      }
+    },
+    "adx_threshold": {
+      "high_adx_gt25": {
+        "count": 216,
+        "pnl": 115767.0,
+        "win_rate": 41.2
+      },
+      "low_adx_le25": {
+        "count": 172,
+        "pnl": 136348.0,
+        "win_rate": 42.4
+      }
+    },
+    "conf_ge_0.2": {
+      "count": 388,
+      "pnl": 252115.0,
+      "win_rate": 41.8
+    },
+    "conf_ge_0.25": {
+      "count": 331,
+      "pnl": 279835.0,
+      "win_rate": 41.7
+    },
+    "conf_ge_0.3": {
+      "count": 286,
+      "pnl": 214633.0,
+      "win_rate": 42.3
+    },
+    "conf_ge_0.35": {
+      "count": 208,
+      "pnl": 149562.0,
+      "win_rate": 41.8
+    },
+    "conf_ge_0.4": {
+      "count": 116,
+      "pnl": 33058.0,
+      "win_rate": 42.2
+    }
+  },
+  "indicator_comparison": {
+    "entry_rsi": {
+      "winners_avg": 49.14,
+      "losers_avg": 51.04,
+      "diff": -1.9
+    },
+    "entry_adx": {
+      "winners_avg": 27.85,
+      "losers_avg": 27.24,
+      "diff": 0.61
+    },
+    "entry_bb_width": {
+      "winners_avg": 0.42,
+      "losers_avg": 0.41,
+      "diff": 0.01
+    },
+    "entry_stoch_k": {
+      "winners_avg": 49.04,
+      "losers_avg": 54.12,
+      "diff": -5.08
+    },
+    "entry_atr_pct": {
+      "winners_avg": 0.05,
+      "losers_avg": 0.05,
+      "diff": 0.0
+    },
+    "confidence": {
+      "winners_avg": 0.34,
+      "losers_avg": 0.34,
+      "diff": 0.0
+    },
+    "call_score": {
+      "winners_avg": 4.4,
+      "losers_avg": 4.77,
+      "diff": -0.37
+    },
+    "put_score": {
+      "winners_avg": 4.67,
+      "losers_avg": 4.1,
+      "diff": 0.57
+    },
+    "minutes_held": {
+      "winners_avg": 180.28,
+      "losers_avg": 130.02,
+      "diff": 50.26
+    },
+    "max_favorable_move": {
+      "winners_avg": 0.45,
+      "losers_avg": 0.11,
+      "diff": 0.34
+    }
+  },
+  "daily_results": [
+    {
+      "date": "2025-10-01",
+      "dow": "Wed",
+      "open": 24621,
+      "close": 24853,
+      "change_pct": 0.95,
+      "vix": 10.3,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 20201,
+      "equity": 220201,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-03",
+      "dow": "Fri",
+      "open": 24760,
+      "close": 24895,
+      "change_pct": 0.55,
+      "vix": 10.1,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 2665,
+      "equity": 222866,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-07",
+      "dow": "Tue",
+      "open": 25085,
+      "close": 25113,
+      "change_pct": 0.11,
+      "vix": 10.1,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 9326,
+      "equity": 232192,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-08",
+      "dow": "Wed",
+      "open": 25080,
+      "close": 25024,
+      "change_pct": -0.22,
+      "vix": 10.3,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -4188,
+      "equity": 228004,
+      "drawdown": 1.8,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-09",
+      "dow": "Thu",
+      "open": 25074,
+      "close": 25170,
+      "change_pct": 0.38,
+      "vix": 10.1,
+      "trades": 4,
+      "wins": 1,
+      "pnl": -974,
+      "equity": 227030,
+      "drawdown": 2.22,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-10",
+      "dow": "Fri",
+      "open": 25168,
+      "close": 25278,
+      "change_pct": 0.44,
+      "vix": 10.1,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 4259,
+      "equity": 231289,
+      "drawdown": 0.39,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-13",
+      "dow": "Mon",
+      "open": 25177,
+      "close": 25237,
+      "change_pct": 0.24,
+      "vix": 11.0,
+      "trades": 3,
+      "wins": 0,
+      "pnl": -1187,
+      "equity": 230102,
+      "drawdown": 0.9,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-14",
+      "dow": "Tue",
+      "open": 25278,
+      "close": 25123,
+      "change_pct": -0.61,
+      "vix": 11.2,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -1186,
+      "equity": 228916,
+      "drawdown": 1.41,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-15",
+      "dow": "Wed",
+      "open": 25182,
+      "close": 25328,
+      "change_pct": 0.58,
+      "vix": 10.5,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 5930,
+      "equity": 234846,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-16",
+      "dow": "Thu",
+      "open": 25395,
+      "close": 25566,
+      "change_pct": 0.67,
+      "vix": 10.9,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 19211,
+      "equity": 254057,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-17",
+      "dow": "Fri",
+      "open": 25547,
+      "close": 25705,
+      "change_pct": 0.62,
+      "vix": 11.6,
+      "trades": 4,
+      "wins": 3,
+      "pnl": 5091,
+      "equity": 259148,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-20",
+      "dow": "Mon",
+      "open": 25825,
+      "close": 25851,
+      "change_pct": 0.1,
+      "vix": 11.4,
+      "trades": 4,
+      "wins": 1,
+      "pnl": -7401,
+      "equity": 251747,
+      "drawdown": 2.86,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-21",
+      "dow": "Tue",
+      "open": 25901,
+      "close": 25833,
+      "change_pct": -0.26,
+      "vix": 11.3,
+      "trades": 1,
+      "wins": 0,
+      "pnl": -1897,
+      "equity": 249850,
+      "drawdown": 3.59,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-23",
+      "dow": "Thu",
+      "open": 26057,
+      "close": 25870,
+      "change_pct": -0.72,
+      "vix": 11.7,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 729,
+      "equity": 250579,
+      "drawdown": 3.31,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-27",
+      "dow": "Mon",
+      "open": 25843,
+      "close": 25974,
+      "change_pct": 0.51,
+      "vix": 11.9,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 733,
+      "equity": 251312,
+      "drawdown": 3.02,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-28",
+      "dow": "Tue",
+      "open": 25940,
+      "close": 25965,
+      "change_pct": 0.1,
+      "vix": 11.9,
+      "trades": 5,
+      "wins": 2,
+      "pnl": 3235,
+      "equity": 254547,
+      "drawdown": 1.78,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-29",
+      "dow": "Wed",
+      "open": 25982,
+      "close": 26068,
+      "change_pct": 0.33,
+      "vix": 12.0,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 1758,
+      "equity": 256305,
+      "drawdown": 1.1,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-10-31",
+      "dow": "Fri",
+      "open": 25864,
+      "close": 25733,
+      "change_pct": -0.51,
+      "vix": 12.2,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 2723,
+      "equity": 259028,
+      "drawdown": 0.05,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-03",
+      "dow": "Mon",
+      "open": 25697,
+      "close": 25774,
+      "change_pct": 0.3,
+      "vix": 12.7,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -2475,
+      "equity": 256553,
+      "drawdown": 1.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-04",
+      "dow": "Tue",
+      "open": 25745,
+      "close": 25586,
+      "change_pct": -0.62,
+      "vix": 12.7,
+      "trades": 5,
+      "wins": 2,
+      "pnl": -616,
+      "equity": 255937,
+      "drawdown": 1.24,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-06",
+      "dow": "Thu",
+      "open": 25593,
+      "close": 25520,
+      "change_pct": -0.29,
+      "vix": 12.4,
+      "trades": 4,
+      "wins": 1,
+      "pnl": -963,
+      "equity": 254974,
+      "drawdown": 1.61,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-07",
+      "dow": "Fri",
+      "open": 25434,
+      "close": 25510,
+      "change_pct": 0.3,
+      "vix": 12.6,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -1764,
+      "equity": 253210,
+      "drawdown": 2.29,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-10",
+      "dow": "Mon",
+      "open": 25504,
+      "close": 25574,
+      "change_pct": 0.28,
+      "vix": 12.3,
+      "trades": 3,
+      "wins": 0,
+      "pnl": -7076,
+      "equity": 246134,
+      "drawdown": 5.02,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-12",
+      "dow": "Wed",
+      "open": 25834,
+      "close": 25874,
+      "change_pct": 0.15,
+      "vix": 12.1,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 1377,
+      "equity": 247511,
+      "drawdown": 4.49,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-13",
+      "dow": "Thu",
+      "open": 25906,
+      "close": 25884,
+      "change_pct": -0.08,
+      "vix": 12.2,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 1519,
+      "equity": 249030,
+      "drawdown": 3.9,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-14",
+      "dow": "Fri",
+      "open": 25768,
+      "close": 25917,
+      "change_pct": 0.58,
+      "vix": 11.9,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 5708,
+      "equity": 254738,
+      "drawdown": 1.7,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-18",
+      "dow": "Tue",
+      "open": 26022,
+      "close": 25895,
+      "change_pct": -0.49,
+      "vix": 12.1,
+      "trades": 4,
+      "wins": 1,
+      "pnl": -8001,
+      "equity": 246737,
+      "drawdown": 4.79,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-19",
+      "dow": "Wed",
+      "open": 25918,
+      "close": 26053,
+      "change_pct": 0.52,
+      "vix": 12.0,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 3788,
+      "equity": 250525,
+      "drawdown": 3.33,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-20",
+      "dow": "Thu",
+      "open": 26132,
+      "close": 26197,
+      "change_pct": 0.25,
+      "vix": 12.1,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -2757,
+      "equity": 247768,
+      "drawdown": 4.39,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-21",
+      "dow": "Fri",
+      "open": 26110,
+      "close": 26064,
+      "change_pct": -0.17,
+      "vix": 13.6,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -3607,
+      "equity": 244161,
+      "drawdown": 5.78,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-24",
+      "dow": "Mon",
+      "open": 26123,
+      "close": 25943,
+      "change_pct": -0.69,
+      "vix": 13.2,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 9974,
+      "equity": 254135,
+      "drawdown": 1.93,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-25",
+      "dow": "Tue",
+      "open": 25998,
+      "close": 25860,
+      "change_pct": -0.53,
+      "vix": 12.2,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 3027,
+      "equity": 257162,
+      "drawdown": 0.77,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-26",
+      "dow": "Wed",
+      "open": 25843,
+      "close": 26204,
+      "change_pct": 1.4,
+      "vix": 12.0,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 15493,
+      "equity": 272655,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-27",
+      "dow": "Thu",
+      "open": 26261,
+      "close": 26220,
+      "change_pct": -0.16,
+      "vix": 11.8,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -4381,
+      "equity": 268274,
+      "drawdown": 1.61,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-11-28",
+      "dow": "Fri",
+      "open": 26237,
+      "close": 26205,
+      "change_pct": -0.13,
+      "vix": 11.6,
+      "trades": 3,
+      "wins": 0,
+      "pnl": -3391,
+      "equity": 264883,
+      "drawdown": 2.85,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-01",
+      "dow": "Mon",
+      "open": 26326,
+      "close": 26176,
+      "change_pct": -0.57,
+      "vix": 11.6,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -2173,
+      "equity": 262710,
+      "drawdown": 3.65,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-02",
+      "dow": "Tue",
+      "open": 26088,
+      "close": 26057,
+      "change_pct": -0.12,
+      "vix": 11.2,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 5590,
+      "equity": 268300,
+      "drawdown": 1.6,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-03",
+      "dow": "Wed",
+      "open": 26005,
+      "close": 25985,
+      "change_pct": -0.08,
+      "vix": 11.2,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 6106,
+      "equity": 274406,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-04",
+      "dow": "Thu",
+      "open": 25982,
+      "close": 26017,
+      "change_pct": 0.14,
+      "vix": 10.8,
+      "trades": 3,
+      "wins": 0,
+      "pnl": -4808,
+      "equity": 269598,
+      "drawdown": 1.75,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-08",
+      "dow": "Mon",
+      "open": 26160,
+      "close": 25933,
+      "change_pct": -0.87,
+      "vix": 11.1,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -7033,
+      "equity": 262565,
+      "drawdown": 4.32,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-09",
+      "dow": "Tue",
+      "open": 25867,
+      "close": 25842,
+      "change_pct": -0.1,
+      "vix": 10.9,
+      "trades": 4,
+      "wins": 3,
+      "pnl": 2312,
+      "equity": 264877,
+      "drawdown": 3.47,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-10",
+      "dow": "Wed",
+      "open": 25864,
+      "close": 25743,
+      "change_pct": -0.47,
+      "vix": 10.9,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -303,
+      "equity": 264574,
+      "drawdown": 3.58,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-12",
+      "dow": "Fri",
+      "open": 25971,
+      "close": 26043,
+      "change_pct": 0.28,
+      "vix": 10.1,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -2750,
+      "equity": 261824,
+      "drawdown": 4.59,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-15",
+      "dow": "Mon",
+      "open": 25930,
+      "close": 26014,
+      "change_pct": 0.32,
+      "vix": 10.2,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 2543,
+      "equity": 264367,
+      "drawdown": 3.66,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-16",
+      "dow": "Tue",
+      "open": 25952,
+      "close": 25851,
+      "change_pct": -0.39,
+      "vix": 10.1,
+      "trades": 3,
+      "wins": 2,
+      "pnl": -2904,
+      "equity": 261463,
+      "drawdown": 4.72,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-18",
+      "dow": "Thu",
+      "open": 25765,
+      "close": 25816,
+      "change_pct": 0.2,
+      "vix": 9.7,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 3439,
+      "equity": 264902,
+      "drawdown": 3.46,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-19",
+      "dow": "Fri",
+      "open": 25912,
+      "close": 25961,
+      "change_pct": 0.19,
+      "vix": 9.5,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 695,
+      "equity": 265597,
+      "drawdown": 3.21,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-22",
+      "dow": "Mon",
+      "open": 26056,
+      "close": 26163,
+      "change_pct": 0.41,
+      "vix": 9.7,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 1923,
+      "equity": 267520,
+      "drawdown": 2.51,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-24",
+      "dow": "Wed",
+      "open": 26171,
+      "close": 26142,
+      "change_pct": -0.11,
+      "vix": 9.2,
+      "trades": 2,
+      "wins": 1,
+      "pnl": 1042,
+      "equity": 268562,
+      "drawdown": 2.13,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-26",
+      "dow": "Fri",
+      "open": 26121,
+      "close": 26048,
+      "change_pct": -0.28,
+      "vix": 9.2,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 2247,
+      "equity": 270809,
+      "drawdown": 1.31,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-30",
+      "dow": "Tue",
+      "open": 25941,
+      "close": 25971,
+      "change_pct": 0.11,
+      "vix": 9.7,
+      "trades": 3,
+      "wins": 2,
+      "pnl": -1202,
+      "equity": 269607,
+      "drawdown": 1.75,
+      "trend": "neutral"
+    },
+    {
+      "date": "2025-12-31",
+      "dow": "Wed",
+      "open": 25971,
+      "close": 26142,
+      "change_pct": 0.66,
+      "vix": 9.5,
+      "trades": 4,
+      "wins": 1,
+      "pnl": 4615,
+      "equity": 274222,
+      "drawdown": 0.07,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-01",
+      "dow": "Thu",
+      "open": 26173,
+      "close": 26140,
+      "change_pct": -0.13,
+      "vix": 9.2,
+      "trades": 4,
+      "wins": 1,
+      "pnl": -2120,
+      "equity": 272102,
+      "drawdown": 0.84,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-02",
+      "dow": "Fri",
+      "open": 26155,
+      "close": 26336,
+      "change_pct": 0.69,
+      "vix": 9.4,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 9262,
+      "equity": 281364,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-05",
+      "dow": "Mon",
+      "open": 26334,
+      "close": 26245,
+      "change_pct": -0.34,
+      "vix": 10.0,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -4514,
+      "equity": 276850,
+      "drawdown": 1.6,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-06",
+      "dow": "Tue",
+      "open": 26190,
+      "close": 26175,
+      "change_pct": -0.06,
+      "vix": 10.0,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -6694,
+      "equity": 270156,
+      "drawdown": 3.98,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-07",
+      "dow": "Wed",
+      "open": 26143,
+      "close": 26143,
+      "change_pct": -0.0,
+      "vix": 9.9,
+      "trades": 3,
+      "wins": 2,
+      "pnl": -5300,
+      "equity": 264856,
+      "drawdown": 5.87,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-08",
+      "dow": "Thu",
+      "open": 26106,
+      "close": 25869,
+      "change_pct": -0.91,
+      "vix": 10.6,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 2349,
+      "equity": 267205,
+      "drawdown": 5.03,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-09",
+      "dow": "Fri",
+      "open": 25840,
+      "close": 25704,
+      "change_pct": -0.53,
+      "vix": 10.9,
+      "trades": 4,
+      "wins": 3,
+      "pnl": 5343,
+      "equity": 272548,
+      "drawdown": 3.13,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-12",
+      "dow": "Mon",
+      "open": 25669,
+      "close": 25806,
+      "change_pct": 0.53,
+      "vix": 11.4,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 20024,
+      "equity": 292572,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-13",
+      "dow": "Tue",
+      "open": 25897,
+      "close": 25714,
+      "change_pct": -0.71,
+      "vix": 11.2,
+      "trades": 5,
+      "wins": 3,
+      "pnl": 1757,
+      "equity": 294329,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-14",
+      "dow": "Wed",
+      "open": 25649,
+      "close": 25669,
+      "change_pct": 0.08,
+      "vix": 11.3,
+      "trades": 5,
+      "wins": 2,
+      "pnl": -2982,
+      "equity": 291347,
+      "drawdown": 1.01,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-19",
+      "dow": "Mon",
+      "open": 25653,
+      "close": 25556,
+      "change_pct": -0.38,
+      "vix": 11.8,
+      "trades": 3,
+      "wins": 3,
+      "pnl": 9382,
+      "equity": 300729,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-20",
+      "dow": "Tue",
+      "open": 25580,
+      "close": 25225,
+      "change_pct": -1.39,
+      "vix": 12.7,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 21010,
+      "equity": 321739,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-21",
+      "dow": "Wed",
+      "open": 25141,
+      "close": 25168,
+      "change_pct": 0.11,
+      "vix": 13.8,
+      "trades": 5,
+      "wins": 3,
+      "pnl": 15399,
+      "equity": 337138,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-23",
+      "dow": "Fri",
+      "open": 25345,
+      "close": 25065,
+      "change_pct": -1.1,
+      "vix": 14.2,
+      "trades": 5,
+      "wins": 1,
+      "pnl": 9037,
+      "equity": 346175,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-27",
+      "dow": "Tue",
+      "open": 25063,
+      "close": 25234,
+      "change_pct": 0.68,
+      "vix": 14.4,
+      "trades": 5,
+      "wins": 1,
+      "pnl": -11517,
+      "equity": 334658,
+      "drawdown": 3.33,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-29",
+      "dow": "Thu",
+      "open": 25345,
+      "close": 25422,
+      "change_pct": 0.3,
+      "vix": 13.4,
+      "trades": 5,
+      "wins": 3,
+      "pnl": 3012,
+      "equity": 337670,
+      "drawdown": 2.46,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-01-30",
+      "dow": "Fri",
+      "open": 25248,
+      "close": 25316,
+      "change_pct": 0.27,
+      "vix": 13.6,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -2841,
+      "equity": 334829,
+      "drawdown": 3.28,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-01",
+      "dow": "Sun",
+      "open": 25334,
+      "close": 24768,
+      "change_pct": -2.23,
+      "vix": 15.1,
+      "trades": 5,
+      "wins": 2,
+      "pnl": 65395,
+      "equity": 400224,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-02",
+      "dow": "Mon",
+      "open": 24796,
+      "close": 25080,
+      "change_pct": 1.14,
+      "vix": 13.9,
+      "trades": 5,
+      "wins": 2,
+      "pnl": 9939,
+      "equity": 410163,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-04",
+      "dow": "Wed",
+      "open": 25675,
+      "close": 25738,
+      "change_pct": 0.24,
+      "vix": 12.2,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -1946,
+      "equity": 408217,
+      "drawdown": 0.47,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-05",
+      "dow": "Thu",
+      "open": 25756,
+      "close": 25642,
+      "change_pct": -0.44,
+      "vix": 12.2,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 440,
+      "equity": 408657,
+      "drawdown": 0.37,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-06",
+      "dow": "Fri",
+      "open": 25606,
+      "close": 25674,
+      "change_pct": 0.26,
+      "vix": 11.9,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 1041,
+      "equity": 409698,
+      "drawdown": 0.11,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-10",
+      "dow": "Tue",
+      "open": 25923,
+      "close": 25917,
+      "change_pct": -0.02,
+      "vix": 11.7,
+      "trades": 5,
+      "wins": 3,
+      "pnl": -1421,
+      "equity": 408277,
+      "drawdown": 0.46,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-11",
+      "dow": "Wed",
+      "open": 25997,
+      "close": 25945,
+      "change_pct": -0.2,
+      "vix": 11.6,
+      "trades": 5,
+      "wins": 2,
+      "pnl": -4637,
+      "equity": 403640,
+      "drawdown": 1.59,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-12",
+      "dow": "Thu",
+      "open": 25907,
+      "close": 25796,
+      "change_pct": -0.43,
+      "vix": 11.7,
+      "trades": 3,
+      "wins": 1,
+      "pnl": 430,
+      "equity": 404070,
+      "drawdown": 1.49,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-13",
+      "dow": "Fri",
+      "open": 25571,
+      "close": 25461,
+      "change_pct": -0.43,
+      "vix": 13.3,
+      "trades": 2,
+      "wins": 1,
+      "pnl": 3570,
+      "equity": 407640,
+      "drawdown": 0.62,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-16",
+      "dow": "Mon",
+      "open": 25424,
+      "close": 25682,
+      "change_pct": 1.02,
+      "vix": 13.3,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -6431,
+      "equity": 401209,
+      "drawdown": 2.18,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-17",
+      "dow": "Tue",
+      "open": 25638,
+      "close": 25716,
+      "change_pct": 0.3,
+      "vix": 12.7,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -8089,
+      "equity": 393120,
+      "drawdown": 4.16,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-18",
+      "dow": "Wed",
+      "open": 25753,
+      "close": 25806,
+      "change_pct": 0.21,
+      "vix": 12.2,
+      "trades": 5,
+      "wins": 0,
+      "pnl": -10154,
+      "equity": 382966,
+      "drawdown": 6.63,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-19",
+      "dow": "Thu",
+      "open": 25873,
+      "close": 25416,
+      "change_pct": -1.77,
+      "vix": 13.5,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 19146,
+      "equity": 402112,
+      "drawdown": 1.96,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-20",
+      "dow": "Fri",
+      "open": 25407,
+      "close": 25566,
+      "change_pct": 0.63,
+      "vix": 14.4,
+      "trades": 4,
+      "wins": 1,
+      "pnl": -1319,
+      "equity": 400793,
+      "drawdown": 2.28,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-23",
+      "dow": "Mon",
+      "open": 25678,
+      "close": 25704,
+      "change_pct": 0.1,
+      "vix": 14.2,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 5983,
+      "equity": 406776,
+      "drawdown": 0.83,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-24",
+      "dow": "Tue",
+      "open": 25642,
+      "close": 25460,
+      "change_pct": -0.71,
+      "vix": 14.2,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 23123,
+      "equity": 429899,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-25",
+      "dow": "Wed",
+      "open": 25513,
+      "close": 25479,
+      "change_pct": -0.13,
+      "vix": 13.5,
+      "trades": 4,
+      "wins": 1,
+      "pnl": 5344,
+      "equity": 435243,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-02-26",
+      "dow": "Thu",
+      "open": 25556,
+      "close": 25493,
+      "change_pct": -0.25,
+      "vix": 13.1,
+      "trades": 5,
+      "wins": 1,
+      "pnl": -12215,
+      "equity": 423028,
+      "drawdown": 2.81,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-02",
+      "dow": "Mon",
+      "open": 24659,
+      "close": 24850,
+      "change_pct": 0.77,
+      "vix": 17.1,
+      "trades": 3,
+      "wins": 2,
+      "pnl": 32379,
+      "equity": 455407,
+      "drawdown": 0.0,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-04",
+      "dow": "Wed",
+      "open": 24389,
+      "close": 24474,
+      "change_pct": 0.35,
+      "vix": 21.1,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -5032,
+      "equity": 450375,
+      "drawdown": 1.1,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-06",
+      "dow": "Fri",
+      "open": 24656,
+      "close": 24469,
+      "change_pct": -0.76,
+      "vix": 19.9,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -3925,
+      "equity": 446450,
+      "drawdown": 1.97,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-09",
+      "dow": "Mon",
+      "open": 23868,
+      "close": 24006,
+      "change_pct": 0.58,
+      "vix": 23.4,
+      "trades": 3,
+      "wins": 1,
+      "pnl": -9023,
+      "equity": 437427,
+      "drawdown": 3.95,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-10",
+      "dow": "Tue",
+      "open": 24281,
+      "close": 24286,
+      "change_pct": 0.02,
+      "vix": 18.9,
+      "trades": 5,
+      "wins": 1,
+      "pnl": -10814,
+      "equity": 426613,
+      "drawdown": 6.32,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-12",
+      "dow": "Thu",
+      "open": 23675,
+      "close": 23639,
+      "change_pct": -0.15,
+      "vix": 21.5,
+      "trades": 5,
+      "wins": 0,
+      "pnl": -16500,
+      "equity": 410113,
+      "drawdown": 9.95,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-13",
+      "dow": "Fri",
+      "open": 23462,
+      "close": 23171,
+      "change_pct": -1.24,
+      "vix": 22.6,
+      "trades": 5,
+      "wins": 1,
+      "pnl": 10307,
+      "equity": 420420,
+      "drawdown": 7.68,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-16",
+      "dow": "Mon",
+      "open": 23116,
+      "close": 23356,
+      "change_pct": 1.04,
+      "vix": 21.6,
+      "trades": 5,
+      "wins": 2,
+      "pnl": -1181,
+      "equity": 419239,
+      "drawdown": 7.94,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-18",
+      "dow": "Wed",
+      "open": 23633,
+      "close": 23764,
+      "change_pct": 0.56,
+      "vix": 18.7,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -1808,
+      "equity": 417431,
+      "drawdown": 8.34,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-19",
+      "dow": "Thu",
+      "open": 23198,
+      "close": 23088,
+      "change_pct": -0.47,
+      "vix": 22.8,
+      "trades": 5,
+      "wins": 2,
+      "pnl": 7056,
+      "equity": 424487,
+      "drawdown": 6.79,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-20",
+      "dow": "Fri",
+      "open": 23110,
+      "close": 23135,
+      "change_pct": 0.11,
+      "vix": 22.8,
+      "trades": 4,
+      "wins": 1,
+      "pnl": -3145,
+      "equity": 421342,
+      "drawdown": 7.48,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-24",
+      "dow": "Tue",
+      "open": 22878,
+      "close": 22958,
+      "change_pct": 0.35,
+      "vix": 24.7,
+      "trades": 5,
+      "wins": 1,
+      "pnl": -4848,
+      "equity": 416494,
+      "drawdown": 8.54,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-25",
+      "dow": "Wed",
+      "open": 23064,
+      "close": 23309,
+      "change_pct": 1.06,
+      "vix": 24.6,
+      "trades": 2,
+      "wins": 2,
+      "pnl": 21065,
+      "equity": 437559,
+      "drawdown": 3.92,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-27",
+      "dow": "Fri",
+      "open": 23174,
+      "close": 22840,
+      "change_pct": -1.44,
+      "vix": 26.8,
+      "trades": 4,
+      "wins": 2,
+      "pnl": 2222,
+      "equity": 439781,
+      "drawdown": 3.43,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-03-30",
+      "dow": "Mon",
+      "open": 22550,
+      "close": 22379,
+      "change_pct": -0.76,
+      "vix": 27.9,
+      "trades": 4,
+      "wins": 2,
+      "pnl": -1590,
+      "equity": 438191,
+      "drawdown": 3.78,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-04-01",
+      "dow": "Wed",
+      "open": 22899,
+      "close": 22703,
+      "change_pct": -0.86,
+      "vix": 25.0,
+      "trades": 5,
+      "wins": 1,
+      "pnl": -4905,
+      "equity": 433286,
+      "drawdown": 4.86,
+      "trend": "neutral"
+    },
+    {
+      "date": "2026-04-02",
+      "dow": "Thu",
+      "open": 22383,
+      "close": 22701,
+      "change_pct": 1.42,
+      "vix": 25.5,
+      "trades": 4,
+      "wins": 1,
+      "pnl": 18829,
+      "equity": 452115,
+      "drawdown": 0.72,
+      "trend": "neutral"
+    }
+  ]
+}

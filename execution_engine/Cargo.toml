@@ -1,0 +1,43 @@
+[package]
+name = "execution_engine"
+version = "0.1.0"
+edition = "2021"
+description = "Indian options algorithmic trading execution engine"
+
+[[bin]]
+name = "execution_engine"
+path = "src/main.rs"
+
+[dependencies]
+# gRPC / Protobuf
+tonic = "0.12"
+prost = "0.13"
+prost-types = "0.13"
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+tokio-stream = { version = "0.1", features = ["sync"] }
+tokio-tungstenite = { version = "0.24", features = ["native-tls"] }
+futures-util = "0.3"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Logging / tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "fmt"] }
+
+# HTTP client for REST reconciliation
+reqwest = { version = "0.12", features = ["json", "native-tls"] }
+
+# Utilities
+uuid = { version = "1", features = ["v4"] }
+rand = "0.8"
+chrono = { version = "0.4", features = ["serde"] }
+dashmap = "6"
+tower = "0.4"
+lazy_static = "1"
+
+[build-dependencies]
+tonic-build = "0.12"

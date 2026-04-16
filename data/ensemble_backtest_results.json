@@ -1,0 +1,73 @@
+{
+  "backtest_date": "2026-04-05T14:21:46.322702",
+  "period": "Oct 2025 - Apr 2026",
+  "capital": 200000,
+  "strategies": [
+    {
+      "strategy": "A_BASELINE",
+      "trades": 122,
+      "win_rate": 0.0,
+      "total_pnl": 337870.0,
+      "return_pct": 168.9,
+      "max_dd": 2.66,
+      "sharpe": 8.09,
+      "final_equity": 537870.0,
+      "all_months_positive": true
+    },
+    {
+      "strategy": "B_ENSEMBLE_V1",
+      "trades": 78,
+      "win_rate": 41.7,
+      "total_pnl": 1067619.0,
+      "return_pct": 533.8,
+      "max_dd": 11.38,
+      "sharpe": 7.43,
+      "final_equity": 1267618.0,
+      "all_months_positive": true
+    },
+    {
+      "strategy": "C_ENSEMBLE_V2",
+      "trades": 82,
+      "win_rate": 43.1,
+      "total_pnl": 1215408.0,
+      "return_pct": 607.7,
+      "max_dd": 16.65,
+      "sharpe": 8.03,
+      "final_equity": 1415406.0,
+      "all_months_positive": true
+    },
+    {
+      "strategy": "D_FULL_ENSEMBLE",
+      "trades": 82,
+      "win_rate": 43.1,
+      "total_pnl": 1598610.0,
+      "return_pct": 799.3,
+      "max_dd": 16.65,
+      "sharpe": 8.59,
+      "final_equity": 1798605.0,
+      "all_months_positive": true
+    }
+  ],
+  "sr_comparison": {
+    "swing": {
+      "pnl": 1067619.0,
+      "sharpe": 7.428605272674351,
+      "wr": 64.1025641025641
+    },
+    "round": {
+      "pnl": 1215408.0,
+      "sharpe": 8.026689632008354,
+      "wr": 64.63414634146342
+    },
+    "pdhl": {
+      "pnl": 1095508.0,
+      "sharpe": 7.700538513998391,
+      "wr": 64.0
+    },
+    "multi": {
+      "pnl": 1215408.0,
+      "sharpe": 8.026689632008354,
+      "wr": 64.63414634146342
+    }
+  }
+}

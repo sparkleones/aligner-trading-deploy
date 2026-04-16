@@ -1,0 +1,524 @@
+{
+  "_description": "S/R rules learned from 6 months of NIFTY data (Oct 2025 - Apr 2026)",
+  "_best_method": "round_numbers",
+  "_backtest_period": "Oct 2025 - Apr 2026",
+  "method_ranking": {
+    "round_numbers": {
+      "total_pnl": 1569269.0,
+      "avg_wr": 90.7
+    },
+    "pdh_pdl_pdc": {
+      "total_pnl": 748938.0,
+      "avg_wr": 85.3
+    },
+    "price_clustering": {
+      "total_pnl": 624475.0,
+      "avg_wr": 87.4
+    },
+    "swing_points": {
+      "total_pnl": 234015.0,
+      "avg_wr": 87.6,
+      "best_lookback": "lookback_5"
+    },
+    "sma_sr": {
+      "total_pnl": 176353.0,
+      "avg_wr": 83.1
+    }
+  },
+  "swing_points": {
+    "lookback_5": {
+      "swing_highs": 6,
+      "swing_lows": 7,
+      "support_bounce_rate": 88.9,
+      "support_interactions": 27,
+      "resistance_bounce_rate": 92.6,
+      "resistance_interactions": 27,
+      "buy_call_at_support": {
+        "avg_pnl": 3062.0,
+        "win_rate": 79.2,
+        "trades": 24,
+        "total_pnl": 73493.0
+      },
+      "buy_put_at_resistance": {
+        "avg_pnl": 6421.0,
+        "win_rate": 96.0,
+        "trades": 25,
+        "total_pnl": 160522.0
+      }
+    },
+    "lookback_10": {
+      "swing_highs": 4,
+      "swing_lows": 3,
+      "support_bounce_rate": 90.0,
+      "support_interactions": 10,
+      "resistance_bounce_rate": 91.3,
+      "resistance_interactions": 23,
+      "buy_call_at_support": {
+        "avg_pnl": 5318.0,
+        "win_rate": 77.8,
+        "trades": 9,
+        "total_pnl": 47860.0
+      },
+      "buy_put_at_resistance": {
+        "avg_pnl": 7100.0,
+        "win_rate": 95.2,
+        "trades": 21,
+        "total_pnl": 149099.0
+      }
+    },
+    "lookback_20": {
+      "swing_highs": 2,
+      "swing_lows": 0,
+      "support_bounce_rate": 0,
+      "support_interactions": 0,
+      "resistance_bounce_rate": 80.0,
+      "resistance_interactions": 5,
+      "buy_call_at_support": {
+        "avg_pnl": 0.0,
+        "win_rate": 0,
+        "trades": 0,
+        "total_pnl": 0
+      },
+      "buy_put_at_resistance": {
+        "avg_pnl": 19366.0,
+        "win_rate": 100.0,
+        "trades": 4,
+        "total_pnl": 77463.0
+      }
+    }
+  },
+  "price_clustering": {
+    "top_zones": [
+      {
+        "range": "25850-25900",
+        "count": 10
+      },
+      {
+        "range": "25650-25700",
+        "count": 6
+      },
+      {
+        "range": "25700-25750",
+        "count": 6
+      },
+      {
+        "range": "25800-25850",
+        "count": 6
+      },
+      {
+        "range": "25900-25950",
+        "count": 6
+      },
+      {
+        "range": "25950-26000",
+        "count": 6
+      },
+      {
+        "range": "26000-26050",
+        "count": 6
+      },
+      {
+        "range": "26150-26200",
+        "count": 6
+      },
+      {
+        "range": "25450-25500",
+        "count": 5
+      },
+      {
+        "range": "25550-25600",
+        "count": 5
+      }
+    ],
+    "high_freq_bounce_rate": 88.6,
+    "low_freq_bounce_rate": 86.3,
+    "high_freq_avg_pnl": 3436.0,
+    "low_freq_avg_pnl": 4508.0,
+    "high_freq_total_pnl": 426118.0,
+    "low_freq_total_pnl": 198357.0,
+    "verdict": "high_freq_better"
+  },
+  "round_numbers": {
+    "round_500": {
+      "bounce_rate": 91.4,
+      "total_interactions": 70,
+      "support_avg_pnl": 5425.0,
+      "resistance_avg_pnl": 4913.0,
+      "support_trades": 29,
+      "resistance_trades": 35,
+      "support_total_pnl": 157319.0,
+      "resistance_total_pnl": 171944.0,
+      "levels_tested": [
+        22000,
+        22500,
+        23000,
+        23500,
+        24000,
+        24500,
+        25000,
+        25500,
+        26000,
+        26500
+      ]
+    },
+    "round_100": {
+      "bounce_rate": 90.0,
+      "total_interactions": 290,
+      "support_avg_pnl": 4588.0,
+      "resistance_avg_pnl": 4911.0,
+      "support_trades": 129,
+      "resistance_trades": 132,
+      "support_total_pnl": 591802.0,
+      "resistance_total_pnl": 648204.0,
+      "levels_tested": 36
+    }
+  },
+  "sma_sr": {
+    "sma20": {
+      "support_bounce_rate": 90.5,
+      "support_interactions": 21,
+      "resistance_bounce_rate": 80.0,
+      "resistance_interactions": 10,
+      "buy_call_support": {
+        "avg_pnl": 5129.0,
+        "win_rate": 89.5,
+        "trades": 19,
+        "total_pnl": 97453.0
+      },
+      "buy_put_resistance": {
+        "avg_pnl": 4364.0,
+        "win_rate": 100.0,
+        "trades": 8,
+        "total_pnl": 34913.0
+      }
+    },
+    "sma50": {
+      "support_bounce_rate": 100.0,
+      "support_interactions": 7,
+      "resistance_bounce_rate": 85.7,
+      "resistance_interactions": 7,
+      "buy_call_support": {
+        "avg_pnl": 1516.0,
+        "win_rate": 42.9,
+        "trades": 7,
+        "total_pnl": 10609.0
+      },
+      "buy_put_resistance": {
+        "avg_pnl": 5563.0,
+        "win_rate": 100.0,
+        "trades": 6,
+        "total_pnl": 33378.0
+      }
+    }
+  },
+  "pdh_pdl": {
+    "PDH": {
+      "sr_type": "resistance",
+      "bounce_rate": 79.2,
+      "total_interactions": 48,
+      "avg_pnl": 5684.0,
+      "win_rate": 92.1,
+      "trades": 38,
+      "total_pnl": 216006.0
+    },
+    "PDL": {
+      "sr_type": "support",
+      "bounce_rate": 87.8,
+      "total_interactions": 41,
+      "avg_pnl": 3945.0,
+      "win_rate": 80.6,
+      "trades": 36,
+      "total_pnl": 142009.0
+    },
+    "PDC": {
+      "sr_type": "both",
+      "bounce_rate": 90.2,
+      "total_interactions": 92,
+      "avg_pnl": 4710.0,
+      "win_rate": 83.1,
+      "trades": 83,
+      "total_pnl": 390923.0
+    }
+  },
+  "exit_strategies": {
+    "sr_target": {
+      "BUY_CALL": {
+        "total_pnl": 99700.0,
+        "avg_pnl": 977.0,
+        "win_rate": 44.1,
+        "sharpe": 2.3,
+        "trades": 102
+      },
+      "BUY_PUT": {
+        "total_pnl": -55129.0,
+        "avg_pnl": -540.0,
+        "win_rate": 40.2,
+        "sharpe": -2.05,
+        "trades": 102
+      }
+    },
+    "trail_0.3pct": {
+      "BUY_CALL": {
+        "total_pnl": -4037.0,
+        "avg_pnl": -40.0,
+        "win_rate": 34.3,
+        "sharpe": -0.12,
+        "trades": 102
+      },
+      "BUY_PUT": {
+        "total_pnl": 207914.0,
+        "avg_pnl": 2038.0,
+        "win_rate": 49.0,
+        "sharpe": 5.22,
+        "trades": 102
+      }
+    },
+    "eod_exit": {
+      "BUY_CALL": {
+        "total_pnl": 10240.0,
+        "avg_pnl": 100.0,
+        "win_rate": 42.2,
+        "sharpe": 0.26,
+        "trades": 102
+      },
+      "BUY_PUT": {
+        "total_pnl": 133328.0,
+        "avg_pnl": 1307.0,
+        "win_rate": 47.1,
+        "sharpe": 3.1,
+        "trades": 102
+      }
+    },
+    "sr_trail_combo": {
+      "BUY_CALL": {
+        "total_pnl": 112660.0,
+        "avg_pnl": 1105.0,
+        "win_rate": 44.1,
+        "sharpe": 2.52,
+        "trades": 102
+      },
+      "BUY_PUT": {
+        "total_pnl": 114336.0,
+        "avg_pnl": 1121.0,
+        "win_rate": 44.1,
+        "sharpe": 3.12,
+        "trades": 102
+      }
+    }
+  },
+  "best_exit_per_action": {
+    "BUY_CALL": {
+      "strategy": "sr_trail_combo",
+      "sharpe": 2.52,
+      "win_rate": 44.1,
+      "avg_pnl": 1105.0
+    },
+    "BUY_PUT": {
+      "strategy": "trail_0.3pct",
+      "sharpe": 5.22,
+      "win_rate": 49.0,
+      "avg_pnl": 2038.0
+    }
+  },
+  "sr_strength": {
+    "all_levels": [
+      {
+        "price": 26347.0,
+        "strength": 8.0,
+        "touches": 3,
+        "type": "resistance"
+      },
+      {
+        "price": 24679.0,
+        "strength": 5.0,
+        "touches": 1,
+        "type": "support"
+      },
+      {
+        "price": 25693.0,
+        "strength": 4.2,
+        "touches": 1,
+        "type": "support"
+      },
+      {
+        "price": 25318.0,
+        "strength": 3.6,
+        "touches": 1,
+        "type": "support"
+      },
+      {
+        "price": 26104.0,
+        "strength": 3.3,
+        "touches": 1,
+        "type": "resistance"
+      }
+    ],
+    "current_supports": [],
+    "current_resistances": [
+      {
+        "price": 24679.0,
+        "strength": 5.0,
+        "distance": 1966.0
+      },
+      {
+        "price": 25318.0,
+        "strength": 3.6,
+        "distance": 2605.0
+      },
+      {
+        "price": 25693.0,
+        "strength": 4.2,
+        "distance": 2980.0
+      },
+      {
+        "price": 26104.0,
+        "strength": 3.3,
+        "distance": 3391.0
+      },
+      {
+        "price": 26347.0,
+        "strength": 8.0,
+        "distance": 3634.0
+      }
+    ],
+    "current_close": 22713.0
+  },
+  "entry_quality": {
+    "always_buy_call": {
+      "avg_pnl": -506.0,
+      "win_rate": 40.2,
+      "sharpe": -1.56,
+      "trades": 102,
+      "total_pnl": -51592.0
+    },
+    "always_buy_put": {
+      "avg_pnl": 1009.0,
+      "win_rate": 41.2,
+      "sharpe": 2.57,
+      "trades": 102,
+      "total_pnl": 102900.0
+    },
+    "near_support_buy_call": {
+      "avg_pnl": -145.0,
+      "win_rate": 52.6,
+      "sharpe": -0.61,
+      "trades": 19,
+      "total_pnl": -2761.0
+    },
+    "near_resistance_buy_put": {
+      "avg_pnl": 3630.0,
+      "win_rate": 60.0,
+      "sharpe": 6.89,
+      "trades": 15,
+      "total_pnl": 54452.0
+    },
+    "sr_improves_call": true,
+    "sr_improves_put": true
+  },
+  "current_sr_map": {
+    "current_close": 22713.0,
+    "pdh": 22782.0,
+    "pdl": 22183.0,
+    "pdc": 22713.0,
+    "sma20": 23440.0,
+    "sma50": 24675.0,
+    "immediate_support": 22500.0,
+    "immediate_resistance": 22800.0,
+    "strong_support": 22200.0,
+    "strong_resistance": 23000.0,
+    "all_supports": [
+      22500.0,
+      22200.0,
+      22000.0,
+      21500.0,
+      21000.0
+    ],
+    "all_resistances": [
+      22800.0,
+      23000.0,
+      23450.0,
+      23500.0,
+      24000.0,
+      24500.0,
+      24700.0
+    ],
+    "buy_put_stop_loss": 22800.0,
+    "buy_put_target": 22500.0,
+    "buy_call_stop_loss": 22500.0,
+    "buy_call_target": 22800.0
+  },
+  "rules_for_agent": {
+    "_description": "Actionable rules for the ensemble agent",
+    "sr_detection": {
+      "primary_method": "swing_points_lookback_10",
+      "secondary_method": "pdh_pdl",
+      "tertiary_method": "round_numbers_500",
+      "lookback_bars": 10,
+      "proximity_pct": 0.003
+    },
+    "entry_rules": {
+      "near_support": {
+        "action": "BUY_CALL",
+        "weight": 1.0,
+        "condition": "spot within 0.3% of nearest support"
+      },
+      "near_resistance": {
+        "action": "BUY_PUT",
+        "weight": 1.0,
+        "condition": "spot within 0.3% of nearest resistance"
+      }
+    },
+    "exit_rules": {
+      "BUY_CALL": {
+        "target": "nearest resistance above entry",
+        "stop_loss": "support breach (close below nearest support)",
+        "trailing": "switch to 0.3% trail after target hit"
+      },
+      "BUY_PUT": {
+        "target": "nearest support below entry",
+        "stop_loss": "resistance breach (close above nearest resistance)",
+        "trailing": "switch to 0.3% trail after target hit"
+      }
+    },
+    "strength_scoring": {
+      "touches_weight": 2.0,
+      "recency_weight": 3.0,
+      "round_500_bonus": 2.0,
+      "round_100_bonus": 1.0,
+      "dual_type_bonus": 2.0,
+      "description": "Higher score = more reliable S/R level"
+    },
+    "monday_trade_levels": {
+      "current_close": 22713.0,
+      "pdh": 22782.0,
+      "pdl": 22183.0,
+      "pdc": 22713.0,
+      "sma20": 23440.0,
+      "sma50": 24675.0,
+      "immediate_support": 22500.0,
+      "immediate_resistance": 22800.0,
+      "strong_support": 22200.0,
+      "strong_resistance": 23000.0,
+      "all_supports": [
+        22500.0,
+        22200.0,
+        22000.0,
+        21500.0,
+        21000.0
+      ],
+      "all_resistances": [
+        22800.0,
+        23000.0,
+        23450.0,
+        23500.0,
+        24000.0,
+        24500.0,
+        24700.0
+      ],
+      "buy_put_stop_loss": 22800.0,
+      "buy_put_target": 22500.0,
+      "buy_call_stop_loss": 22500.0,
+      "buy_call_target": 22800.0
+    }
+  }
+}

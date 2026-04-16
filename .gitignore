@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Rust
+execution_engine/target/
+
+# Environment
+.env
+*.env.local
+
+# Data & Models
+data/cache/
+data/historical/
+data/kaggle/
+data/models/
+models/*.pt
+models/*.pth
+*.csv
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# Secrets
+*.pem
+*.key
+credentials.json
+
+# Runtime lock / state files
+data/.trading_engine.lock
+data/dashboard_state.json
+data/session_state.json
+*.lock
