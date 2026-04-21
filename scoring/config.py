@@ -305,7 +305,7 @@ V15_CONFIG = {**V14_CONFIG, **{
     # that's POSITIVE in every OOS period:
     #   IS Jul24-Jan25:  10.83x | OOS1 Feb-Jul25: 1.81x
     #   OOS2 Aug25-Jan26: 2.96x | OOS3 Feb-Apr26: 2.25x
-    "avoid_days": [2],          # Mon unblocked for expiry 2026-04-13
+    "avoid_days": [0, 2],       # Restored: Mon+Wed blocked (validated V17_PROD_ONLY 28.9x config)
 
     # ══════════════════════════════════════════════════════════
     # V15 RISK MANAGEMENT (backtest-proven)
