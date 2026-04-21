@@ -18,8 +18,31 @@ Usage:
 import sys
 import argparse
 import datetime as dt
+from datetime import date as _date_cls
 from pathlib import Path
 from collections import defaultdict
+
+# SEBI / NSE cutover: weekly NIFTY expiry moved from Thursday (weekday=3)
+# to Tuesday (weekday=1) starting 2025-09-01. Earlier dates use Thursday,
+# on-or-after use Tuesday. Holiday-shifted expiries are handled at the
+# option-chain level (live) and are approximated here by weekday heuristic.
+EXPIRY_CUTOVER = _date_cls(2025, 9, 1)
+
+
+def _expiry_weekday(d) -> int:
+    """Return 3 (Thursday) pre-cutover, 1 (Tuesday) on/after cutover."""
+    try:
+        if isinstance(d, _date_cls) and not isinstance(d, dt.datetime):
+            return 1 if d >= EXPIRY_CUTOVER else 3
+        # dt.datetime or str 'YYYY-MM-DD'
+        if isinstance(d, str):
+            y, m, dd = d.split("-")
+            d = _date_cls(int(y), int(m), int(dd))
+        elif hasattr(d, "date"):
+            d = d.date()
+        return 1 if d >= EXPIRY_CUTOVER else 3
+    except Exception:
+        return 3  # safe fallback: assume old regime
 
 import numpy as np
 import pandas as pd
@@ -378,11 +401,11 @@ def simulate_day(
         span_per_lot = 60000
     base_lots = max(1, int(equity * 0.70 / span_per_lot))
 
-    # DTE: approximate as days to next Thursday (2024 expiry day)
+    # DTE: approximate as days to next expiry day (regime-aware).
+    # Pre-2025-09-01: Thursday (weekday=3). On/after: Tuesday (weekday=1).
     day_of_week = date.weekday()  # 0=Mon ... 6=Sun
-    # For 2024 data: Thursday expiry. For 2026: Tuesday expiry.
-    # Use Thursday for backtest period (Jul 2024 - Jan 2025)
-    days_to_expiry = (3 - day_of_week) % 7  # Days to Thursday
+    target_wd = _expiry_weekday(date)
+    days_to_expiry = (target_wd - day_of_week) % 7
     if days_to_expiry == 0:
         dte = 0.2  # Expiry day: a few hours left
     else:
@@ -847,7 +870,7 @@ def run_backtest(start_date=None, end_date=None, months=6, cfg_override=None, qu
             continue
 
         vix = vix_lookup.get(date, 14.0)
-        is_expiry = (date.weekday() == 3)  # Thursday for 2024
+        is_expiry = (date.weekday() == _expiry_weekday(date))  # Thu pre-2025-09-01, Tue on/after
 
         trades, day_pnl, eod_close, btst_carry = simulate_day(
             bars, date, vix, cfg,
