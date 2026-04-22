@@ -311,8 +311,10 @@ V15_CONFIG = {**V14_CONFIG, **{
     # V15 RISK MANAGEMENT (backtest-proven)
     # ══════════════════════════════════════════════════════════
 
-    # ── VIX floor at 13 (R6: VIX lot scaling protects at 0.3x-0.5x, no need for 14) ──
-    "vix_floor": 13,
+    # ── VIX floor at 12 (lowered from 13 post-Sep-2025 regime sweep:
+    #    21-mo sweep on avoid_days=[0,2] → floor=12 gives 29.0x full / +Rs 14.2L post-Sep
+    #    vs floor=13's 28.1x / +Rs 9.9L. PF post-Sep 1.73 (was 1.60). See OVERNIGHT_REPORT_2026-04-22.) ──
+    "vix_floor": 12,
 
     # ── Losing streak sizing (after 3+ consecutive losses, reduce lots;
     #    +0.03x return, -2% MaxDD, Calmar 23.3→24.1) ──
