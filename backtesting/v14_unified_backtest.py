@@ -529,6 +529,12 @@ def simulate_day(
             continue
         if trades_today >= cfg["max_trades_per_day"]:
             continue
+        # ── Daily drawdown circuit breaker (H1): block new entries
+        # if cumulative day P&L breaches -max_daily_loss_pct of equity ──
+        max_daily_loss_pct = cfg.get("max_daily_loss_pct", 0.0)
+        if max_daily_loss_pct and max_daily_loss_pct > 0:
+            if day_pnl < -abs(max_daily_loss_pct) * equity:
+                continue
 
         # ── Entry window gating (R4_2Windows: bars 3-15 + 54-69) ──
         # Composite entries at bars 0-2 (gap, ORB) bypass this gate
