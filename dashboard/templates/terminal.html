@@ -665,6 +665,75 @@ tbody tr:hover { background:var(--card2); }
         </div>
       </div>
 
+      <!-- Strategy Lab (validated configs + rejected experiments) -->
+      <div class="panel-section">
+        <div class="panel-header" onclick="togglePanel(this)">
+          Strategy Lab <span id="strategy-lab-deployed" style="font-size:10px;color:var(--accent);margin-left:6px;">--</span> <span class="arrow">&#9660;</span>
+        </div>
+        <div class="panel-body" id="strategy-lab-panel" style="max-height:500px;">
+          <div style="padding:10px 12px;">
+            <!-- Deployed strategy summary -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-size:11px;font-weight:700;color:var(--muted);">DEPLOYED</span>
+              <span id="sl-deployed-name" style="font-size:11px;font-weight:700;color:var(--green,#0f0);">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span style="font-size:10px;color:var(--muted);">Config</span>
+              <span id="sl-deployed-config" style="font-size:10px;color:var(--text2);">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span style="font-size:10px;color:var(--muted);">Full PnL</span>
+              <span id="sl-deployed-pnl" style="font-size:11px;font-weight:700;">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span style="font-size:10px;color:var(--muted);">Profit Factor</span>
+              <span id="sl-deployed-pf" style="font-size:11px;font-weight:700;">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span style="font-size:10px;color:var(--muted);">Win Rate</span>
+              <span id="sl-deployed-wr" style="font-size:11px;font-weight:700;">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span style="font-size:10px;color:var(--muted);">Max DD</span>
+              <span id="sl-deployed-dd" style="font-size:11px;font-weight:700;color:var(--red,#f44);">--</span>
+            </div>
+
+            <!-- A vs B delta -->
+            <div style="border-top:1px solid var(--border);padding-top:6px;margin-top:8px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">A → B IMPROVEMENT</div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Full PnL Δ</span>
+                <span id="sl-delta-full-pnl" style="font-weight:700;">--</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Post-Sep PnL Δ</span>
+                <span id="sl-delta-post-pnl" style="font-weight:700;">--</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Post-Sep PF Δ</span>
+                <span id="sl-delta-post-pf" style="font-weight:700;">--</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Max DD Δ</span>
+                <span id="sl-delta-dd" style="font-weight:700;">--</span>
+              </div>
+            </div>
+
+            <!-- Tested & Rejected -->
+            <div style="border-top:1px solid var(--border);padding-top:6px;margin-top:8px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">
+                TESTED & REJECTED <span id="sl-rejected-count" style="color:var(--text2);">--</span>
+              </div>
+              <div id="sl-rejected-list" style="max-height:180px;overflow-y:auto;font-size:10px;line-height:1.4;"></div>
+            </div>
+
+            <div style="border-top:1px solid var(--border);padding-top:6px;margin-top:8px;">
+              <div id="sl-key-insight" style="font-size:10px;color:var(--text2);font-style:italic;line-height:1.5;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Engine Logs (compact) -->
       <div class="panel-section" style="flex:1;display:flex;flex-direction:column;">
         <div class="panel-header" onclick="togglePanel(this)">
@@ -1397,6 +1466,76 @@ fetch('/api/strategy/info').then(r => r.json()).then(info => {
     document.getElementById('strat-pf').textContent = bt.profit_factor.toFixed(2);
   }
 }).catch(() => {});
+
+// ── Strategy Lab: load comparison + research ──
+function fmtRupee(n) {
+  if (n == null) return '--';
+  const sign = n >= 0 ? '+' : '-';
+  const abs = Math.abs(n);
+  if (abs >= 1e7) return sign + 'Rs ' + (abs/1e7).toFixed(2) + 'Cr';
+  if (abs >= 1e5) return sign + 'Rs ' + (abs/1e5).toFixed(2) + 'L';
+  if (abs >= 1e3) return sign + 'Rs ' + (abs/1e3).toFixed(1) + 'K';
+  return sign + 'Rs ' + abs.toFixed(0);
+}
+function colorDelta(n) { return n > 0 ? 'var(--green,#0f0)' : (n < 0 ? 'var(--red,#f44)' : 'var(--text2)'); }
+
+fetch('/api/strategies/comparison').then(r => r.json()).then(d => {
+  if (!d || !d.option_b) return;
+  const b = d.option_b;
+  const dd = d.summary && d.summary.deltas;
+  // Deployed config + metrics (Option B)
+  const cfg = b.cfg || {avoid_days: [0,2], vix_floor: 12, vix_ceil: 25};
+  document.getElementById('strategy-lab-deployed').textContent = 'Option B';
+  document.getElementById('sl-deployed-name').textContent = 'V17_PROD_ONLY';
+  document.getElementById('sl-deployed-config').textContent =
+    'avoid=[0,2] f=' + (cfg.vix_floor || 12) + ' c=' + (cfg.vix_ceil || 25);
+  if (b.full) {
+    document.getElementById('sl-deployed-pnl').textContent = fmtRupee(b.full.pnl);
+    document.getElementById('sl-deployed-pnl').style.color = b.full.pnl >= 0 ? 'var(--green,#0f0)' : 'var(--red,#f44)';
+    document.getElementById('sl-deployed-pf').textContent = (b.full.pf || 0).toFixed(2);
+    document.getElementById('sl-deployed-wr').textContent = (b.full.wr || 0).toFixed(1) + '%';
+  }
+  if (b.max_dd != null) {
+    document.getElementById('sl-deployed-dd').textContent = fmtRupee(b.max_dd) +
+      (b.max_dd_pct != null ? ' (' + b.max_dd_pct.toFixed(1) + '%)' : '');
+  }
+  // A->B deltas
+  if (dd) {
+    const e1 = document.getElementById('sl-delta-full-pnl');
+    e1.textContent = fmtRupee(dd.full_pnl);
+    e1.style.color = colorDelta(dd.full_pnl);
+    const e2 = document.getElementById('sl-delta-post-pnl');
+    e2.textContent = fmtRupee(dd.post_sep_pnl);
+    e2.style.color = colorDelta(dd.post_sep_pnl);
+    const e3 = document.getElementById('sl-delta-post-pf');
+    e3.textContent = (dd.post_sep_pf >= 0 ? '+' : '') + dd.post_sep_pf.toFixed(2);
+    e3.style.color = colorDelta(dd.post_sep_pf);
+    const e4 = document.getElementById('sl-delta-dd');
+    e4.textContent = dd.max_dd === 0 ? 'unchanged' : fmtRupee(dd.max_dd);
+    e4.style.color = dd.max_dd === 0 ? 'var(--text2)' : colorDelta(-dd.max_dd);
+  }
+}).catch(err => console.warn('strategies/comparison failed', err));
+
+fetch('/api/strategies/research').then(r => r.json()).then(d => {
+  if (!d || !d.tested_rejected) return;
+  document.getElementById('sl-rejected-count').textContent = '(' + d.tested_rejected.length + ')';
+  const listEl = document.getElementById('sl-rejected-list');
+  listEl.innerHTML = d.tested_rejected.map(x => {
+    const m = x.metrics || x.actual || {};
+    let metricStr = '';
+    if (m.full_pf != null) metricStr = 'PF ' + m.full_pf.toFixed(2);
+    else if (m.pf != null) metricStr = 'PF ' + m.pf.toFixed(2);
+    else if (m.wr_honest != null) metricStr = 'WR ' + m.wr_honest.toFixed(1) + '%';
+    return '<div style="padding:4px 0;border-bottom:1px solid var(--border);">' +
+           '<div style="color:var(--text2);font-weight:600;">' + x.name + '</div>' +
+           '<div style="color:var(--muted);font-size:9px;">' +
+           (metricStr ? '<span style="color:var(--red,#f44);">' + metricStr + '</span> · ' : '') +
+           x.verdict + '</div></div>';
+  }).join('');
+  if (d.summary && d.summary.key_insight) {
+    document.getElementById('sl-key-insight').textContent = '"' + d.summary.key_insight + '"';
+  }
+}).catch(err => console.warn('strategies/research failed', err));
 
 // ══════════════════════════════════════════════════════════════
 // ══ INTERACTIVE CHART ENGINE (TradingView Lightweight Charts) ══

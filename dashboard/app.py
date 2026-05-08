@@ -818,6 +818,134 @@ async def strategy_info():
         return JSONResponse(status_code=500, content={"error": "Config not found"})
 
 
+# ─────────────────────────────────────────────────────────────────────
+# Strategy Research / Comparison Endpoints
+# ─────────────────────────────────────────────────────────────────────
+
+@app.get("/api/strategies/comparison")
+async def strategies_comparison():
+    """Side-by-side validation of deployed config evolution.
+
+    Returns Option A (vix_ceil=35) vs Option B (vix_ceil=25) backtest
+    results — full window + post-Sep + monthly + drawdown.
+    Loaded from reports/oos/option_b_validation.json.
+    """
+    json_path = Path(PROJECT_ROOT) / "reports" / "oos" / "option_b_validation.json"
+    if not json_path.exists():
+        return JSONResponse(status_code=404, content={
+            "error": "validation file not found",
+            "hint": "Run: python -m backtesting.validate_option_b",
+        })
+    try:
+        with open(json_path, "r") as f:
+            data = json.load(f)
+        # Sanitize: JSON spec disallows inf/nan; convert to None
+        def _sanitize(obj):
+            if isinstance(obj, dict):
+                return {k: _sanitize(v) for k, v in obj.items()}
+            if isinstance(obj, list):
+                return [_sanitize(x) for x in obj]
+            if isinstance(obj, float):
+                if obj == float("inf") or obj == float("-inf") or obj != obj:
+                    return None
+            return obj
+        data = _sanitize(data)
+        # Compute deltas for the UI summary
+        a, b = data.get("option_a", {}), data.get("option_b", {})
+        summary = {
+            "deployed": "OPTION B",
+            "deployed_since": "2026-05-08",
+            "deltas": {
+                "full_pnl":       round(b.get("full", {}).get("pnl", 0) - a.get("full", {}).get("pnl", 0), 2),
+                "post_sep_pnl":   round(b.get("post", {}).get("pnl", 0) - a.get("post", {}).get("pnl", 0), 2),
+                "full_pf":        round(b.get("full", {}).get("pf", 0) - a.get("full", {}).get("pf", 0), 4),
+                "post_sep_pf":    round(b.get("post", {}).get("pf", 0) - a.get("post", {}).get("pf", 0), 4),
+                "max_dd":         round(b.get("max_dd", 0) - a.get("max_dd", 0), 2),
+                "trades":         b.get("full", {}).get("n", 0) - a.get("full", {}).get("n", 0),
+            },
+        }
+        return {"summary": summary, "option_a": a, "option_b": b}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/strategies/research")
+async def strategies_research():
+    """Catalog of strategies tested and their verdicts.
+
+    Each entry summarizes a research experiment with the conclusion,
+    so the user can see what's been validated, rejected, and why.
+    """
+    return {
+        "deployed": [
+            {
+                "id": "v17_option_b",
+                "name": "V17_PROD_ONLY (Option B)",
+                "config": {"avoid_days": [0, 2], "vix_floor": 12, "vix_ceil": 25},
+                "metrics": {"full_pnl": 5_729_880, "full_pf": 1.94,
+                            "post_sep_pnl": 1_554_471, "post_sep_pf": 1.87,
+                            "wr_full": 42.3, "max_dd_pct": -12.2, "n_full": 194},
+                "status": "deployed",
+                "deployed_since": "2026-05-08",
+            },
+        ],
+        "tested_rejected": [
+            {
+                "id": "vix_floor_10_lift",
+                "name": "vix_floor=10 (max return)",
+                "metrics": {"full_pnl": 5_962_497, "full_pf": 1.76,
+                            "post_sep_pnl": 1_744_318, "post_sep_pf": 1.57},
+                "verdict": "Higher gross PnL but worse PF; more noisy entries",
+                "kept_alternative": "vix_floor=12 (Option A)",
+            },
+            {
+                "id": "avoid_023_floor12",
+                "name": "avoid=[0,2,3], vix_floor=12 (max quality)",
+                "metrics": {"full_pf": 2.45, "post_sep_pnl": 1_598_145,
+                            "post_sep_pf": 2.45, "wr_post_sep": 50.0,
+                            "max_dd_pct": -50.5},
+                "verdict": "Best risk profile but Tuesday post-Sep is expiry — blocking it kills the lift",
+                "kept_alternative": "avoid=[0,2]",
+            },
+            {
+                "id": "gap_classifier_skip_huge",
+                "name": "Gap-classifier: skip days with |gap|>0.6%",
+                "metrics": {"full_pnl_delta": 419_000, "post_sep_pnl_delta": -146_000},
+                "verdict": "Lifts pre-Sep, degrades post-Sep — regime is shifting",
+                "source": "OptionWise Auto-Router idea, inverted",
+            },
+            {
+                "id": "optionwise_mean_reversion",
+                "name": "OptionWise Mean Reversion strategy",
+                "claimed": {"wr": 68.0},
+                "actual": {"wr_honest": 28.8, "wr_their_method": 77.3, "pf_honest": 0.57},
+                "verdict": "68% WR is daily-OHLC backtest artifact (47pp inflation)",
+                "documented_in": "reports/oos/optionwise_mr_replication.log",
+            },
+            {
+                "id": "intraday_short_strangle",
+                "name": "Intraday short strangle (V17 filters)",
+                "metrics": {"wr": 13.1, "pf": 0.02, "full_pnl": -498_792},
+                "verdict": "Slippage round-trip > intraday theta gain",
+                "documented_in": "reports/oos/short_premium_backtest.log",
+            },
+            {
+                "id": "multi_day_short_strangle_wed",
+                "name": "Multi-day short strangle (Wed entry, Tue expiry)",
+                "metrics": {"wr": 68.0, "pf": 0.70, "full_pnl": -85_028},
+                "verdict": "Literature WR confirmed (68%) but PF<1.0 — high-WR, negative-expectancy trap",
+                "documented_in": "reports/oos/multi_day_short_premium.log",
+            },
+        ],
+        "summary": {
+            "total_experiments": 9,
+            "deployed_winners": 1,
+            "rejected": 6,
+            "key_insight": "High win-rate claims (68%, 70%) consistently fail to translate into positive PF on real data with realistic costs. V17 buying (WR 42%, PF 1.94) is strictly superior.",
+        },
+    }
+
+
 @app.get("/api/ai/brain")
 async def get_ai_brain():
     """Return latest AI Market Brain analysis."""
