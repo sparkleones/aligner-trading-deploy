@@ -316,6 +316,11 @@ V15_CONFIG = {**V14_CONFIG, **{
     #    vs floor=13's 28.1x / +Rs 9.9L. PF post-Sep 1.73 (was 1.60). See OVERNIGHT_REPORT_2026-04-22.) ──
     "vix_floor": 12,
 
+    # ── VIX ceiling at 25 (tightened from 35: vix_ceil_sweep showed 29.65x full
+    #    +Rs 57.30L vs ceil=35's 28.99x / +Rs 55.97L. Post-Sep PF 1.73 -> 1.87.
+    #    Drops 3 high-VIX losing trades. Max DD identical (-Rs 6.08L). See validate_option_b.log) ──
+    "vix_ceil": 25,
+
     # ── Losing streak sizing (after 3+ consecutive losses, reduce lots;
     #    +0.03x return, -2% MaxDD, Calmar 23.3→24.1) ──
     "use_streak_sizing": True,
