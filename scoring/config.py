@@ -322,19 +322,25 @@ V15_CONFIG = {**V14_CONFIG, **{
     "vix_ceil": 25,
 
     # ══════════════════════════════════════════════════════════
-    # DIRECTIONAL SANITY GATE (entry-side filter, 5-day spot trend)
+    # DIRECTIONAL SANITY GATE (entry-side filter, N-day spot trend)
     # ══════════════════════════════════════════════════════════
-    # Blocks PUT entries when 5-day NIFTY return > +threshold (fresh uptrend),
-    # blocks CALL entries when 5-day return < -threshold (fresh downtrend).
-    # Walk-forward validated 6/6 STRONG EDGE on 21mo (Jul 2024 -> Apr 2026):
-    #   PnL:  +Rs 57.30L -> +Rs 79.55L  (+Rs 22.25L, +38.8%)
-    #   PF:   1.94 -> 2.85
-    #   WR:   42.3% -> 50.0%
-    #   DD:   -Rs 6.08L -> -Rs 4.42L  (drawdown IMPROVED)
-    # Robustness sweep confirmed lift across [0.5, 1.5] threshold range.
-    # See: directional_gate_test.py, directional_gate_inloop_validate.py,
-    #      directional_gate_robustness.py
-    "directional_gate_threshold": 1.0,  # percent — 0.5 to 1.5 all robust
+    # Blocks PUT entries when N-day NIFTY return > +threshold (fresh uptrend),
+    # blocks CALL entries when N-day return < -threshold (fresh downtrend).
+    #
+    # First validation (lb=5, thr=1.0): walk-forward 6/6 STRONG EDGE.
+    # Refined on lookback sweep: lb=3, thr=0.5 dominates lb=5, thr=1.0 in
+    # walk-forward 6/6 PnL+PF wins (+Rs 7L additional 21mo lift).
+    #
+    # Walk-forward (Jul 2024 -> Apr 2026) lb=3/thr=0.5 vs no-gate baseline:
+    #   PnL:  +Rs 57.30L -> +Rs 86.72L  (+Rs 29.42L, +51.4%)
+    #   PF:   1.94 -> 3.53
+    #   WR:   42.3% -> 52.2%
+    #   DD:   -Rs 6.08L -> -Rs 5.06L  (drawdown improved)
+    # All 6 walk-forward windows: candidate beats deployed (Push #2 lb=5).
+    # See: directional_gate_lookback_sweep.py,
+    #      directional_gate_lb3_thr05_walkfwd.py
+    "directional_gate_threshold": 0.5,
+    "directional_gate_lookback_days": 3,
 
     # ── Losing streak sizing (after 3+ consecutive losses, reduce lots;
     #    +0.03x return, -2% MaxDD, Calmar 23.3→24.1) ──

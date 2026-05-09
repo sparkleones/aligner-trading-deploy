@@ -173,13 +173,18 @@ def calc_premium(spot, strike, dte, vix, opt_type, slippage_sign=1):
     return max(0.05, prem)
 
 
-def _build_trend_lookup_5d(day_groups: dict) -> dict:
-    """Pre-compute {date -> 5-day spot return %} for directional sanity gate.
+def _build_trend_lookup_5d(day_groups: dict, lookback_days: int = 5) -> dict:
+    """Pre-compute {date -> N-day spot return %} for directional sanity gate.
 
     Used by the entry-side filter that blocks PUT entries during fresh
     uptrends and CALL entries during fresh downtrends. Walk-forward
     validated 6/6 PnL+PF wins on 21mo dataset (see directional_gate_test.py).
+
+    Default lookback is 5 days (the validated configuration). Function
+    name kept as `_5d` for backward compatibility.
     """
+    if lookback_days < 1:
+        lookback_days = 5
     sorted_dates = sorted(day_groups.keys())
     closes = {}
     for d in sorted_dates:
@@ -189,10 +194,10 @@ def _build_trend_lookup_5d(day_groups: dict) -> dict:
     trading_dates = sorted(closes.keys())
     out = {}
     for i, d in enumerate(trading_dates):
-        if i < 5:
+        if i < lookback_days:
             out[d] = 0.0
             continue
-        prev_close = closes[trading_dates[i - 5]]
+        prev_close = closes[trading_dates[i - lookback_days]]
         today_close = closes[d]
         if prev_close > 0:
             out[d] = (today_close - prev_close) / prev_close * 100.0
@@ -899,7 +904,8 @@ def run_backtest(start_date=None, end_date=None, months=6, cfg_override=None, qu
 
     # ── Build trend lookup if directional gate is active ──
     if cfg_local.get("directional_gate_threshold") is not None:
-        cfg_local["_trend_lookup_5d"] = _build_trend_lookup_5d(day_groups)
+        lookback = int(cfg_local.get("directional_gate_lookback_days", 5))
+        cfg_local["_trend_lookup_5d"] = _build_trend_lookup_5d(day_groups, lookback)
 
     # Run simulation
     cfg = cfg_local

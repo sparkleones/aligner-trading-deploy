@@ -310,22 +310,28 @@ class V14LiveAgent(BaseLiveAgent):
             return hours_left / 6.25  # 6.25 trading hours/day
         return float(days_to_expiry)
 
-    def _get_5day_return_pct(self, current_spot: float) -> float:
-        """Return 5-day spot return % using daily close history + current spot.
+    def _get_trend_return_pct(self, current_spot: float, lookback_days: int = 5) -> float:
+        """Return N-day spot return % using daily close history + current spot.
 
         Mirrors backtest logic in _build_trend_lookup_5d. Compares today's
-        spot (current_spot) to the close from 5 trading days ago.
+        spot (current_spot) to the close from N trading days ago.
 
-        Returns 0.0 when insufficient history (< 5 prior days), making the
+        Returns 0.0 when insufficient history (< N prior days), making the
         directional gate a no-op during cold start — same as backtest.
         """
-        if len(self._daily_close_history) < 5 or current_spot <= 0:
+        if lookback_days < 1:
+            lookback_days = 5
+        if len(self._daily_close_history) < lookback_days or current_spot <= 0:
             return 0.0
-        # 5 trading days ago = element at index -5 of the deque
-        prev_close = self._daily_close_history[-5][1]
+        # N trading days ago = element at index -N of the deque
+        prev_close = self._daily_close_history[-lookback_days][1]
         if prev_close <= 0:
             return 0.0
         return (current_spot - prev_close) / prev_close * 100.0
+
+    # Backward-compat alias (older smoke tests/code may call _get_5day_return_pct)
+    def _get_5day_return_pct(self, current_spot: float) -> float:
+        return self._get_trend_return_pct(current_spot, lookback_days=5)
 
     def _directional_gate_blocks(
         self, action: str, current_spot: float, cfg: dict,
@@ -333,14 +339,16 @@ class V14LiveAgent(BaseLiveAgent):
         """Directional sanity gate: block PUT in fresh uptrend, CALL in fresh downtrend.
 
         Walk-forward validated 6/6 STRONG EDGE on 21mo (see directional_gate_test.py).
-        21mo lift: +Rs 22.25L, PF 1.94 -> 2.85, DD improved from -Rs 6.08L to -Rs 4.42L.
+        21mo lift: +Rs 29.42L, PF 1.94 -> 3.53, DD improved.
 
         Active when cfg["directional_gate_threshold"] is set (default None = inactive).
+        Lookback is read from cfg["directional_gate_lookback_days"] (default 5).
         """
         thr = cfg.get("directional_gate_threshold")
         if thr is None or thr <= 0:
             return False
-        trend_5d = self._get_5day_return_pct(current_spot)
+        lookback = int(cfg.get("directional_gate_lookback_days", 5))
+        trend_5d = self._get_trend_return_pct(current_spot, lookback_days=lookback)
         if action == "BUY_PUT" and trend_5d > thr:
             logger.info(
                 "V14 SKIP DIRECTIONAL_GATE: 5d return %.2f%% > +%.2f%% threshold "
