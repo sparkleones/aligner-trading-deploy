@@ -173,6 +173,34 @@ def calc_premium(spot, strike, dte, vix, opt_type, slippage_sign=1):
     return max(0.05, prem)
 
 
+def _build_trend_lookup_5d(day_groups: dict) -> dict:
+    """Pre-compute {date -> 5-day spot return %} for directional sanity gate.
+
+    Used by the entry-side filter that blocks PUT entries during fresh
+    uptrends and CALL entries during fresh downtrends. Walk-forward
+    validated 6/6 PnL+PF wins on 21mo dataset (see directional_gate_test.py).
+    """
+    sorted_dates = sorted(day_groups.keys())
+    closes = {}
+    for d in sorted_dates:
+        bars = day_groups.get(d, [])
+        if bars:
+            closes[d] = bars[-1]["close"]
+    trading_dates = sorted(closes.keys())
+    out = {}
+    for i, d in enumerate(trading_dates):
+        if i < 5:
+            out[d] = 0.0
+            continue
+        prev_close = closes[trading_dates[i - 5]]
+        today_close = closes[d]
+        if prev_close > 0:
+            out[d] = (today_close - prev_close) / prev_close * 100.0
+        else:
+            out[d] = 0.0
+    return out
+
+
 # ─────────────────────────────────────────────────────────────
 # DAY SIMULATION
 # ─────────────────────────────────────────────────────────────
@@ -602,6 +630,18 @@ def simulate_day(
         if vix < cfg["vix_floor"] or vix > cfg["vix_ceil"]:
             continue
 
+        # ── Directional sanity gate (entry-side filter) ──
+        # Block PUT entries when 5-day spot return > +threshold (fresh uptrend),
+        # block CALL entries when 5-day return < -threshold (fresh downtrend).
+        # Walk-forward validated 6/6 PnL+PF wins on 21mo (see directional_gate_test.py).
+        gate_thr = cfg.get("directional_gate_threshold")
+        if gate_thr is not None and gate_thr > 0:
+            trend_5d = cfg.get("_trend_lookup_5d", {}).get(date, 0.0)
+            if action == "BUY_PUT" and trend_5d > gate_thr:
+                continue
+            if action == "BUY_CALL" and trend_5d < -gate_thr:
+                continue
+
         # Confluence check
         if not passes_confluence(
             action, conf, indicators, bar_idx, cfg,
@@ -856,6 +896,10 @@ def run_backtest(start_date=None, end_date=None, months=6, cfg_override=None, qu
         warmup_bars = []
         for d in warmup_dates[-3:]:
             warmup_bars.extend(day_groups[d])
+
+    # ── Build trend lookup if directional gate is active ──
+    if cfg_local.get("directional_gate_threshold") is not None:
+        cfg_local["_trend_lookup_5d"] = _build_trend_lookup_5d(day_groups)
 
     # Run simulation
     cfg = cfg_local
