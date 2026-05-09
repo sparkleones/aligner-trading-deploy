@@ -297,6 +297,90 @@ async def zerodha_callback(request_token: str = "", action: str = "", status: st
         </body></html>""")
 
 
+@app.post("/api/broker/auto_login")
+async def broker_auto_login():
+    """Trigger Zerodha auto-login (HTTP-based, no browser).
+
+    Uses .env credentials (ZERODHA_USER_ID, ZERODHA_PASSWORD,
+    ZERODHA_TOTP_SECRET) to log in programmatically and refresh the
+    access_token. Updates kite_state in-memory and writes new token to
+    .env if writable.
+
+    Required env vars:
+      KITE_API_KEY (or BROKER_API_KEY)
+      KITE_API_SECRET (or BROKER_API_SECRET)
+      ZERODHA_USER_ID
+      ZERODHA_PASSWORD
+      ZERODHA_TOTP_SECRET
+    """
+    try:
+        from broker.kite_auto_login import auto_login_kite
+        result = auto_login_kite(persist=True)
+    except Exception as e:
+        logger.error("auto_login import or call failed: %s", e)
+        return JSONResponse(status_code=500, content={
+            "success": False, "error": f"{type(e).__name__}: {e}",
+        })
+
+    if not result["success"]:
+        logger.warning("Kite auto-login failed at stage=%s: %s",
+                       result.get("stage"), result.get("error"))
+        return JSONResponse(status_code=400, content=result)
+
+    # Wire the new token into kite_state in-memory so existing endpoints
+    # (broker/status, broker/positions, etc.) start working immediately
+    # without a container restart.
+    try:
+        from kiteconnect import KiteConnect
+        api_key = kite_state["api_key"] or os.getenv("KITE_API_KEY", "")
+        kite = KiteConnect(api_key=api_key)
+        kite.set_access_token(result["access_token"])
+        kite_state["kite"] = kite
+        kite_state["connected"] = True
+        kite_state["access_token"] = result["access_token"]
+        try:
+            kite_state["user_profile"] = kite.profile()
+        except Exception as e:
+            logger.warning("auto_login: token saved but profile fetch failed: %s", e)
+        logger.info("Kite auto-login SUCCESS | user_id=%s", result.get("user_id"))
+        return {
+            "success": True,
+            "user_id": result["user_id"],
+            "persisted": result["persisted"],
+            "user_name": (kite_state.get("user_profile") or {}).get("user_name", ""),
+        }
+    except Exception as e:
+        logger.error("auto_login wiring failed: %s", e)
+        return JSONResponse(status_code=500, content={
+            "success": False,
+            "error": f"token saved but wiring failed: {e}",
+            "access_token_len": len(result["access_token"]),
+        })
+
+
+@app.get("/api/broker/auto_login/check")
+async def broker_auto_login_check():
+    """Check whether all auto-login env vars are configured.
+
+    Used by dashboard UI to show whether the auto-login button can work.
+    Does NOT expose secrets — returns presence flags only.
+    """
+    return {
+        "api_key_set":     bool(os.getenv("KITE_API_KEY") or os.getenv("BROKER_API_KEY")),
+        "api_secret_set":  bool(os.getenv("KITE_API_SECRET") or os.getenv("BROKER_API_SECRET")),
+        "user_id_set":     bool(os.getenv("ZERODHA_USER_ID")),
+        "password_set":    bool(os.getenv("ZERODHA_PASSWORD")),
+        "totp_secret_set": bool(os.getenv("ZERODHA_TOTP_SECRET")),
+        "ready": all([
+            os.getenv("KITE_API_KEY") or os.getenv("BROKER_API_KEY"),
+            os.getenv("KITE_API_SECRET") or os.getenv("BROKER_API_SECRET"),
+            os.getenv("ZERODHA_USER_ID"),
+            os.getenv("ZERODHA_PASSWORD"),
+            os.getenv("ZERODHA_TOTP_SECRET"),
+        ]),
+    }
+
+
 @app.get("/api/broker/status")
 async def broker_status():
     """Check if broker is connected and return account info."""

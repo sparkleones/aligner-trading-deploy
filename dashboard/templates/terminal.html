@@ -511,6 +511,57 @@ tbody tr:hover { background:var(--card2); }
     <!-- ── RIGHT PANEL ── -->
     <div class="right-panel">
 
+      <!-- Kite Broker Auth (auto-login + status) -->
+      <div class="panel-section">
+        <div class="panel-header" onclick="togglePanel(this)">
+          Kite Broker
+          <span id="kite-auth-status-badge" style="font-size:10px;font-weight:700;margin-left:6px;color:var(--red,#f44);">DISCONNECTED</span>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="panel-body" id="kite-auth-panel">
+          <div style="padding:10px 12px;">
+            <!-- Connection status -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:11px;font-weight:700;color:var(--muted);">CONNECTION</span>
+              <span id="kite-conn-text" style="font-size:11px;font-weight:700;color:var(--red,#f44);">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:11px;font-weight:700;color:var(--muted);">USER</span>
+              <span id="kite-user" style="font-size:11px;font-weight:700;">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:11px;font-weight:700;color:var(--muted);">AVAILABLE</span>
+              <span id="kite-available" style="font-size:11px;font-weight:700;color:var(--green,#0f0);">Rs --</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <span style="font-size:11px;font-weight:700;color:var(--muted);">USED MARGIN</span>
+              <span id="kite-used" style="font-size:11px;font-weight:700;">Rs --</span>
+            </div>
+
+            <!-- Credential readiness check -->
+            <div style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">
+                AUTO-LOGIN CREDENTIALS <span id="kite-cred-summary" style="color:var(--text2);">--</span>
+              </div>
+              <div id="kite-cred-list" style="font-size:10px;line-height:1.6;color:var(--text2);"></div>
+            </div>
+
+            <!-- Action buttons -->
+            <div style="border-top:1px solid var(--border);padding-top:8px;margin-top:8px;display:flex;gap:6px;">
+              <button id="kite-auto-login-btn" onclick="kiteAutoLogin()"
+                style="flex:1;padding:8px;font-size:11px;font-weight:700;background:var(--green,#0f0);color:var(--bg,#000);border:0;border-radius:4px;cursor:pointer;">
+                AUTO-LOGIN
+              </button>
+              <button onclick="window.open('/login/zerodha','_blank')"
+                style="padding:8px 10px;font-size:10px;background:var(--card2);color:var(--text2);border:1px solid var(--border);border-radius:4px;cursor:pointer;">
+                MANUAL
+              </button>
+            </div>
+            <div id="kite-login-result" style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.4;min-height:16px;"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- V14 R5 Decision Engine -->
       <div class="panel-section">
         <div class="panel-header" onclick="togglePanel(this)">
@@ -1466,6 +1517,111 @@ fetch('/api/strategy/info').then(r => r.json()).then(info => {
     document.getElementById('strat-pf').textContent = bt.profit_factor.toFixed(2);
   }
 }).catch(() => {});
+
+// ── Kite Broker Auth panel ──
+function fmtRs(n) {
+  if (n == null) return 'Rs --';
+  if (Math.abs(n) >= 1e7) return 'Rs ' + (n/1e7).toFixed(2) + 'Cr';
+  if (Math.abs(n) >= 1e5) return 'Rs ' + (n/1e5).toFixed(2) + 'L';
+  if (Math.abs(n) >= 1e3) return 'Rs ' + (n/1e3).toFixed(1) + 'K';
+  return 'Rs ' + Math.round(n).toLocaleString('en-IN');
+}
+
+function refreshKiteStatus() {
+  // Connection status
+  fetch('/api/broker/status').then(r => r.json()).then(d => {
+    const badge = document.getElementById('kite-auth-status-badge');
+    const conn = document.getElementById('kite-conn-text');
+    const user = document.getElementById('kite-user');
+    const avail = document.getElementById('kite-available');
+    const used = document.getElementById('kite-used');
+    if (d.connected) {
+      badge.textContent = 'CONNECTED';
+      badge.style.color = 'var(--green,#0f0)';
+      conn.textContent = 'CONNECTED';
+      conn.style.color = 'var(--green,#0f0)';
+      user.textContent = (d.user || '--') + ' (' + (d.user_id || '') + ')';
+      avail.textContent = fmtRs(d.available_margin);
+      used.textContent = fmtRs(d.used_margin);
+    } else {
+      badge.textContent = 'DISCONNECTED';
+      badge.style.color = 'var(--red,#f44)';
+      conn.textContent = 'DISCONNECTED';
+      conn.style.color = 'var(--red,#f44)';
+      user.textContent = '--';
+      avail.textContent = 'Rs --';
+      used.textContent = 'Rs --';
+    }
+  }).catch(() => {});
+
+  // Credentials check
+  fetch('/api/broker/auto_login/check').then(r => r.json()).then(d => {
+    const summary = document.getElementById('kite-cred-summary');
+    const list = document.getElementById('kite-cred-list');
+    const btn = document.getElementById('kite-auto-login-btn');
+    const checks = [
+      ['API_KEY', d.api_key_set],
+      ['API_SECRET', d.api_secret_set],
+      ['USER_ID', d.user_id_set],
+      ['PASSWORD', d.password_set],
+      ['TOTP_SECRET', d.totp_secret_set],
+    ];
+    const missing = checks.filter(c => !c[1]).map(c => c[0]);
+    if (d.ready) {
+      summary.textContent = '(all set)';
+      summary.style.color = 'var(--green,#0f0)';
+      list.innerHTML = checks.map(c => '<div style="color:var(--green,#0f0);">✓ ' + c[0] + '</div>').join('');
+      btn.disabled = false;
+      btn.style.opacity = 1;
+      btn.style.cursor = 'pointer';
+    } else {
+      summary.textContent = '(missing ' + missing.length + ')';
+      summary.style.color = 'var(--red,#f44)';
+      list.innerHTML = checks.map(c =>
+        '<div style="color:' + (c[1] ? 'var(--green,#0f0)' : 'var(--red,#f44)') + ';">' +
+        (c[1] ? '✓' : '✗') + ' ' + c[0] + '</div>'
+      ).join('');
+      btn.disabled = true;
+      btn.style.opacity = 0.4;
+      btn.style.cursor = 'not-allowed';
+    }
+  }).catch(() => {});
+}
+
+function kiteAutoLogin() {
+  const btn = document.getElementById('kite-auto-login-btn');
+  const result = document.getElementById('kite-login-result');
+  btn.disabled = true;
+  btn.textContent = 'LOGGING IN...';
+  result.textContent = 'Authenticating with Zerodha...';
+  result.style.color = 'var(--muted)';
+
+  fetch('/api/broker/auto_login', {method: 'POST'})
+    .then(r => r.json())
+    .then(d => {
+      if (d.success) {
+        result.textContent = '✓ Logged in as ' + (d.user_name || d.user_id) +
+                            ' · token saved' + (d.persisted ? ' to .env' : ' (in-memory only)');
+        result.style.color = 'var(--green,#0f0)';
+        setTimeout(refreshKiteStatus, 500);
+      } else {
+        result.textContent = '✗ Failed at ' + (d.stage || '?') + ': ' + (d.error || 'unknown');
+        result.style.color = 'var(--red,#f44)';
+      }
+    })
+    .catch(err => {
+      result.textContent = '✗ Network error: ' + err.message;
+      result.style.color = 'var(--red,#f44)';
+    })
+    .finally(() => {
+      btn.textContent = 'AUTO-LOGIN';
+      btn.disabled = false;
+    });
+}
+
+// Initial load + 30s refresh
+refreshKiteStatus();
+setInterval(refreshKiteStatus, 30000);
 
 // ── Strategy Lab: load comparison + research ──
 function fmtRupee(n) {
