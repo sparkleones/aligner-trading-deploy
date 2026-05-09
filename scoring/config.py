@@ -321,6 +321,21 @@ V15_CONFIG = {**V14_CONFIG, **{
     #    Drops 3 high-VIX losing trades. Max DD identical (-Rs 6.08L). See validate_option_b.log) ──
     "vix_ceil": 25,
 
+    # ══════════════════════════════════════════════════════════
+    # DIRECTIONAL SANITY GATE (entry-side filter, 5-day spot trend)
+    # ══════════════════════════════════════════════════════════
+    # Blocks PUT entries when 5-day NIFTY return > +threshold (fresh uptrend),
+    # blocks CALL entries when 5-day return < -threshold (fresh downtrend).
+    # Walk-forward validated 6/6 STRONG EDGE on 21mo (Jul 2024 -> Apr 2026):
+    #   PnL:  +Rs 57.30L -> +Rs 79.55L  (+Rs 22.25L, +38.8%)
+    #   PF:   1.94 -> 2.85
+    #   WR:   42.3% -> 50.0%
+    #   DD:   -Rs 6.08L -> -Rs 4.42L  (drawdown IMPROVED)
+    # Robustness sweep confirmed lift across [0.5, 1.5] threshold range.
+    # See: directional_gate_test.py, directional_gate_inloop_validate.py,
+    #      directional_gate_robustness.py
+    "directional_gate_threshold": 1.0,  # percent — 0.5 to 1.5 all robust
+
     # ── Losing streak sizing (after 3+ consecutive losses, reduce lots;
     #    +0.03x return, -2% MaxDD, Calmar 23.3→24.1) ──
     "use_streak_sizing": True,

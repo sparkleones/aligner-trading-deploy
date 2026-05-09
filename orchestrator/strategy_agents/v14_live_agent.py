@@ -39,6 +39,27 @@ from scoring.engine import (
 
 from orchestrator.smart_strike_selector import SmartStrikeSelector
 
+# ── LIVE TRADE MONITOR (secondary exit layer — tail-risk only) ──
+# Walk-forward validated Jul 2024 – Apr 2026:
+#   train (11mo): +Rs 72K delta, 52% runaway rescue
+#   test  (11mo): +Rs 99K delta, 78% runaway rescue
+# Only emergency-floor is active; reversal/trail/structural are disabled
+# because they cut winners faster than they rescue losers.
+from orchestrator.live_trade_monitor import monitor_check as _monitor_check
+from backtesting.option_pricer import price_option as _price_option
+
+MONITOR_CFG = {
+    "monitor_enabled": True,
+    # Emergency floor: fires once premium reached 1.20x entry and then
+    # collapsed to <=0.45x of peak. Catches the "+4000 to -11000" pattern.
+    "mon_emergency_peak_mult":  1.20,
+    "mon_emergency_floor_frac": 0.45,
+    # Everything else disabled — proven net-negative in walk-forward.
+    "mon_prem_trail_activate_mult": 999,
+    "mon_reversal_score_min":       99,
+    "mon_structural_underwater_bars": 999,
+}
+
 if TYPE_CHECKING:
     from orchestrator.market_analyzer import MarketAnalysis
 
@@ -198,6 +219,12 @@ class V14LiveAgent(BaseLiveAgent):
         self._consecutive_down_days: int = 0
         self._prev_day_open: float = 0.0
         self._prev_day_close: float = 0.0
+        # ── Daily-close history for directional sanity gate ──
+        # Keeps last 10 (date_str, close) pairs. Used by 5-day return filter
+        # that blocks PUT entries during fresh uptrends and CALL entries during
+        # fresh downtrends. Walk-forward validated 6/6 STRONG EDGE on 21mo.
+        # On cold start, empty -> gate is permissive (returns 0 like backtest).
+        self._daily_close_history: list[tuple[str, float]] = []
         # ── Composite entry state (NEW: gap, ORB, S/R bounce, zero-to-hero) ──
         self._orb_high: float = 0.0
         self._orb_low: float = 0.0
@@ -268,11 +295,12 @@ class V14LiveAgent(BaseLiveAgent):
     def _estimate_dte(self, today) -> float:
         """Estimate days to expiry for Greeks calculation.
 
-        Uses weekday heuristic: NIFTY weekly expiry is Thursday.
+        Uses weekday heuristic: NIFTY weekly expiry is Tuesday
+        (SEBI Sep 2025 cutover: NSE moved weekly expiry from Thu to Tue).
         Returns fractional days (minimum 0.2 = ~5 hours for expiry day).
         """
         from datetime import timedelta
-        target_weekday = 3  # Thursday
+        target_weekday = 1  # Tuesday (SEBI Sep 2025: NSE expiry Thu-->Tue)
         days_to_expiry = (target_weekday - today.weekday()) % 7
         if days_to_expiry == 0:
             # Expiry day: use remaining trading hours
@@ -281,6 +309,51 @@ class V14LiveAgent(BaseLiveAgent):
             hours_left = max(0.5, (15.5 - now.hour - now.minute / 60.0))
             return hours_left / 6.25  # 6.25 trading hours/day
         return float(days_to_expiry)
+
+    def _get_5day_return_pct(self, current_spot: float) -> float:
+        """Return 5-day spot return % using daily close history + current spot.
+
+        Mirrors backtest logic in _build_trend_lookup_5d. Compares today's
+        spot (current_spot) to the close from 5 trading days ago.
+
+        Returns 0.0 when insufficient history (< 5 prior days), making the
+        directional gate a no-op during cold start — same as backtest.
+        """
+        if len(self._daily_close_history) < 5 or current_spot <= 0:
+            return 0.0
+        # 5 trading days ago = element at index -5 of the deque
+        prev_close = self._daily_close_history[-5][1]
+        if prev_close <= 0:
+            return 0.0
+        return (current_spot - prev_close) / prev_close * 100.0
+
+    def _directional_gate_blocks(
+        self, action: str, current_spot: float, cfg: dict,
+    ) -> bool:
+        """Directional sanity gate: block PUT in fresh uptrend, CALL in fresh downtrend.
+
+        Walk-forward validated 6/6 STRONG EDGE on 21mo (see directional_gate_test.py).
+        21mo lift: +Rs 22.25L, PF 1.94 -> 2.85, DD improved from -Rs 6.08L to -Rs 4.42L.
+
+        Active when cfg["directional_gate_threshold"] is set (default None = inactive).
+        """
+        thr = cfg.get("directional_gate_threshold")
+        if thr is None or thr <= 0:
+            return False
+        trend_5d = self._get_5day_return_pct(current_spot)
+        if action == "BUY_PUT" and trend_5d > thr:
+            logger.info(
+                "V14 SKIP DIRECTIONAL_GATE: 5d return %.2f%% > +%.2f%% threshold "
+                "(blocking PUT in uptrend)", trend_5d, thr,
+            )
+            return True
+        if action == "BUY_CALL" and trend_5d < -thr:
+            logger.info(
+                "V14 SKIP DIRECTIONAL_GATE: 5d return %.2f%% < -%.2f%% threshold "
+                "(blocking CALL in downtrend)", trend_5d, thr,
+            )
+            return True
+        return False
 
     def _pick_product(
         self,
@@ -316,7 +389,7 @@ class V14LiveAgent(BaseLiveAgent):
             day_low = min(b["low"] for b in today_bars)
             day_open = self._day_open if self._day_open > 0 else today_bars[0]["open"]
 
-            # dte estimate — weekly Thursday expiry heuristic
+            # dte estimate — weekly Tuesday expiry heuristic (NSE post-Sep-2025)
             from datetime import date as _date
             try:
                 if today:
@@ -1590,6 +1663,12 @@ class V14LiveAgent(BaseLiveAgent):
             if self._bar_history:
                 self._prev_day_open = self._day_open if self._day_open > 0 else self._bar_history[0]["open"]
                 self._prev_day_close = self._bar_history[-1]["close"]
+                # Append to daily-close history for directional gate (5-day return)
+                yesterday_date = self._today_date
+                if yesterday_date and self._prev_day_close > 0:
+                    self._daily_close_history.append((yesterday_date, self._prev_day_close))
+                    if len(self._daily_close_history) > 10:
+                        self._daily_close_history = self._daily_close_history[-10:]
 
             self._reset_day()
             self._today_date = today_str
@@ -1857,6 +1936,46 @@ class V14LiveAgent(BaseLiveAgent):
                         if spot < pos["best_fav"] - trail_d:
                             exit_reason = "trail_stop"
 
+            # ── LIVE TRADE MONITOR (secondary tail-exit layer) ──
+            # Fires only on "emergency floor": premium reached 1.20x entry
+            # then collapsed to <=0.45x of peak. Catches the runaway-loss
+            # pattern where V14's ATR/fixed trail hasn't fired yet but the
+            # premium has already given back most of its gain. Walk-forward
+            # validated: 78% runaway-rescue rate on OOS window.
+            if not exit_reason and MONITOR_CFG.get("monitor_enabled", True):
+                try:
+                    # Estimate current premium via Black-Scholes — same method
+                    # the backtest uses, so live behavior matches validation.
+                    dte_at_entry = float(pos.get("dte_at_entry", 1.0))
+                    bars_since = max(0, bar_idx - pos.get("entry_bar", bar_idx))
+                    dte_now = max(0.05, dte_at_entry - bars_since * 5 / (6.25 * 60))
+                    vix_used = float(pos.get("vix_at_entry", 14.0))
+                    opt_type_live = pos.get("opt_type", "CE")
+                    cur_prem = _price_option(
+                        spot, pos["strike"], dte_now, vix_used, opt_type_live,
+                    ).get("premium", 0.0)
+                    if cur_prem > 0:
+                        mon_reason = _monitor_check(
+                            pos, indicators_for_exit or {}, cur_prem, bar_idx,
+                            MONITOR_CFG,
+                        )
+                        if mon_reason:
+                            exit_reason = mon_reason
+                            entry_prem = pos.get("entry_premium", 0) or 1.0
+                            peak = pos.get("peak_premium", entry_prem)
+                            logger.warning(
+                                "V14 MONITOR EXIT: %s %s%s | reason=%s | "
+                                "entry=%.1f peak=%.1f cur=%.1f "
+                                "(peak/entry=%.2fx cur/peak=%.2fx)",
+                                action, pos["strike"], pos["opt_type"],
+                                mon_reason, entry_prem, peak, cur_prem,
+                                peak / entry_prem if entry_prem else 0,
+                                cur_prem / peak if peak else 0,
+                            )
+                except Exception as _mon_err:
+                    # Monitor is advisory — never block the trade loop on its error
+                    logger.debug("Monitor check skipped: %s", _mon_err)
+
             # EOD close
             if not exit_reason and bar_idx >= 72:  # 72 bars x 5 min = 360 min
                 exit_reason = "eod_close"
@@ -1963,6 +2082,11 @@ class V14LiveAgent(BaseLiveAgent):
             # VIX bounds (matches backtest line 340)
             if vix < cfg["vix_floor"] or vix > cfg["vix_ceil"]:
                 return None
+            # ── Directional sanity gate (entry-side filter) — matches backtest ──
+            # Walk-forward validated 6/6 STRONG EDGE on 21mo. Active when
+            # cfg["directional_gate_threshold"] is set (default None = no-op).
+            if self._directional_gate_blocks(action_early, spot, cfg):
+                return None
             # Full confluence check including PSAR filter (matches backtest line 344)
             indicators = self._compute_indicators()
             if indicators and not self._passes_confluence(
@@ -2024,6 +2148,13 @@ class V14LiveAgent(BaseLiveAgent):
                 "entry_premium": 50.0,  # Estimate
                 "entry_type": entry_type_early,
                 "is_zero_hero": is_zh_early,
+                # ── Monitor state (LiveTradeMonitor tail-exit) ──
+                "vix_at_entry": vix,
+                "dte_at_entry": float(dte) if dte else 1.0,
+                "peak_premium": 50.0,
+                "underwater_bars": 0,
+                "in_profit_phase": False,
+                "mon_prev_macd_hist": float((indicators or {}).get("macd_hist", 0.0) or 0.0),
             }
             self._open_positions.append(pos)
             self._trades_today += 1
@@ -2080,6 +2211,12 @@ class V14LiveAgent(BaseLiveAgent):
         if vix < cfg["vix_floor"] or vix > cfg["vix_ceil"]:
             logger.debug("V14 SKIP: VIX=%.1f outside [%d,%d]", vix, cfg["vix_floor"], cfg["vix_ceil"])
             return None
+
+        # ── Directional sanity gate (entry-side filter) — matches backtest ──
+        # Walk-forward validated 6/6 STRONG EDGE on 21mo. Active when
+        # cfg["directional_gate_threshold"] is set. Blocks PUT in fresh
+        # uptrend, CALL in fresh downtrend. (Note: action determined later
+        # in V8 path; gate applied inline after action is known.)
 
         # ── IV crush event check (research: "Don't buy options day before events") ──
         iv_crush_events = cfg.get("iv_crush_events", [])
@@ -2141,6 +2278,13 @@ class V14LiveAgent(BaseLiveAgent):
                             bar_idx, indicators.get("rsi", 0), indicators.get("ema9_above_ema21"),
                             indicators.get("squeeze_on"), indicators.get("vwap", 0), indicators.get("close", 0))
                 return None
+
+        # ── Directional sanity gate (entry-side filter) — matches backtest ──
+        # Walk-forward validated 6/6 STRONG EDGE on 21mo. Active when
+        # cfg["directional_gate_threshold"] is set (default None = no-op).
+        # Blocks PUT when 5-day spot return > +threshold, CALL when < -threshold.
+        if self._directional_gate_blocks(action, spot, cfg):
+            return None
 
         # ── Regime-aware adjustments (from research: auto-toggle strategy) ──
         # Store on self so exit logic can access trail_mult, max_hold_mult, block_reversion
@@ -2507,6 +2651,13 @@ class V14LiveAgent(BaseLiveAgent):
             "entry_premium": est_entry_premium,  # For hard SL tracking
             "entry_type": entry_type,
             "is_zero_hero": is_zero_hero,
+            # ── Monitor state (LiveTradeMonitor tail-exit) ──
+            "vix_at_entry": vix,
+            "dte_at_entry": float(dte) if dte else 1.0,
+            "peak_premium": est_entry_premium,
+            "underwater_bars": 0,
+            "in_profit_phase": False,
+            "mon_prev_macd_hist": float(indicators.get("macd_hist", 0.0) or 0.0) if indicators else 0.0,
         }
         self._open_positions.append(pos)
         self._trades_today += 1
