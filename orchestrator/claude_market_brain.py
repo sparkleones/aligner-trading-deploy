@@ -45,10 +45,10 @@ PROVIDERS = {
     },
     "gemini": {
         "base_url": None,
-        "model": "gemini-2.5-flash-lite",
-        "fast_model": "gemini-2.5-flash-lite",
+        "model": "gemini-2.5-flash",      # Full Flash (better reasoning than Flash-Lite)
+        "fast_model": "gemini-2.5-flash-lite",  # Lite for quick checks if needed
         "env_key": "GEMINI_API_KEY",
-        "cost_per_1m_input": 0.0,  # Free tier: 1000 req/day
+        "cost_per_1m_input": 0.0,         # Free tier: 1500 req/day, 1M TPM
         "max_tokens": 800,
         "type": "gemini",
     },

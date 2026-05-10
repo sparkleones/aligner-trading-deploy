@@ -961,29 +961,13 @@ async def health_full():
     }
 
     # ── AI Brain ──
+    # Display the CONFIGURED (top-priority) provider+model first, NOT what was
+    # stored in stale claude_brain.json from a previous run. Counters (calls,
+    # cost) can come from brain.json since they're per-session totals.
     ai_subsystem = {"enabled": False, "provider": None, "model": None}
-    brain_file = Path(PROJECT_ROOT) / "data" / "claude_brain.json"
-    if brain_file.exists():
-        try:
-            brain = json.loads(brain_file.read_text(encoding="utf-8"))
-            ai_subsystem.update({
-                "enabled": brain.get("enabled", False),
-                "provider": brain.get("provider"),
-                "model": brain.get("model"),
-                "calls_today": brain.get("total_calls", 0),
-                "cost_usd_today": brain.get("total_cost_usd", 0.0),
-                "last_call_age_sec": (
-                    round(now - brain.get("last_analysis_time", 0), 1)
-                    if brain.get("last_analysis_time") else None
-                ),
-                "last_error": brain.get("last_error"),
-            })
-        except Exception:
-            pass
-    # Detect which Anthropic models are configured
+    configured = []
     try:
         from orchestrator.claude_market_brain import PROVIDERS, PROVIDER_PRIORITY
-        configured = []
         for pname in PROVIDER_PRIORITY:
             p = PROVIDERS.get(pname, {})
             if os.getenv(p.get("env_key", "")):
@@ -992,9 +976,38 @@ async def health_full():
                     "model": p.get("model"),
                     "cost_per_1m": p.get("cost_per_1m_input"),
                 })
+        if configured:
+            # Top-priority configured provider = what the engine WILL use
+            ai_subsystem["enabled"] = True
+            ai_subsystem["provider"] = configured[0]["provider"]
+            ai_subsystem["model"] = configured[0]["model"]
+            ai_subsystem["cost_per_1m"] = configured[0]["cost_per_1m"]
         ai_subsystem["configured_providers"] = configured
     except Exception:
         pass
+
+    # Layer in session counters (calls, cost) from brain.json
+    brain_file = Path(PROJECT_ROOT) / "data" / "claude_brain.json"
+    if brain_file.exists():
+        try:
+            brain = json.loads(brain_file.read_text(encoding="utf-8"))
+            ai_subsystem["calls_today"] = brain.get("total_calls", 0)
+            ai_subsystem["cost_usd_today"] = brain.get("total_cost_usd", 0.0)
+            ai_subsystem["last_call_age_sec"] = (
+                round(now - brain.get("last_analysis_time", 0), 1)
+                if brain.get("last_analysis_time") else None
+            )
+            ai_subsystem["last_error"] = brain.get("last_error")
+            # If the running engine is using a DIFFERENT model than configured,
+            # surface that as a warning (means engine needs restart to pick up
+            # new PROVIDERS config)
+            engine_model = brain.get("model")
+            if (engine_model and ai_subsystem.get("model")
+                    and engine_model != ai_subsystem["model"]):
+                ai_subsystem["engine_running_model"] = engine_model
+                ai_subsystem["model_mismatch"] = True
+        except Exception:
+            pass
 
     # ── Telegram ──
     telegram_subsystem = {

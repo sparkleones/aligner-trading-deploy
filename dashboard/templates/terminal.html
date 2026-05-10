@@ -667,10 +667,10 @@ tbody tr:hover { background:var(--card2); }
 
       <!-- Quick Order -->
       <div class="panel-section">
-        <div class="panel-header" onclick="togglePanel(this)">
+        <div class="panel-header collapsed" onclick="togglePanel(this)">
           Quick Order <span style="font-size:10px;color:var(--muted);margin-left:6px;" title="Shift+B=Buy, Shift+S=Sell, Shift+C=CE, Shift+P=PE, Shift+Enter=Place, 1-6=Tabs">KB</span> <span class="arrow">&#9660;</span>
         </div>
-        <div class="panel-body">
+        <div class="panel-body collapsed">
           <div class="order-form">
             <div class="form-group">
               <div class="form-label">Strike</div>
@@ -702,10 +702,10 @@ tbody tr:hover { background:var(--card2); }
 
       <!-- Market Pulse -->
       <div class="panel-section">
-        <div class="panel-header" onclick="togglePanel(this)">
+        <div class="panel-header collapsed" onclick="togglePanel(this)">
           Market Pulse <span class="arrow">&#9660;</span>
         </div>
-        <div class="panel-body" id="market-pulse">
+        <div class="panel-body collapsed" id="market-pulse">
           <div style="padding:12px;">
             <div class="indicator-row"><span>Supertrend</span><span class="val" id="mp-st">--</span></div>
             <div class="indicator-row"><span>EMA 9/21</span><span class="val" id="mp-ema">--</span></div>
@@ -729,10 +729,10 @@ tbody tr:hover { background:var(--card2); }
 
       <!-- AI Brain -->
       <div class="panel-section">
-        <div class="panel-header" onclick="togglePanel(this)">
+        <div class="panel-header collapsed" onclick="togglePanel(this)">
           AI Brain <span id="ai-provider" style="font-size:10px;color:var(--accent);margin-left:6px;">--</span> <span class="arrow">&#9660;</span>
         </div>
-        <div class="panel-body" id="ai-brain-panel">
+        <div class="panel-body collapsed" id="ai-brain-panel">
           <div style="padding:10px 12px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
               <span style="font-size:11px;font-weight:700;color:var(--muted);">REGIME</span>
@@ -771,10 +771,10 @@ tbody tr:hover { background:var(--card2); }
 
       <!-- Strategy Lab (DEPLOYED config + validated lift + rejected experiments) -->
       <div class="panel-section">
-        <div class="panel-header" onclick="togglePanel(this)">
+        <div class="panel-header collapsed" onclick="togglePanel(this)">
           Strategy Lab <span id="strategy-lab-deployed" style="font-size:10px;color:var(--accent);margin-left:6px;">--</span> <span class="arrow">&#9660;</span>
         </div>
-        <div class="panel-body" id="strategy-lab-panel" style="max-height:560px;">
+        <div class="panel-body collapsed" id="strategy-lab-panel" style="max-height:560px;">
           <div style="padding:10px 12px;">
             <!-- Deployed strategy header -->
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
@@ -842,10 +842,10 @@ tbody tr:hover { background:var(--card2); }
 
       <!-- Engine Logs (compact) -->
       <div class="panel-section" style="flex:1;display:flex;flex-direction:column;">
-        <div class="panel-header" onclick="togglePanel(this)">
+        <div class="panel-header collapsed" onclick="togglePanel(this)">
           Engine Logs <span class="arrow">&#9660;</span>
         </div>
-        <div class="panel-body" id="sidebar-logs" style="flex:1;overflow-y:auto;max-height:200px;"></div>
+        <div class="panel-body collapsed" id="sidebar-logs" style="flex:1;overflow-y:auto;max-height:200px;"></div>
       </div>
     </div>
 
