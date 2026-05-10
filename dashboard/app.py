@@ -892,12 +892,58 @@ async def set_engine_mode(request: Request):
 
 @app.get("/api/strategy/info")
 async def strategy_info():
-    """Return current V14 R5 strategy configuration and backtest stats."""
+    """Return CURRENTLY-DEPLOYED strategy config + walk-forward-validated metrics.
+
+    Reads V15_CONFIG live (the actual deployed strategy), not V14 base.
+    Backtest metrics reflect the directional gate at lb=3 / thr=0.5.
+    """
     try:
-        from scoring.config import V14_CONFIG
-        cfg = V14_CONFIG
+        from scoring.config import V15_CONFIG
+        cfg = V15_CONFIG
+        gate_thr = cfg.get("directional_gate_threshold")
+        gate_lb = cfg.get("directional_gate_lookback_days")
+        has_gate = gate_thr is not None and gate_thr > 0
+
+        # Strategy display name based on what's actually deployed
+        if has_gate:
+            name = f"V17_PROD_ONLY + Directional Gate (lb={gate_lb}, thr={gate_thr})"
+        else:
+            name = "V17_PROD_ONLY (Option B)"
+
+        # Backtest metrics — match the deployed config exactly
+        if has_gate and gate_lb == 3 and gate_thr == 0.5:
+            backtest = {
+                "return_multiple": 44.36,         # +Rs 86.72L / Rs 2L
+                "profit_factor": 3.53,
+                "win_rate": 52.2,
+                "max_drawdown_pct": -10.1,
+                "trades": 134,
+                "walk_forward": "6/6 PnL wins, 6/6 PF wins, 0 catastrophic",
+                "period": "Jul 2024 - Apr 2026 (21mo)",
+                "lift_vs_no_gate": "+Rs 29.42L (+51%) PnL, PF 1.94 -> 3.53",
+            }
+        elif has_gate:
+            backtest = {
+                "return_multiple": 39.77,
+                "profit_factor": 2.85,
+                "win_rate": 50.0,
+                "max_drawdown_pct": -8.8,
+                "trades": 150,
+                "walk_forward": "6/6 PnL wins, 6/6 PF wins",
+                "period": "Jul 2024 - Apr 2026 (21mo)",
+            }
+        else:
+            backtest = {
+                "return_multiple": 29.65,
+                "profit_factor": 1.94,
+                "win_rate": 42.3,
+                "max_drawdown_pct": -12.2,
+                "trades": 194,
+                "period": "Jul 2024 - Apr 2026 (21mo)",
+            }
+
         return {
-            "name": cfg.get("name", "V14_R5_Optimized"),
+            "name": name,
             "bar_interval": cfg.get("bar_interval_min", 5),
             "entry_windows": cfg.get("entry_windows_bars", []),
             "avoid_windows": cfg.get("avoid_windows_bars", []),
@@ -905,31 +951,30 @@ async def strategy_info():
             "max_lots_cap": cfg.get("max_lots_cap", 27),
             "max_trades_per_day": cfg.get("max_trades_per_day", 7),
             "max_concurrent": cfg.get("max_concurrent", 3),
-            "vix_floor": cfg.get("vix_floor", 13),
-            "vix_ceil": cfg.get("vix_ceil", 35),
+            "vix_floor": cfg.get("vix_floor"),
+            "vix_ceil": cfg.get("vix_ceil"),
             "put_score_min": cfg.get("put_score_min", 5.0),
             "call_score_min": cfg.get("call_score_min", 6.0),
+            "directional_gate": {
+                "active": has_gate,
+                "threshold_pct": gate_thr,
+                "lookback_days": gate_lb,
+                "description": (
+                    f"Blocks PUT when {gate_lb}-day spot return > +{gate_thr}%; "
+                    f"blocks CALL when {gate_lb}-day return < -{gate_thr}%."
+                    if has_gate else "Disabled."
+                ),
+            },
             "features": {
-                "psar_confluence": cfg.get("use_psar_confluence", False),
-                "atr_sizing": cfg.get("use_atr_sizing", False),
-                "vix_lot_scaling": cfg.get("vix_lot_scaling", False),
-                "vwap_filter": cfg.get("use_vwap_filter", False),
-                "squeeze_filter": cfg.get("use_squeeze_filter", False),
-                "rsi_hard_gate": cfg.get("use_rsi_hard_gate", False),
-                "pcr_filter": cfg.get("use_pcr_filter", False),
-                "oi_levels": cfg.get("use_oi_levels", False),
-                "iv_pctile_scaling": cfg.get("use_iv_pctile_scaling", False),
-                "gap_reversal_filter": cfg.get("gap_reversal_filter", False),
-                "theta_exit": cfg.get("theta_exit_enabled", False),
+                "directional_gate":   has_gate,
+                "live_trade_monitor": True,  # Push #2 added it
+                "dte_target_tuesday": True,  # Push #2 fixed Thu->Tue
+                "psar_confluence":    cfg.get("use_psar_confluence", False),
+                "vwap_filter":        cfg.get("use_vwap_filter", False),
+                "squeeze_filter":     cfg.get("use_squeeze_filter", False),
+                "theta_exit":         cfg.get("theta_exit_enabled", False),
             },
-            "backtest": {
-                "return_multiple": 14.6,
-                "profit_factor": 2.58,
-                "max_drawdown_pct": 52.9,
-                "calmar_ratio": 22.76,
-                "win_rate": 48.9,
-                "period": "Jul 2024 - Jan 2025",
-            },
+            "backtest": backtest,
         }
     except ImportError:
         return JSONResponse(status_code=500, content={"error": "Config not found"})
@@ -993,20 +1038,89 @@ async def strategies_research():
     Each entry summarizes a research experiment with the conclusion,
     so the user can see what's been validated, rejected, and why.
     """
+    # Build deployed entry dynamically from current V15_CONFIG
+    deployed_config = {}
+    try:
+        from scoring.config import V15_CONFIG
+        deployed_config = {
+            "avoid_days": V15_CONFIG.get("avoid_days"),
+            "vix_floor": V15_CONFIG.get("vix_floor"),
+            "vix_ceil": V15_CONFIG.get("vix_ceil"),
+            "directional_gate_threshold": V15_CONFIG.get("directional_gate_threshold"),
+            "directional_gate_lookback_days": V15_CONFIG.get("directional_gate_lookback_days"),
+        }
+    except ImportError:
+        pass
+
+    # Determine current strategy phase based on whether directional gate is active
+    gate_thr = deployed_config.get("directional_gate_threshold")
+    gate_lb = deployed_config.get("directional_gate_lookback_days")
+    has_gate = gate_thr is not None and gate_thr > 0
+
+    if has_gate and gate_lb == 3 and gate_thr == 0.5:
+        # Push #2 amendment (refined directional gate)
+        deployed_metrics = {
+            "full_pnl": 8_672_000, "full_pf": 3.53,
+            "post_sep_pnl": None, "post_sep_pf": None,
+            "wr_full": 52.2, "max_dd_pct": -10.1, "n_full": 134,
+            "walk_forward": "6/6 STRONG EDGE (6 windows)",
+        }
+        deployed_name = "V17_PROD_ONLY + Directional Gate (lb=3, thr=0.5)"
+        deployed_since = "2026-05-10"
+    elif has_gate:
+        # Earlier directional gate config (lb=5, thr=1.0)
+        deployed_metrics = {
+            "full_pnl": 7_954_899, "full_pf": 2.85,
+            "wr_full": 50.0, "max_dd_pct": -8.8, "n_full": 150,
+            "walk_forward": "6/6 STRONG EDGE",
+        }
+        deployed_name = "V17_PROD_ONLY + Directional Gate (lb=5, thr=1.0)"
+        deployed_since = "2026-05-09"
+    else:
+        # Option B baseline (no gate)
+        deployed_metrics = {
+            "full_pnl": 5_729_880, "full_pf": 1.94,
+            "post_sep_pnl": 1_554_471, "post_sep_pf": 1.87,
+            "wr_full": 42.3, "max_dd_pct": -12.2, "n_full": 194,
+        }
+        deployed_name = "V17_PROD_ONLY (Option B)"
+        deployed_since = "2026-05-08"
+
     return {
         "deployed": [
             {
-                "id": "v17_option_b",
-                "name": "V17_PROD_ONLY (Option B)",
-                "config": {"avoid_days": [0, 2], "vix_floor": 12, "vix_ceil": 25},
-                "metrics": {"full_pnl": 5_729_880, "full_pf": 1.94,
-                            "post_sep_pnl": 1_554_471, "post_sep_pf": 1.87,
-                            "wr_full": 42.3, "max_dd_pct": -12.2, "n_full": 194},
+                "id": "v17_current",
+                "name": deployed_name,
+                "config": deployed_config,
+                "metrics": deployed_metrics,
                 "status": "deployed",
-                "deployed_since": "2026-05-08",
+                "deployed_since": deployed_since,
             },
         ],
         "tested_rejected": [
+            {
+                "id": "trail_stop_tight_or_disable",
+                "name": "Trail-stop fixes (TIGHT_TRAIL / NO_TRAIL / DELAYED / PE_ONLY)",
+                "metrics": {"best_full_pf": 1.99, "best_full_pnl_delta": 264_000,
+                            "walk_fwd_pnl_wins": "3/6", "walk_fwd_pf_wins": "4/6"},
+                "verdict": "All MARGINAL — 3/6 PnL wins doesn't clear strict 4/6 bar. The trail leak is real but the fix only marginally lifts PnL.",
+                "documented_in": "reports/oos/trail_asymmetric_test.log",
+            },
+            {
+                "id": "regime_gate_variant_c",
+                "name": "Variant C (use_v17_regime_gate=True)",
+                "metrics": {"last_1y_pnl_lift": 1_385_000, "walk_fwd_pnl_wins": "3/6",
+                            "catastrophic_windows": 1},
+                "verdict": "Looked +6× on last-1Y, failed walk-forward (3/6, W5 catastrophic)",
+                "documented_in": "reports/oos/walk_forward_variant_c.log",
+            },
+            {
+                "id": "avoid_012_mon_tue_wed",
+                "name": "avoid=[0,1,2] (Mon+Tue+Wed)",
+                "metrics": {"last_1y_pf": 2.11, "pre_1y_oos_pnl_delta": -757_000},
+                "verdict": "Post-Sep concentration artifact; OOS lost Rs 7.57L vs deployed",
+                "documented_in": "reports/oos/validate_avoid_012_oos.log",
+            },
             {
                 "id": "vix_floor_10_lift",
                 "name": "vix_floor=10 (max return)",
@@ -1055,10 +1169,16 @@ async def strategies_research():
             },
         ],
         "summary": {
-            "total_experiments": 9,
+            "total_experiments": 30,
             "deployed_winners": 1,
-            "rejected": 6,
-            "key_insight": "High win-rate claims (68%, 70%) consistently fail to translate into positive PF on real data with realistic costs. V17 buying (WR 42%, PF 1.94) is strictly superior.",
+            "rejected": 9,
+            "key_insight": (
+                "Directional sanity gate (block PUT in uptrend, CALL in downtrend, "
+                "lb=3 thr=0.5) is the breakthrough — first variant in 30+ tested to "
+                "clear strict walk-forward (6/6 PnL+PF wins). 21mo: PF 1.94 -> 3.53, "
+                "WR 42.3% -> 52.2%, DD improved. Mechanism: rescues low-vol uptrend "
+                "regimes (e.g. June 2025) where V14 entries systematically fade trends."
+            ),
         },
     }
 
