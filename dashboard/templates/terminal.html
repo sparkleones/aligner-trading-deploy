@@ -351,7 +351,7 @@ tbody tr:hover { background:var(--card2); }
         <div class="hero-pnl-block">
           <div class="hero-label">Today's P&L</div>
           <div class="hero-pnl up" id="hero-pnl">+0</div>
-          <div class="hero-sub" id="hero-sub">0.0% | Capital: Rs 2,00,000</div>
+          <div class="hero-sub" id="hero-sub">0.0% | Capital: --</div>
         </div>
         <div class="hero-stats">
           <div class="hero-stat"><div class="label">Win Rate</div><div class="value up" id="hs-wr">--</div></div>
@@ -1548,6 +1548,12 @@ function refreshKiteStatus() {
       // Expose live broker balance to hero card so Capital shows real value
       // even before engine has written its first state tick.
       window._liveBrokerCapital = d.available_margin || 0;
+      // If engine hasn't pushed state yet, hero-sub still shows the placeholder.
+      // Update it directly with live broker balance.
+      const heroSub = document.getElementById('hero-sub');
+      if (heroSub && (heroSub.textContent.includes('--') || heroSub.textContent.includes('2,00,000'))) {
+        heroSub.textContent = '0.0% | Capital: Rs ' + (d.available_margin || 0).toLocaleString('en-IN');
+      }
     } else {
       badge.textContent = 'DISCONNECTED';
       badge.style.color = 'var(--red,#f44)';
