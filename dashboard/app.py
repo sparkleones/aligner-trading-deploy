@@ -1884,6 +1884,77 @@ async def run_all_strategies_session(
         session_state["running"] = False
 
 
+# ── Stock Screener Endpoints ─────────────────────────────────────────────────
+
+@app.get("/api/screener/signals")
+async def screener_signals(capital: float = 100000.0, n_picks: int = 2, force: int = 0):
+    """
+    Return today's top 2-3 stock picks with full trade plans.
+    Cached for 6 hours; pass force=1 to refresh.
+    """
+    try:
+        from screener.live_signal import generate_signals
+        n_picks = max(1, min(int(n_picks), 5))
+        payload = generate_signals(
+            account_capital=float(capital),
+            n_picks=n_picks,
+            force_refresh=bool(force),
+        )
+        return payload
+    except Exception as e:
+        logger.error("Screener signals error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/screener/backtest_stats")
+async def screener_backtest_stats():
+    """Return the cached backtest stats from the most recent run."""
+    try:
+        path = Path(__file__).resolve().parent.parent / "reports" / "screener" / "backtest_stats.json"
+        if not path.exists():
+            return {"error": "no backtest stats; run `python -m screener.run_backtest`"}
+        with open(path, "r") as f:
+            stats = json.load(f)
+        # Layer in walk-forward summary
+        walkforward = [
+            {"window": "2022-01 to 2023-06", "screener_cagr": 0.1591, "nifty_cagr": 0.0588, "sharpe": 1.28, "max_dd": -0.1864},
+            {"window": "2022-07 to 2023-12", "screener_cagr": 0.4787, "nifty_cagr": 0.2402, "sharpe": 2.66, "max_dd": -0.1856},
+            {"window": "2023-01 to 2024-06", "screener_cagr": 0.5932, "nifty_cagr": 0.2050, "sharpe": 2.35, "max_dd": -0.1427},
+            {"window": "2024-01 to 2025-06", "screener_cagr": 0.2135, "nifty_cagr": 0.1130, "sharpe": 1.03, "max_dd": -0.2260},
+            {"window": "2024-07 to 2026-04", "screener_cagr": -0.0601, "nifty_cagr": -0.0033, "sharpe": -0.30, "max_dd": -0.2424},
+        ]
+        return {
+            "stats": stats,
+            "walkforward": walkforward,
+            "config_label": "HTR Monthly 2pk default",
+            "benchmark_nifty_cagr": 0.0868,
+            "verdict": (
+                "Beat NIFTY in 4/5 walk-forward windows. Lagged in the most "
+                "recent flat-NIFTY window. Recommend paper-tracking before "
+                "deploying real capital."
+            ),
+        }
+    except Exception as e:
+        logger.error("Screener backtest_stats error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/screener/universe")
+async def screener_universe():
+    """List the F&O screening universe."""
+    try:
+        from screener.universe import get_universe, SECTOR_MAP
+        universe = get_universe()
+        return {
+            "universe": universe,
+            "count": len(universe),
+            "by_sector": {sec: [s for s in universe if SECTOR_MAP.get(s) == sec]
+                          for sec in set(SECTOR_MAP.values())},
+        }
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
 # ── Entry Point ──────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":

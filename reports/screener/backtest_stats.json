@@ -1,0 +1,24 @@
+{
+  "initial_capital": 100000.0,
+  "final_equity": 129440.43835288975,
+  "total_return_pct": 0.2944043835288974,
+  "cagr_pct": 0.08073178089499411,
+  "sharpe": 0.5774704092222505,
+  "max_drawdown_pct": -0.28944571149924037,
+  "calmar": 0.27891855946605026,
+  "n_trades": 134.0,
+  "win_rate_pct": 0.4626865671641791,
+  "avg_win_pct": 0.07126095424638405,
+  "avg_loss_pct": -0.04141292748745365,
+  "avg_hold_bars": 9.940298507462687,
+  "profit_factor": 1.1966513954356222,
+  "exit_reasons": {
+    "rebalance": 59,
+    "stop": 44,
+    "time_stop": 22,
+    "target": 8,
+    "end_of_window": 1
+  },
+  "n_days": 1214.0,
+  "years": 3.32
+}

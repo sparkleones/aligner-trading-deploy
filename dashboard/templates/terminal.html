@@ -840,6 +840,66 @@ tbody tr:hover { background:var(--card2); }
         </div>
       </div>
 
+      <!-- Stock Screener (separate from V15 options engine) -->
+      <div class="panel-section">
+        <div class="panel-header collapsed" onclick="togglePanel(this)">
+          Stock Screener
+          <span id="screener-mode-badge" style="font-size:10px;color:var(--yellow);margin-left:6px;background:rgba(255,200,0,0.1);padding:1px 5px;border-radius:3px;">PAPER</span>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="panel-body collapsed" id="screener-panel" style="max-height:580px;">
+          <div style="padding:10px 12px;">
+            <!-- Capital input + refresh -->
+            <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center;">
+              <input type="number" id="scr-capital" value="100000" min="25000" step="10000"
+                     style="flex:1;padding:4px 6px;background:var(--card2);border:1px solid var(--border);
+                            color:var(--fg);font-size:11px;font-family:inherit;border-radius:3px;"
+                     placeholder="Equity capital (Rs)" />
+              <select id="scr-n-picks" style="padding:4px;background:var(--card2);border:1px solid var(--border);
+                                              color:var(--fg);font-size:11px;font-family:inherit;border-radius:3px;">
+                <option value="2" selected>2 picks</option>
+                <option value="3">3 picks</option>
+              </select>
+              <button onclick="refreshScreener(true)"
+                      style="padding:4px 10px;background:var(--accent);color:#000;border:0;
+                             font-size:11px;font-weight:700;cursor:pointer;border-radius:3px;">
+                SCAN
+              </button>
+            </div>
+
+            <!-- Top picks (cards) -->
+            <div id="scr-picks" style="margin-top:6px;">
+              <div style="font-size:11px;color:var(--muted);text-align:center;padding:20px;">
+                Click SCAN to generate today's picks
+              </div>
+            </div>
+
+            <!-- Runners-up -->
+            <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">RUNNERS-UP</div>
+              <div id="scr-runners" style="font-size:10px;color:var(--muted);"></div>
+            </div>
+
+            <!-- Backtest summary -->
+            <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">BACKTEST (3.3 YRS, MONTHLY REBAL)</div>
+              <div id="scr-backtest" style="font-size:10px;color:var(--fg);">Loading...</div>
+            </div>
+
+            <!-- Walk-forward -->
+            <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">WALK-FORWARD vs NIFTY</div>
+              <div id="scr-walkforward" style="font-size:10px;color:var(--fg);"></div>
+            </div>
+
+            <!-- Verdict -->
+            <div id="scr-verdict" style="margin-top:10px;padding:8px;background:rgba(255,200,0,0.08);
+                                          border-left:3px solid var(--yellow);font-size:10px;color:var(--fg);
+                                          line-height:1.4;border-radius:2px;"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Engine Logs (compact) -->
       <div class="panel-section" style="flex:1;display:flex;flex-direction:column;">
         <div class="panel-header collapsed" onclick="togglePanel(this)">
@@ -1712,6 +1772,107 @@ function refreshSystemHealth() {
 }
 refreshSystemHealth();
 setInterval(refreshSystemHealth, 5000);  // every 5 seconds
+
+// ── Stock Screener panel ──
+function refreshScreener(force) {
+  const capEl = document.getElementById('scr-capital');
+  const nEl = document.getElementById('scr-n-picks');
+  const cap = capEl ? parseFloat(capEl.value) || 100000 : 100000;
+  const n = nEl ? parseInt(nEl.value) || 2 : 2;
+  const picksDiv = document.getElementById('scr-picks');
+  if (force && picksDiv) {
+    picksDiv.innerHTML = '<div style="font-size:11px;color:var(--muted);text-align:center;padding:20px;">Scanning ~80 stocks... (may take 10-30s)</div>';
+  }
+  const url = `/api/screener/signals?capital=${cap}&n_picks=${n}&force=${force ? 1 : 0}`;
+  fetch(url).then(r => r.json()).then(d => {
+    if (d.error) {
+      picksDiv.innerHTML = `<div style="color:var(--red);font-size:11px;padding:8px;">Error: ${d.error}</div>`;
+      return;
+    }
+    // Render picks as cards
+    let html = '';
+    (d.picks || []).forEach((p, idx) => {
+      const r2r = ((p.target - p.entry) / (p.entry - p.stop_loss)).toFixed(1);
+      html += `
+        <div style="background:var(--card2);border:1px solid var(--border);border-left:3px solid var(--green);
+                    padding:8px;margin-bottom:6px;border-radius:3px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <span style="font-weight:700;font-size:13px;color:var(--green);">${p.symbol}</span>
+            <span style="font-size:10px;color:var(--muted);">${p.sector} | z=${p.composite.toFixed(2)}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:10px;">
+            <div><span style="color:var(--muted);">Entry</span> <span style="font-weight:600;">Rs ${p.entry}</span></div>
+            <div><span style="color:var(--red);">SL</span> <span style="font-weight:600;">Rs ${p.stop_loss}</span></div>
+            <div><span style="color:var(--green);">Target</span> <span style="font-weight:600;">Rs ${p.target}</span></div>
+            <div><span style="color:var(--muted);">Qty</span> <span style="font-weight:600;">${p.qty}</span></div>
+            <div><span style="color:var(--muted);">Deploy</span> <span style="font-weight:600;">Rs ${Math.round(p.capital_deployed).toLocaleString('en-IN')}</span></div>
+            <div><span style="color:var(--muted);">Risk</span> <span style="font-weight:600;">Rs ${Math.round(p.risk_inr).toLocaleString('en-IN')}</span></div>
+          </div>
+          <div style="font-size:9px;color:var(--muted);margin-top:4px;">
+            SL ${(p.stop_distance_pct*100).toFixed(1)}% | Reward ${(p.reward_pct*100).toFixed(1)}% | R:R ${r2r}
+          </div>
+          ${(p.notes && p.notes.length) ? `<div style="font-size:9px;color:var(--yellow);margin-top:3px;">${p.notes.join('; ')}</div>` : ''}
+        </div>`;
+    });
+    if (!html) {
+      html = '<div style="font-size:11px;color:var(--muted);padding:8px;">No qualifying picks today (composite < 0 across universe — market risk-off).</div>';
+    }
+    picksDiv.innerHTML = html;
+
+    // Runners
+    const rDiv = document.getElementById('scr-runners');
+    rDiv.innerHTML = (d.runners_up || []).map(r =>
+      `<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 5px;background:var(--card2);border:1px solid var(--border);border-radius:2px;">
+        ${r.symbol} <span style="color:var(--muted);">${r.composite.toFixed(2)}</span>
+      </span>`
+    ).join('') || '<span style="color:var(--muted);">--</span>';
+
+    // Verdict / warning
+    const vDiv = document.getElementById('scr-verdict');
+    vDiv.textContent = d.warning || '';
+
+    // Stats updated separately — kick off
+    refreshScreenerStats();
+  }).catch(err => {
+    picksDiv.innerHTML = `<div style="color:var(--red);font-size:11px;padding:8px;">Fetch failed: ${err.message}</div>`;
+  });
+}
+
+function refreshScreenerStats() {
+  fetch('/api/screener/backtest_stats').then(r => r.json()).then(d => {
+    if (d.error) return;
+    const s = d.stats || {};
+    const bDiv = document.getElementById('scr-backtest');
+    if (bDiv) {
+      bDiv.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+          <div>CAGR: <span style="color:var(--green);font-weight:700;">${(s.cagr_pct*100).toFixed(2)}%</span></div>
+          <div>NIFTY: <span style="color:var(--muted);">${(d.benchmark_nifty_cagr*100).toFixed(2)}%</span></div>
+          <div>Sharpe: <span style="font-weight:700;">${s.sharpe?.toFixed(2)}</span></div>
+          <div>MaxDD: <span style="color:var(--red);">${(s.max_drawdown_pct*100).toFixed(2)}%</span></div>
+          <div>Calmar: ${s.calmar?.toFixed(2)}</div>
+          <div>Win rt: ${(s.win_rate_pct*100).toFixed(1)}%</div>
+          <div>Profit factor: ${s.profit_factor?.toFixed(2)}</div>
+          <div>N trades: ${s.n_trades}</div>
+        </div>`;
+    }
+    const wDiv = document.getElementById('scr-walkforward');
+    if (wDiv) {
+      wDiv.innerHTML = (d.walkforward || []).map(w => {
+        const beats = w.screener_cagr > w.nifty_cagr;
+        const color = beats ? 'var(--green)' : 'var(--red)';
+        return `<div style="display:flex;justify-content:space-between;padding:1px 0;">
+          <span style="color:var(--muted);">${w.window}</span>
+          <span><span style="color:${color};font-weight:600;">${(w.screener_cagr*100).toFixed(1)}%</span>
+                <span style="color:var(--muted);">vs ${(w.nifty_cagr*100).toFixed(1)}%</span></span>
+        </div>`;
+      }).join('');
+    }
+  }).catch(() => {});
+}
+
+// Refresh stats on load (cheap, no scan needed)
+refreshScreenerStats();
 
 // ── Kite Broker Auth panel ──
 function fmtRs(n) {
