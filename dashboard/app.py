@@ -85,9 +85,36 @@ kite_state = {
     "kite": None,
     "access_token": None,
     "user_profile": None,
-    "api_key": os.getenv("BROKER_API_KEY", ""),
-    "api_secret": os.getenv("BROKER_API_SECRET", ""),
+    "api_key": os.getenv("KITE_API_KEY") or os.getenv("BROKER_API_KEY", ""),
+    "api_secret": os.getenv("KITE_API_SECRET") or os.getenv("BROKER_API_SECRET", ""),
 }
+
+
+def _try_restore_kite_session():
+    """On dashboard startup, if KITE_ACCESS_TOKEN is set in .env, try to
+    restore the session in-memory so we don't force a re-login on every
+    container/launcher restart. The token is fetched once a day by
+    auto-login and persists in .env until expiry next midnight."""
+    token = os.getenv("KITE_ACCESS_TOKEN", "").strip()
+    if not token or not kite_state["api_key"]:
+        return
+    try:
+        from kiteconnect import KiteConnect
+        kite = KiteConnect(api_key=kite_state["api_key"])
+        kite.set_access_token(token)
+        profile = kite.profile()  # validates the token
+        kite_state["kite"] = kite
+        kite_state["access_token"] = token
+        kite_state["connected"] = True
+        kite_state["user_profile"] = profile
+        logger.info("Kite session restored from .env | user=%s",
+                    profile.get("user_name", ""))
+    except Exception as e:
+        logger.info("Could not restore Kite session from .env (%s) — user must AUTO-LOGIN", e)
+
+
+# Attempt restore at import time (after logger is configured above)
+_try_restore_kite_session()
 
 
 # ── WebSocket Manager ────────────────────────────────────────────────────────
@@ -372,19 +399,18 @@ async def broker_auto_login_check():
         load_dotenv(Path(PROJECT_ROOT) / ".env", override=True)
     except Exception:
         pass
+    api_key_v     = os.getenv("KITE_API_KEY") or os.getenv("BROKER_API_KEY")
+    api_secret_v  = os.getenv("KITE_API_SECRET") or os.getenv("BROKER_API_SECRET")
+    user_id_v     = os.getenv("ZERODHA_USER_ID") or os.getenv("BROKER_USER_ID") or os.getenv("KITE_USER_ID")
+    password_v    = os.getenv("ZERODHA_PASSWORD") or os.getenv("BROKER_PASSWORD") or os.getenv("KITE_PASSWORD")
+    totp_v        = os.getenv("ZERODHA_TOTP_SECRET") or os.getenv("BROKER_TOTP_SECRET") or os.getenv("KITE_TOTP_SECRET")
     return {
-        "api_key_set":     bool(os.getenv("KITE_API_KEY") or os.getenv("BROKER_API_KEY")),
-        "api_secret_set":  bool(os.getenv("KITE_API_SECRET") or os.getenv("BROKER_API_SECRET")),
-        "user_id_set":     bool(os.getenv("ZERODHA_USER_ID")),
-        "password_set":    bool(os.getenv("ZERODHA_PASSWORD")),
-        "totp_secret_set": bool(os.getenv("ZERODHA_TOTP_SECRET")),
-        "ready": all([
-            os.getenv("KITE_API_KEY") or os.getenv("BROKER_API_KEY"),
-            os.getenv("KITE_API_SECRET") or os.getenv("BROKER_API_SECRET"),
-            os.getenv("ZERODHA_USER_ID"),
-            os.getenv("ZERODHA_PASSWORD"),
-            os.getenv("ZERODHA_TOTP_SECRET"),
-        ]),
+        "api_key_set":     bool(api_key_v),
+        "api_secret_set":  bool(api_secret_v),
+        "user_id_set":     bool(user_id_v),
+        "password_set":    bool(password_v),
+        "totp_secret_set": bool(totp_v),
+        "ready": all([api_key_v, api_secret_v, user_id_v, password_v, totp_v]),
     }
 
 

@@ -108,12 +108,12 @@ def auto_login_kite(persist: bool = True) -> dict:
     except Exception:
         pass  # not critical — falls back to current process env
 
-    # ── Read credentials (support both KITE_* and BROKER_* prefixes) ──
+    # ── Read credentials (support ZERODHA_*, BROKER_*, and KITE_* prefixes) ──
     api_key = _get_env("KITE_API_KEY", "BROKER_API_KEY")
     api_secret = _get_env("KITE_API_SECRET", "BROKER_API_SECRET")
-    user_id = _get_env("ZERODHA_USER_ID", "KITE_USER_ID")
-    password = _get_env("ZERODHA_PASSWORD", "KITE_PASSWORD")
-    totp_secret = _get_env("ZERODHA_TOTP_SECRET", "KITE_TOTP_SECRET")
+    user_id = _get_env("ZERODHA_USER_ID", "BROKER_USER_ID", "KITE_USER_ID")
+    password = _get_env("ZERODHA_PASSWORD", "BROKER_PASSWORD", "KITE_PASSWORD")
+    totp_secret = _get_env("ZERODHA_TOTP_SECRET", "BROKER_TOTP_SECRET", "KITE_TOTP_SECRET")
 
     missing = [name for name, val in [
         ("API_KEY", api_key), ("API_SECRET", api_secret),
@@ -170,29 +170,60 @@ def auto_login_kite(persist: bool = True) -> dict:
             result["error"] = f"twofa failed: {twofa_data.get('message', 'unknown')}"
             return result
 
-        # Stage 3: GET kite connect login URL with API key, follow redirects
-        # to capture request_token from the redirect URL
+        # Stage 3: GET kite connect login URL, follow redirects MANUALLY so we
+        # can capture the request_token from the final redirect URL WITHOUT
+        # actually trying to fetch the configured redirect_uri (which is set
+        # to your trading dashboard — may be on a different port or unreachable).
         result["stage"] = "request_token"
         kite = KiteConnect(api_key=api_key)
         login_url = kite.login_url()
-        # Don't auto-follow redirects — we want to capture the redirect URL
-        r3 = sess.get(login_url, allow_redirects=True, timeout=15)
 
-        # The redirect chain ends at the configured redirect_uri with
-        # ?request_token=XXX&action=login&status=success
-        # Look in r3.url and r3.history for the request_token.
         request_token = None
-        urls_to_check = [r3.url] + [resp.url for resp in r3.history]
-        for url in urls_to_check:
-            qs = parse_qs(urlparse(url).query)
+        current_url = login_url
+        for _ in range(10):  # cap redirects
+            try:
+                r3 = sess.get(current_url, allow_redirects=False, timeout=15)
+            except Exception as fetch_err:
+                # Connection refused etc. on the final redirect target.
+                # The request_token may already be in current_url from the
+                # previous Location header — check before giving up.
+                qs = parse_qs(urlparse(current_url).query)
+                if "request_token" in qs:
+                    request_token = qs["request_token"][0]
+                    break
+                raise fetch_err
+
+            # Check the CURRENT URL we just fetched (handles 200 endpoint cases)
+            qs = parse_qs(urlparse(current_url).query)
             if "request_token" in qs:
                 request_token = qs["request_token"][0]
                 break
 
+            if r3.status_code in (301, 302, 303, 307, 308) and r3.headers.get("Location"):
+                next_url = r3.headers["Location"]
+                # Resolve relative URLs against current host
+                if next_url.startswith("/"):
+                    parsed = urlparse(current_url)
+                    next_url = f"{parsed.scheme}://{parsed.netloc}{next_url}"
+
+                # Check the redirect target BEFORE following — captures the
+                # request_token from the configured redirect_uri without
+                # needing to actually fetch it.
+                qs = parse_qs(urlparse(next_url).query)
+                if "request_token" in qs:
+                    request_token = qs["request_token"][0]
+                    break
+
+                current_url = next_url
+                continue
+
+            # Non-redirect response with no token — we're stuck
+            break
+
         if not request_token:
             result["error"] = (
                 f"could not extract request_token from redirect chain. "
-                f"final URL: {r3.url[:120]}"
+                f"final URL: {current_url[:120]}"
             )
             return result
 
