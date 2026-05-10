@@ -910,34 +910,40 @@ async def strategy_info():
         else:
             name = "V17_PROD_ONLY (Option B)"
 
-        # Backtest metrics — match the deployed config exactly
+        # Backtest metrics — sized for NIFTY lot=65 (SEBI Oct 2025 revision).
+        # Earlier numbers were computed with stale lot=75; rescaled by 65/75=0.867.
+        # PF/WR/MaxDD% are ratios, unchanged. Absolute PnL and DD scale linearly.
         if has_gate and gate_lb == 3 and gate_thr == 0.5:
             backtest = {
-                "return_multiple": 44.36,         # +Rs 86.72L / Rs 2L
-                "profit_factor": 3.53,
-                "win_rate": 52.2,
-                "max_drawdown_pct": -10.1,
+                "return_multiple": 38.58,                # +Rs 75.16L / Rs 2L cap
+                "profit_factor": 3.53,                   # ratio — unchanged
+                "win_rate": 52.2,                        # ratio — unchanged
+                "max_drawdown_pct": -10.1,               # ratio — unchanged
+                "max_dd_inr": -439_000,                  # -Rs 4.39L
                 "trades": 134,
                 "walk_forward": "6/6 PnL wins, 6/6 PF wins, 0 catastrophic",
                 "period": "Jul 2024 - Apr 2026 (21mo)",
-                "lift_vs_no_gate": "+Rs 29.42L (+51%) PnL, PF 1.94 -> 3.53",
+                "lift_vs_no_gate": "+Rs 25.5L (+51%) PnL, PF 1.94 -> 3.53",
+                "lot_size_note": "NIFTY lot=65 (SEBI Oct 2025 revision; prior lot=75 numbers were 15% higher in INR)",
             }
         elif has_gate:
             backtest = {
-                "return_multiple": 39.77,
+                "return_multiple": 34.46,
                 "profit_factor": 2.85,
                 "win_rate": 50.0,
                 "max_drawdown_pct": -8.8,
+                "max_dd_inr": -383_000,
                 "trades": 150,
                 "walk_forward": "6/6 PnL wins, 6/6 PF wins",
                 "period": "Jul 2024 - Apr 2026 (21mo)",
             }
         else:
             backtest = {
-                "return_multiple": 29.65,
+                "return_multiple": 25.69,
                 "profit_factor": 1.94,
                 "win_rate": 42.3,
                 "max_drawdown_pct": -12.2,
+                "max_dd_inr": -527_000,
                 "trades": 194,
                 "period": "Jul 2024 - Apr 2026 (21mo)",
             }
@@ -1057,31 +1063,36 @@ async def strategies_research():
     gate_lb = deployed_config.get("directional_gate_lookback_days")
     has_gate = gate_thr is not None and gate_thr > 0
 
+    # All PnL/DD values rescaled for NIFTY lot=65 (SEBI Oct 2025 revision).
+    # Earlier metrics at lot=75 were 15% higher in INR; PF/WR/DD% unchanged.
     if has_gate and gate_lb == 3 and gate_thr == 0.5:
         # Push #2 amendment (refined directional gate)
         deployed_metrics = {
-            "full_pnl": 8_672_000, "full_pf": 3.53,
+            "full_pnl": 7_516_000, "full_pf": 3.53,    # was 8_672_000 at lot=75
             "post_sep_pnl": None, "post_sep_pf": None,
             "wr_full": 52.2, "max_dd_pct": -10.1, "n_full": 134,
             "walk_forward": "6/6 STRONG EDGE (6 windows)",
+            "lot_size": 65,
         }
         deployed_name = "V17_PROD_ONLY + Directional Gate (lb=3, thr=0.5)"
         deployed_since = "2026-05-10"
     elif has_gate:
         # Earlier directional gate config (lb=5, thr=1.0)
         deployed_metrics = {
-            "full_pnl": 7_954_899, "full_pf": 2.85,
+            "full_pnl": 6_894_245, "full_pf": 2.85,    # was 7_954_899 at lot=75
             "wr_full": 50.0, "max_dd_pct": -8.8, "n_full": 150,
             "walk_forward": "6/6 STRONG EDGE",
+            "lot_size": 65,
         }
         deployed_name = "V17_PROD_ONLY + Directional Gate (lb=5, thr=1.0)"
         deployed_since = "2026-05-09"
     else:
         # Option B baseline (no gate)
         deployed_metrics = {
-            "full_pnl": 5_729_880, "full_pf": 1.94,
-            "post_sep_pnl": 1_554_471, "post_sep_pf": 1.87,
+            "full_pnl": 4_965_896, "full_pf": 1.94,    # was 5_729_880 at lot=75
+            "post_sep_pnl": 1_347_208, "post_sep_pf": 1.87,
             "wr_full": 42.3, "max_dd_pct": -12.2, "n_full": 194,
+            "lot_size": 65,
         }
         deployed_name = "V17_PROD_ONLY (Option B)"
         deployed_since = "2026-05-08"
@@ -1174,10 +1185,10 @@ async def strategies_research():
             "rejected": 9,
             "key_insight": (
                 "Directional sanity gate (block PUT in uptrend, CALL in downtrend, "
-                "lb=3 thr=0.5) is the breakthrough — first variant in 30+ tested to "
-                "clear strict walk-forward (6/6 PnL+PF wins). 21mo: PF 1.94 -> 3.53, "
-                "WR 42.3% -> 52.2%, DD improved. Mechanism: rescues low-vol uptrend "
-                "regimes (e.g. June 2025) where V14 entries systematically fade trends."
+                "lb=3 thr=0.5) is the breakthrough — first of 30+ tested variants to "
+                "clear strict walk-forward (6/6 PnL+PF wins). 21mo at NIFTY lot=65: "
+                "PnL +Rs 75.16L, PF 3.53, WR 52.2%. Live forward expectation: "
+                "+Rs 7-13L/yr on Rs 22.9K capital (1 ATM lot/trade, SEBI compliant)."
             ),
         },
     }

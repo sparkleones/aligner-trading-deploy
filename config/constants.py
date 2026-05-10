@@ -65,7 +65,7 @@ INDEX_CONFIG = {
         "freeze_qty": 600,
     },
     "FINNIFTY": {
-        "lot_size": 65,              # Revised Jan 2026 (was 40 → 65)
+        "lot_size": 60,              # Revised Oct 28 2025 (was 65 → 60). NSE Oct 2025 circular.
         "strike_interval": 50,
         "weekly_expiry_day": "Tuesday",  # SEBI Nov 2025: consolidated to Tuesday
         "exchange": "NFO",

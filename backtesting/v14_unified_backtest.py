@@ -67,7 +67,11 @@ from backtesting.option_pricer import price_option
 
 DATA_DIR = project_root / "data" / "historical"
 CAPITAL = 200_000
-LOT_SIZE = 75  # NIFTY lot size for 2024 backtest period
+LOT_SIZE = 65  # NIFTY lot size — SEBI revised 75 → 65 effective Oct 28, 2025 EOD
+               # Applies to Jan 2026+ contracts. Source: NSE circular Oct 2025.
+               # Using 65 throughout (vs date-aware 75-pre/65-post) gives a
+               # conservative forward-looking PnL projection that matches the
+               # live engine's actual lot sizing — what you'll actually trade.
 STRIKE_INTERVAL = 50
 SLIPPAGE_PCT = 0.005   # 0.5% entry/exit slippage
 SPREAD_RS = 2.0        # Rs 2 bid-ask spread

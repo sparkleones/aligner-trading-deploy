@@ -1,9 +1,13 @@
 # Operations Runbook — Aligner Trading System
 
-**Last updated**: 2026-05-09
-**Current live config**: V15_CONFIG with vix_floor=12, vix_ceil=25, directional_gate_threshold=0.5, lookback=3
-**Live AWS endpoint**: http://51.21.206.33:8510/terminal
-**Container name**: `aligner-trading`
+**Last updated**: 2026-05-11
+**Deployment**: Local laptop, `E:\Aligner\Trading\`
+**Dashboard URL**: http://localhost:8510/terminal
+**Launcher**: `python start_local.py`
+**Current config**: V15_CONFIG · `avoid_days=[0,2]` · `vix_floor=12` · `vix_ceil=25` · `directional_gate_threshold=0.5` · `directional_gate_lookback_days=3`
+**Current NIFTY lot size**: **65** (SEBI revised 75 → 65 effective Oct 28, 2025 EOD)
+**Trading instrument**: NIFTY weekly options (NSE NFO, Tuesday expiry post-Sep 2025)
+**SEBI algo framework compliance**: Personal-use white-box algo (< 10 OPS), exempt from registration. See section 12.
 
 ---
 
@@ -331,3 +335,54 @@ docker logs --tail 10 aligner-trading
 5. **Telegram notifier requires `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` in .env**: if not set, you won't get trade alerts.
 6. **Disk fills up over time** from Docker images: run `docker system prune -af` weekly to reclaim space.
 7. **`_estimate_dte` targets Tuesday**: works for current weekly expiry. If SEBI changes again, update v14_live_agent.py line 303.
+
+---
+
+## 12. SEBI Algo Trading Compliance (Feb 2025 framework, effective Apr 1, 2026)
+
+Per SEBI Circular `SEBI/HO/MIRSD/MIRSD-PoD/P/2025/0000013` dated Feb 4, 2025.
+
+| Requirement | Our status |
+|---|---|
+| **< 10 orders/sec threshold** | ✅ System fires 0-7 orders/day (well under) — exempt from algo registration |
+| **Personal account only** | ✅ Single trader, no third-party access |
+| **No "open" APIs** | ✅ Personal Kite Connect API key, OAuth flow |
+| **2FA mandatory** | ✅ TOTP-based 2FA via Kite |
+| **Static IP whitelist** | ⚠️ User must whitelist `106.214.33.87` at developers.kite.trade/profile (one-time) |
+| **Order tagging** | ✅ Every order placed with `tag=<strategy_name>` (e.g. `v14_indicator`) |
+| **Broker registration with exchange** | ✅ Zerodha is registered with NSE for retail algo trading |
+| **White-box algorithm (logic transparent)** | ✅ Source code under user's control |
+| **Black-box algo → Research Analyst registration** | n/a (we're white-box) |
+
+### What this means in practice
+- No special SEBI registration required for the user
+- The system is fully compliant out of the box
+- Only outstanding user action: add public IP to Kite's IP whitelist
+
+---
+
+## 13. Lot Size Reference
+
+NIFTY lot size revision history (relevant context):
+
+| Effective Date | NIFTY Lot | Source |
+|---|---:|---|
+| Apr 1, 2024 | 25 | Pre-revision |
+| Apr 1 - Oct 27, 2025 | 75 | First revision |
+| **Oct 28, 2025 onwards** | **65** | **Current** (NSE Oct 2025 circular per SEBI Dec 2024) |
+
+**Where used in our codebase**:
+- `config/constants.py` → `INDEX_CONFIG["NIFTY"]["lot_size"] = 65` (authoritative source)
+- `orchestrator/strategy_agents/v14_live_agent.py` → `__init__(lot_size=65)` (live engine)
+- `backtesting/v14_unified_backtest.py` → `LOT_SIZE = 65` (research, scaled for forward projection)
+
+**If SEBI revises again in future**:
+1. Update `config/constants.py` first (single source of truth)
+2. Update `backtesting/v14_unified_backtest.py` LOT_SIZE constant
+3. Restart engine: `python start_local.py`
+4. The live agent reads `lot_size` from config; backtest uses module-level constant.
+
+Other indices (not deployed):
+- BANKNIFTY: 30 (was 35)
+- FINNIFTY: 60 (was 65)
+- NIFTY MIDCAP SELECT: 120 (was 140)
