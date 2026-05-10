@@ -890,6 +890,191 @@ async def set_engine_mode(request: Request):
     return {"status": "MODE_SET", "mode": new_mode, "message": "Engine not running. Start it to trade in " + new_mode + " mode."}
 
 
+@app.get("/api/health/full")
+async def health_full():
+    """Comprehensive system health: every subsystem status + counters + errors.
+
+    Aggregates from kite_state, engine state file, .env config, and process info.
+    Dashboard uses this to surface "why isn't anything happening" without asking.
+    """
+    import time
+    import psutil
+
+    now = time.time()
+    state_path = Path(PROJECT_ROOT) / "data" / "dashboard_state.json"
+    engine_state = {}
+    state_age_sec = None
+    if state_path.exists():
+        try:
+            engine_state = json.loads(state_path.read_text(encoding="utf-8"))
+            mtime = state_path.stat().st_mtime
+            state_age_sec = round(now - mtime, 1)
+        except Exception:
+            pass
+
+    # ── Engine subsystem ──
+    engine_pids = _find_external_engine_pids()
+    engine_running = bool(engine_pids)
+    engine_mem_mb = 0
+    if engine_pids:
+        try:
+            engine_mem_mb = round(psutil.Process(engine_pids[0]).memory_info().rss / 1024 / 1024, 0)
+        except Exception:
+            pass
+
+    sys_status = (engine_state.get("system") or {}).get("status", "UNKNOWN")
+    bars_processed = (engine_state.get("system") or {}).get("bars_processed", 0)
+    market = engine_state.get("market") or {}
+
+    # ── Kite subsystem ──
+    kite_subsystem = {
+        "connected": kite_state.get("connected", False),
+        "user": (kite_state.get("user_profile") or {}).get("user_name", ""),
+        "user_id": (kite_state.get("user_profile") or {}).get("user_id", ""),
+        "api_key_set": bool(kite_state.get("api_key")),
+        "access_token_set": bool(kite_state.get("access_token")),
+    }
+    if kite_state.get("connected") and kite_state.get("kite"):
+        try:
+            t0 = time.time()
+            margins = kite_state["kite"].margins()
+            kite_subsystem["api_response_ms"] = round((time.time() - t0) * 1000, 0)
+            eq = margins.get("equity", {})
+            kite_subsystem["available_margin"] = eq.get("available", {}).get("live_balance", 0)
+            kite_subsystem["used_margin"] = eq.get("utilised", {}).get("debits", 0)
+            kite_subsystem["api_status"] = "ok"
+        except Exception as e:
+            kite_subsystem["api_status"] = "error"
+            kite_subsystem["api_error"] = str(e)[:200]
+
+    # ── Data feeds ──
+    data_feeds = {
+        "nifty_spot": {
+            "value": market.get("spot_price"),
+            "stale": (state_age_sec is None) or (state_age_sec > 30 and sys_status == "TRADING"),
+        },
+        "vix": {
+            "value": market.get("vix"),
+            "stale": (state_age_sec is None) or (state_age_sec > 30 and sys_status == "TRADING"),
+        },
+        "state_age_sec": state_age_sec,
+    }
+
+    # ── AI Brain ──
+    ai_subsystem = {"enabled": False, "provider": None, "model": None}
+    brain_file = Path(PROJECT_ROOT) / "data" / "claude_brain.json"
+    if brain_file.exists():
+        try:
+            brain = json.loads(brain_file.read_text(encoding="utf-8"))
+            ai_subsystem.update({
+                "enabled": brain.get("enabled", False),
+                "provider": brain.get("provider"),
+                "model": brain.get("model"),
+                "calls_today": brain.get("total_calls", 0),
+                "cost_usd_today": brain.get("total_cost_usd", 0.0),
+                "last_call_age_sec": (
+                    round(now - brain.get("last_analysis_time", 0), 1)
+                    if brain.get("last_analysis_time") else None
+                ),
+                "last_error": brain.get("last_error"),
+            })
+        except Exception:
+            pass
+    # Detect which Anthropic models are configured
+    try:
+        from orchestrator.claude_market_brain import PROVIDERS, PROVIDER_PRIORITY
+        configured = []
+        for pname in PROVIDER_PRIORITY:
+            p = PROVIDERS.get(pname, {})
+            if os.getenv(p.get("env_key", "")):
+                configured.append({
+                    "provider": pname,
+                    "model": p.get("model"),
+                    "cost_per_1m": p.get("cost_per_1m_input"),
+                })
+        ai_subsystem["configured_providers"] = configured
+    except Exception:
+        pass
+
+    # ── Telegram ──
+    telegram_subsystem = {
+        "enabled": bool(os.getenv("TELEGRAM_BOT_TOKEN")) and bool(os.getenv("TELEGRAM_CHAT_ID")),
+        "chat_id": os.getenv("TELEGRAM_CHAT_ID", ""),
+    }
+
+    # ── Position / order counters from engine state ──
+    positions = engine_state.get("positions", {}).get("open", [])
+    risk = engine_state.get("risk", {})
+    today_pnl = (engine_state.get("pnl") or {}).get("gross") or (engine_state.get("pnl") or {}).get("total") or 0
+
+    # ── Recent log tail (last 5 ERROR/WARN entries) ──
+    log_path = Path(PROJECT_ROOT) / "data" / "daemon_feed.log"
+    recent_alerts = []
+    if log_path.exists():
+        try:
+            lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-200:]
+            for line in reversed(lines):
+                low = line.lower()
+                if "error" in low or "warning" in low or "warn" in low:
+                    recent_alerts.append(line[:200])
+                if len(recent_alerts) >= 5:
+                    break
+        except Exception:
+            pass
+
+    # ── Disk / memory ──
+    try:
+        disk = psutil.disk_usage(str(PROJECT_ROOT))
+        disk_free_gb = round(disk.free / 1024 / 1024 / 1024, 1)
+        disk_used_pct = round(disk.percent, 1)
+    except Exception:
+        disk_free_gb = None
+        disk_used_pct = None
+
+    # ── Config validation ──
+    config_subsystem = {
+        "kite_api_key":     bool(os.getenv("KITE_API_KEY") or os.getenv("BROKER_API_KEY")),
+        "kite_api_secret":  bool(os.getenv("KITE_API_SECRET") or os.getenv("BROKER_API_SECRET")),
+        "zerodha_user_id":  bool(os.getenv("ZERODHA_USER_ID") or os.getenv("BROKER_USER_ID")),
+        "zerodha_password": bool(os.getenv("ZERODHA_PASSWORD") or os.getenv("BROKER_PASSWORD")),
+        "totp_secret":      bool(os.getenv("ZERODHA_TOTP_SECRET") or os.getenv("BROKER_TOTP_SECRET")),
+        "anthropic_key":    bool(os.getenv("ANTHROPIC_API_KEY")),
+        "groq_key":         bool(os.getenv("GROQ_API_KEY")),
+        "gemini_key":       bool(os.getenv("GEMINI_API_KEY")),
+        "telegram":         bool(os.getenv("TELEGRAM_BOT_TOKEN")) and bool(os.getenv("TELEGRAM_CHAT_ID")),
+    }
+
+    return {
+        "ts": now,
+        "engine": {
+            "running": engine_running,
+            "pid": engine_pids[0] if engine_pids else None,
+            "status": sys_status,
+            "bars_processed": bars_processed,
+            "state_age_sec": state_age_sec,
+            "memory_mb": engine_mem_mb,
+        },
+        "kite": kite_subsystem,
+        "data_feeds": data_feeds,
+        "ai_brain": ai_subsystem,
+        "telegram": telegram_subsystem,
+        "trade_stats": {
+            "today_pnl_inr": today_pnl,
+            "win_rate": risk.get("win_rate", 0),
+            "winners": risk.get("winners", 0),
+            "losers": risk.get("losers", 0),
+            "profit_factor": risk.get("profit_factor", 0),
+            "open_positions": len(positions),
+        },
+        "config": config_subsystem,
+        "system": {
+            "disk_free_gb": disk_free_gb,
+            "disk_used_pct": disk_used_pct,
+        },
+        "alerts": recent_alerts,
+    }
+
+
 @app.get("/api/strategy/info")
 async def strategy_info():
     """Return CURRENTLY-DEPLOYED strategy config + walk-forward-validated metrics.

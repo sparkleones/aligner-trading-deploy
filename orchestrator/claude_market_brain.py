@@ -72,26 +72,38 @@ PROVIDERS = {
     },
     "haiku": {
         "base_url": None,
-        "model": "claude-sonnet-4-20250514",
-        "fast_model": "claude-sonnet-4-20250514",
+        "model": "claude-haiku-4-5",            # Haiku 4.5 ($1/$5 per M tokens, released Oct 2025)
+        "fast_model": "claude-haiku-4-5",       # 1/3 cost of Sonnet, 2x speed — perfect for trade decisions
         "env_key": "ANTHROPIC_API_KEY",
-        "cost_per_1m_input": 3.0,
+        "cost_per_1m_input": 1.0,
         "max_tokens": 600,
         "type": "anthropic",
     },
-    "claude": {
+    "sonnet": {
         "base_url": None,
-        "model": "claude-sonnet-4-20250514",
-        "fast_model": "claude-sonnet-4-20250514",
+        "model": "claude-sonnet-4-5-20250929",  # Sonnet 4.5 (latest Sonnet, $3/$15 per M)
+        "fast_model": "claude-sonnet-4-5-20250929",
         "env_key": "ANTHROPIC_API_KEY",
         "cost_per_1m_input": 3.0,
         "max_tokens": 800,
         "type": "anthropic",
     },
+    "claude": {
+        "base_url": None,
+        "model": "claude-haiku-4-5",            # default 'claude' alias → Haiku 4.5 (cheapest Anthropic)
+        "fast_model": "claude-haiku-4-5",
+        "env_key": "ANTHROPIC_API_KEY",
+        "cost_per_1m_input": 1.0,
+        "max_tokens": 800,
+        "type": "anthropic",
+    },
 }
 
-# Default priority: FREE tiers first, then cheapest paid
-PROVIDER_PRIORITY = ["groq", "gemini", "deepseek", "openai", "haiku", "claude"]
+# Default priority: FREE tiers first, then cheapest paid.
+# User currently has only ANTHROPIC_API_KEY → "haiku" (Claude Haiku 4.5 at $1/M) wins.
+# To save further: get free GROQ_API_KEY (console.groq.com) or GEMINI_API_KEY
+# (aistudio.google.com/apikey) and the system will auto-prefer them.
+PROVIDER_PRIORITY = ["groq", "gemini", "deepseek", "haiku", "openai", "sonnet", "claude"]
 
 
 class AIMarketBrain:
@@ -101,11 +113,16 @@ class AIMarketBrain:
     priority chain if a provider fails.
 
     Cost comparison for 75 bars/day (~150 calls):
-      - DeepSeek:  ~$0.02/day  (~Rs 1.7/day)
-      - Groq:      ~$0.01/day  (free tier)
-      - Haiku:     ~$0.04/day  (~Rs 3.3/day)
-      - GPT-4o-mini: ~$0.02/day
-      - Sonnet:    ~$0.45/day  (~Rs 37/day)
+      - Groq Llama-3.3:  $0.00/day      (FREE tier, 1000 req/day)
+      - Gemini 2.5 F-Lite: $0.00/day    (FREE tier, 1000 req/day)
+      - DeepSeek-chat:   ~$0.02/day     (~Rs 1.7/day)
+      - GPT-4o-mini:     ~$0.02/day
+      - **Haiku 4.5**:   ~$0.15/day  (~Rs 12/day) ← current default (best Anthropic value)
+      - Sonnet 4.5:      ~$0.45/day  (~Rs 37/day, 3x Haiku cost)
+
+    To switch to free providers, add to .env:
+      GROQ_API_KEY=...     (free at https://console.groq.com/keys)
+      GEMINI_API_KEY=...   (free at https://aistudio.google.com/apikey)
     """
 
     def __init__(

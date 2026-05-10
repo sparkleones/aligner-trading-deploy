@@ -511,6 +511,59 @@ tbody tr:hover { background:var(--card2); }
     <!-- ── RIGHT PANEL ── -->
     <div class="right-panel">
 
+      <!-- SYSTEM HEALTH — at-a-glance status for every subsystem -->
+      <div class="panel-section">
+        <div class="panel-header" onclick="togglePanel(this)">
+          System Health
+          <span id="sh-overall-badge" style="font-size:10px;font-weight:700;margin-left:6px;color:var(--muted);">CHECKING...</span>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="panel-body" id="system-health-panel" style="max-height:520px;">
+          <div style="padding:10px 12px;">
+            <div id="sh-status-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:10px;margin-bottom:8px;"></div>
+
+            <div style="border-top:1px solid var(--border);padding-top:6px;margin-top:4px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">TODAY'S STATS</div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">P&amp;L</span><span id="sh-pnl" style="font-weight:700;">--</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Trades W/L</span><span id="sh-trades" style="font-weight:700;">--</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Open positions</span><span id="sh-open-pos" style="font-weight:700;">--</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Bars processed</span><span id="sh-bars" style="font-weight:700;">--</span>
+              </div>
+            </div>
+
+            <div style="border-top:1px solid var(--border);padding-top:6px;margin-top:6px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">AI BRAIN</div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Provider</span><span id="sh-ai-provider" style="font-weight:700;">--</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Model</span><span id="sh-ai-model" style="font-weight:700;font-size:9px;">--</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Calls today</span><span id="sh-ai-calls" style="font-weight:700;">--</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;">
+                <span style="color:var(--muted);">Cost today</span><span id="sh-ai-cost" style="font-weight:700;">--</span>
+              </div>
+            </div>
+
+            <div style="border-top:1px solid var(--border);padding-top:6px;margin-top:6px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">
+                RECENT ALERTS <span id="sh-alerts-count" style="color:var(--text2);font-weight:400;">--</span>
+              </div>
+              <div id="sh-alerts-list" style="max-height:130px;overflow-y:auto;font-size:9px;line-height:1.4;color:var(--text2);font-family:monospace;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Kite Broker Auth (auto-login + status) -->
       <div class="panel-section">
         <div class="panel-header" onclick="togglePanel(this)">
@@ -1521,6 +1574,144 @@ fetch('/api/strategy/info').then(r => r.json()).then(info => {
     document.getElementById('strat-pf').textContent = bt.profit_factor.toFixed(2);
   }
 }).catch(() => {});
+
+// ── System Health panel: comprehensive status fetched every 5s ──
+function shDot(state) {
+  // state: 'green' | 'yellow' | 'red' | 'gray'
+  const colors = {
+    green: 'var(--green,#0f0)',
+    yellow: '#f5b400',
+    red: 'var(--red,#f44)',
+    gray: 'var(--muted,#666)',
+  };
+  return '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
+         (colors[state] || colors.gray) + ';margin-right:5px;"></span>';
+}
+
+function refreshSystemHealth() {
+  fetch('/api/health/full').then(r => r.json()).then(d => {
+    if (!d) return;
+
+    // ── Subsystem grid ──
+    const checks = [];
+
+    // Engine
+    const eng = d.engine || {};
+    const eng_running = eng.running;
+    const stale = eng.state_age_sec != null && eng.state_age_sec > 60;
+    let eng_state = 'red'; let eng_text = 'STOPPED';
+    if (eng_running && eng.status === 'TRADING' && !stale) { eng_state = 'green'; eng_text = 'TRADING'; }
+    else if (eng_running && eng.status === 'TRADING' && stale) { eng_state = 'yellow'; eng_text = 'STALE'; }
+    else if (eng_running) { eng_state = 'yellow'; eng_text = eng.status || 'IDLE'; }
+    checks.push(['Engine', eng_state, eng_text + (eng.pid ? ' PID ' + eng.pid : '')]);
+
+    // Kite
+    const k = d.kite || {};
+    let kite_state = k.connected ? (k.api_status === 'ok' ? 'green' : 'yellow') : 'red';
+    let kite_text = k.connected ? 'CONNECTED' : 'DISCONNECTED';
+    checks.push(['Kite API', kite_state, kite_text]);
+
+    // Data feeds
+    const df = d.data_feeds || {};
+    const feed_state = (df.nifty_spot?.stale || df.vix?.stale) ? 'yellow' : (df.nifty_spot?.value ? 'green' : 'gray');
+    const feed_text = df.nifty_spot?.value
+      ? 'NIFTY ' + Math.round(df.nifty_spot.value) + ' (' + (df.state_age_sec || 0) + 's)'
+      : 'No data';
+    checks.push(['Data Feeds', feed_state, feed_text]);
+
+    // AI Brain
+    const ai = d.ai_brain || {};
+    const ai_state = ai.enabled ? (ai.last_error ? 'yellow' : 'green') : 'gray';
+    const ai_text = ai.enabled ? (ai.provider + ' (' + (ai.calls_today || 0) + ' calls)') : 'Disabled';
+    checks.push(['AI Brain', ai_state, ai_text]);
+
+    // Telegram
+    const tg = d.telegram || {};
+    checks.push(['Telegram', tg.enabled ? 'green' : 'gray', tg.enabled ? 'Enabled' : 'Disabled']);
+
+    // Config
+    const cfg = d.config || {};
+    const cfg_all = Object.values(cfg).every(v => v);
+    const cfg_essentials = cfg.kite_api_key && cfg.kite_api_secret && cfg.zerodha_user_id && cfg.zerodha_password && cfg.totp_secret;
+    checks.push(['Config', cfg_essentials ? (cfg_all ? 'green' : 'yellow') : 'red',
+                cfg_essentials ? (cfg_all ? 'All set' : 'Optional missing') : 'INCOMPLETE']);
+
+    // Disk
+    const sys = d.system || {};
+    let disk_state = 'green'; let disk_text = '--';
+    if (sys.disk_free_gb != null) {
+      if (sys.disk_free_gb < 2) disk_state = 'red';
+      else if (sys.disk_free_gb < 5) disk_state = 'yellow';
+      disk_text = sys.disk_free_gb + ' GB free';
+    }
+    checks.push(['Disk Space', disk_state, disk_text]);
+
+    // Memory
+    let mem_state = 'green'; let mem_text = '--';
+    if (eng.memory_mb) {
+      if (eng.memory_mb > 1500) mem_state = 'yellow';
+      mem_text = eng.memory_mb + ' MB';
+    }
+    checks.push(['Engine Mem', mem_state, mem_text]);
+
+    // Render grid
+    document.getElementById('sh-status-grid').innerHTML = checks.map(c =>
+      '<div style="display:flex;align-items:center;">' + shDot(c[1]) +
+      '<span style="color:var(--muted);">' + c[0] + '</span></div>' +
+      '<div style="text-align:right;color:var(--text2);font-weight:600;" title="' + c[2] + '">' +
+      (c[2].length > 22 ? c[2].substring(0, 20) + '..' : c[2]) +
+      '</div>'
+    ).join('');
+
+    // Overall badge
+    const has_red = checks.some(c => c[1] === 'red');
+    const has_yellow = checks.some(c => c[1] === 'yellow');
+    const badge = document.getElementById('sh-overall-badge');
+    if (has_red) {
+      badge.textContent = 'ATTENTION';
+      badge.style.color = 'var(--red,#f44)';
+    } else if (has_yellow) {
+      badge.textContent = 'DEGRADED';
+      badge.style.color = '#f5b400';
+    } else {
+      badge.textContent = 'ALL GREEN';
+      badge.style.color = 'var(--green,#0f0)';
+    }
+
+    // Today's stats
+    const ts = d.trade_stats || {};
+    const pnl = ts.today_pnl_inr || 0;
+    const pnl_el = document.getElementById('sh-pnl');
+    pnl_el.textContent = (pnl >= 0 ? '+' : '-') + 'Rs ' + Math.abs(pnl).toLocaleString('en-IN');
+    pnl_el.style.color = pnl >= 0 ? 'var(--green,#0f0)' : 'var(--red,#f44)';
+    document.getElementById('sh-trades').textContent = (ts.winners || 0) + 'W / ' + (ts.losers || 0) + 'L';
+    document.getElementById('sh-open-pos').textContent = ts.open_positions || 0;
+    document.getElementById('sh-bars').textContent = eng.bars_processed || 0;
+
+    // AI Brain stats
+    document.getElementById('sh-ai-provider').textContent = ai.provider || '--';
+    document.getElementById('sh-ai-model').textContent = ai.model || '--';
+    document.getElementById('sh-ai-calls').textContent = ai.calls_today || 0;
+    document.getElementById('sh-ai-cost').textContent = ai.cost_usd_today
+      ? '$' + ai.cost_usd_today.toFixed(4) : '$0.00';
+
+    // Alerts
+    const alerts = d.alerts || [];
+    document.getElementById('sh-alerts-count').textContent = '(' + alerts.length + ')';
+    document.getElementById('sh-alerts-list').innerHTML = alerts.length === 0
+      ? '<div style="color:var(--green,#0f0);padding:4px 0;">No recent warnings or errors</div>'
+      : alerts.map(a => {
+          let color = 'var(--text2)';
+          if (a.toLowerCase().includes('error')) color = 'var(--red,#f44)';
+          else if (a.toLowerCase().includes('warn')) color = '#f5b400';
+          return '<div style="padding:2px 0;color:' + color + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+                 a.replace(/</g, '&lt;') + '</div>';
+        }).join('');
+
+  }).catch(err => console.warn('health/full failed', err));
+}
+refreshSystemHealth();
+setInterval(refreshSystemHealth, 5000);  // every 5 seconds
 
 // ── Kite Broker Auth panel ──
 function fmtRs(n) {
