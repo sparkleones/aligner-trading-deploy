@@ -101,6 +101,13 @@ def auto_login_kite(persist: bool = True) -> dict:
         result["error"] = f"missing dep: {e}"
         return result
 
+    # ── Reload .env so newly-added credentials are visible without restart ──
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(Path(__file__).resolve().parent.parent / ".env", override=True)
+    except Exception:
+        pass  # not critical — falls back to current process env
+
     # ── Read credentials (support both KITE_* and BROKER_* prefixes) ──
     api_key = _get_env("KITE_API_KEY", "BROKER_API_KEY")
     api_secret = _get_env("KITE_API_SECRET", "BROKER_API_SECRET")

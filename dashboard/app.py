@@ -364,7 +364,14 @@ async def broker_auto_login_check():
 
     Used by dashboard UI to show whether the auto-login button can work.
     Does NOT expose secrets — returns presence flags only.
+    Reloads .env each call so newly-added vars are picked up without restart.
     """
+    # Reload .env so dashboard reflects fresh credentials without restart
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(Path(PROJECT_ROOT) / ".env", override=True)
+    except Exception:
+        pass
     return {
         "api_key_set":     bool(os.getenv("KITE_API_KEY") or os.getenv("BROKER_API_KEY")),
         "api_secret_set":  bool(os.getenv("KITE_API_SECRET") or os.getenv("BROKER_API_SECRET")),
