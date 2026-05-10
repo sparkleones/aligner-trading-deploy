@@ -865,7 +865,9 @@ function render() {
   el.textContent = fmtINR(pnl);
   el.className = 'hero-pnl ' + cls(pnl);
 
-  const capital = state.system?.capital || 200000;
+  // Capital priority: live engine state > live broker available margin > 0
+  // (no fake hardcoded fallback — that misleads when engine hasn't ticked yet)
+  const capital = state.system?.capital || window._liveBrokerCapital || 0;
   const pct = capital > 0 ? (pnl / capital * 100) : 0;
   const charges = state.pnl.charges || 0;
   let subText = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}% | Capital: Rs ${capital.toLocaleString('en-IN')}`;
@@ -1543,6 +1545,9 @@ function refreshKiteStatus() {
       user.textContent = (d.user || '--') + ' (' + (d.user_id || '') + ')';
       avail.textContent = fmtRs(d.available_margin);
       used.textContent = fmtRs(d.used_margin);
+      // Expose live broker balance to hero card so Capital shows real value
+      // even before engine has written its first state tick.
+      window._liveBrokerCapital = d.available_margin || 0;
     } else {
       badge.textContent = 'DISCONNECTED';
       badge.style.color = 'var(--red,#f44)';
