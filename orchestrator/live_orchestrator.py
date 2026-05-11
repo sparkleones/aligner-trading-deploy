@@ -20,6 +20,7 @@ import logging
 import queue
 import time
 from datetime import datetime, timedelta, date, time as dt_time
+from config.timing import now_ist
 from typing import Any, Callable, Coroutine, Optional, Union
 
 from config.constants import (
@@ -665,12 +666,21 @@ class LiveTradingOrchestrator:
         underlying = INDEX_CONFIG.get(self.symbol, {}).get(
             "underlying_symbol", f"NSE:{self.symbol} 50"
         )
-        now = datetime.now()
+        # Anchor to IST regardless of host clock — Windows ignores TZ env.
+        now = now_ist()
         market_open = now.replace(hour=MARKET_OPEN_HOUR, minute=MARKET_OPEN_MINUTE, second=0, microsecond=0)
+        market_open_in_future = now <= market_open
 
-        if now <= market_open:
-            logger.info("Market not yet open — skipping historical bar fetch")
-            return
+        if market_open_in_future:
+            logger.info(
+                "Pre-market start — fetching prev-day warmup bars only "
+                "(today's session bars will arrive via tick stream after %s IST)",
+                market_open.strftime("%H:%M"),
+            )
+        # NOTE: Even if market not yet open today, still load yesterday's
+        # 30-day warmup. Previously this function bailed entirely, leaving
+        # the engine with zero bars until live ticks formed new ones — a
+        # 30-minute blind period right at market open. Bug fixed 2026-05-11.
 
         all_bars = []
 
@@ -709,22 +719,30 @@ class LiveTradingOrchestrator:
             except Exception as e:
                 logger.warning("Historical warmup fetch failed for %d-day window: %s", warmup_days, e)
 
-        # ── Step 2: Load today's bars ──
-        try:
-            bars = self._md_broker().get_historical_data(
-                symbol=underlying,
-                from_dt=market_open,
-                to_dt=now,
-                interval="5minute",
-            )
-            if bars:
-                all_bars.extend(bars)
-        except Exception as e:
-            logger.warning("Historical data fetch failed: %s — starting fresh", e)
-            return
+        # ── Step 2: Load today's elapsed-session bars (skip if market hasn't opened yet) ──
+        bars = []
+        if not market_open_in_future:
+            try:
+                bars = self._md_broker().get_historical_data(
+                    symbol=underlying,
+                    from_dt=market_open,
+                    to_dt=now,
+                    interval="5minute",
+                ) or []
+                if bars:
+                    all_bars.extend(bars)
+                    logger.info(
+                        "Today's session bars loaded | %d bars from %s to %s IST",
+                        len(bars),
+                        market_open.strftime("%H:%M"),
+                        now.strftime("%H:%M"),
+                    )
+            except Exception as e:
+                logger.warning("Today's session fetch failed: %s — using warmup only", e)
+                # Do NOT return — yesterday's warmup is still valuable
 
         if not all_bars:
-            logger.info("No historical bars returned — starting fresh")
+            logger.info("No historical bars returned — starting fresh (will warm up on live ticks)")
             return
 
         # Seed bar buffer and market analyzer
