@@ -751,6 +751,25 @@ class LiveTradingOrchestrator:
             self._bar_count += 1
             self.market_analyzer.add_bar(bar)
 
+        # Seed each agent's own bar_history. Without this step the
+        # agents start with empty history and stay 'Warming up...' for
+        # 75 minutes even though orchestrator already has 30 days of
+        # data. seed_bars() is a no-op if the agent doesn't implement it.
+        for agent_name, agent in self.agents.items():
+            seed_fn = getattr(agent, "seed_bars", None)
+            if callable(seed_fn):
+                try:
+                    seed_fn(all_bars)
+                    history_len = len(getattr(agent, "_bar_history", []))
+                    logger.info(
+                        "Agent %s seeded with historical bars | bar_history=%d",
+                        agent_name, history_len,
+                    )
+                except Exception as e:
+                    logger.warning("Agent %s seed_bars failed: %s", agent_name, e)
+            else:
+                logger.info("Agent %s does not implement seed_bars (will warm up on live ticks)", agent_name)
+
         logger.info(
             "Historical bars loaded | %d bars (%d warmup + %d today) | latest close=%.2f",
             len(all_bars),

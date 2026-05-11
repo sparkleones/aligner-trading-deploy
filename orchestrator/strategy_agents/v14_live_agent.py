@@ -501,6 +501,49 @@ class V14LiveAgent(BaseLiveAgent):
                 removed.get("action"), removed.get("strike"), removed.get("opt_type"),
             )
 
+    def seed_bars(self, bars: list[dict]) -> None:
+        """Pre-populate the agent's bar history from historical data.
+
+        Called by the orchestrator's _load_historical_bars() so that, on
+        a mid-session engine restart, indicators (RSI, EMA, MACD, ATR,
+        Supertrend) have full context from the last 30 trading days and
+        can fire signals on the very first live tick — instead of
+        waiting 75 minutes (15 bars x 5 min) for the bar_history buffer
+        to refill from live ticks alone.
+
+        Does NOT run signal generation; purely a data warmup. Mid-bar
+        snapshots and duplicate timestamps are filtered.
+        """
+        if not bars:
+            return
+        seen_ts: set[str] = set()
+        # Pre-populate seen set from existing history to avoid double-counting
+        for b in self._bar_history:
+            ts = str(b.get("time") or b.get("timestamp") or "")
+            if ts:
+                seen_ts.add(ts)
+        added = 0
+        for bar in bars:
+            if not isinstance(bar, dict):
+                continue
+            if bar.get("_is_midbar"):
+                continue
+            ts = str(bar.get("time") or bar.get("timestamp") or "")
+            if ts and ts in seen_ts:
+                continue
+            self._bar_history.append(bar)
+            if ts:
+                seen_ts.add(ts)
+            added += 1
+            if self._regime_detector and "close" in bar:
+                try:
+                    self._regime_detector.update(bar["close"])
+                except Exception:
+                    pass
+        # Cap at 500 (matches the live-tick path)
+        if len(self._bar_history) > 500:
+            self._bar_history = self._bar_history[-500:]
+
     def get_decision_state(self, current_spot: float = 0, vix: float = 0) -> dict:
         """Export current scoring and trigger levels for dashboard display."""
         ind = self._compute_indicators()
