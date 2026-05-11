@@ -1166,25 +1166,78 @@ function renderDecision() {
 
 function renderPositions() {
   const open = state.positions?.open || [];
-  if (open.length === 0) {
+  // If engine has its own positions (algo-opened), prefer those
+  if (open.length > 0) {
+    document.getElementById('positions-tbody').innerHTML = open.map(p => {
+      const pnlCls = (p.pnl||0) >= 0 ? 'up' : 'down';
+      const typeCls = p.option_type === 'CE' ? 'ce' : 'pe';
+      return `<tr>
+        <td style="font-weight:600">${p.symbol||'--'}</td>
+        <td><span class="tag ${typeCls}">${p.option_type||'--'}</span></td>
+        <td><span class="tag buy">BUY</span></td>
+        <td>${p.qty||0}</td>
+        <td>${(p.entry_price||0).toFixed(1)}</td>
+        <td>${(p.ltp||0).toFixed(1)}</td>
+        <td class="${pnlCls}" style="font-weight:700">${fmtINR(p.pnl||0)}</td>
+        <td><button class="topbar-btn danger" onclick="exitPosition('${p.symbol}')">EXIT</button></td>
+      </tr>`;
+    }).join('');
+    return;
+  }
+  // Fallback: show broker (Kite) positions — covers manual trades placed
+  // outside the engine. Updated by refreshBrokerPositions() poller.
+  const broker = window._brokerPositions || [];
+  if (broker.length === 0) {
     document.getElementById('positions-tbody').innerHTML = '<tr><td colspan="8" class="empty">No open positions</td></tr>';
     return;
   }
-  document.getElementById('positions-tbody').innerHTML = open.map(p => {
-    const pnlCls = (p.pnl||0) >= 0 ? 'up' : 'down';
-    const typeCls = p.option_type === 'CE' ? 'ce' : 'pe';
+  document.getElementById('positions-tbody').innerHTML = broker.map(p => {
+    const pnl = p.pnl || 0;
+    const pnlCls = pnl >= 0 ? 'up' : 'down';
+    // Parse option type from tradingsymbol (e.g. NIFTY2651223800PE -> PE)
+    const sym = p.tradingsymbol || '--';
+    const optType = /CE$/.test(sym) ? 'CE' : (/PE$/.test(sym) ? 'PE' : '--');
+    const typeCls = optType === 'CE' ? 'ce' : (optType === 'PE' ? 'pe' : '');
+    const side = (p.quantity || 0) > 0 ? 'BUY' : 'SELL';
+    const sideCls = side === 'BUY' ? 'buy' : 'sell';
     return `<tr>
-      <td style="font-weight:600">${p.symbol||'--'}</td>
-      <td><span class="tag ${typeCls}">${p.option_type||'--'}</span></td>
-      <td><span class="tag buy">BUY</span></td>
-      <td>${p.qty||0}</td>
-      <td>${(p.entry_price||0).toFixed(1)}</td>
-      <td>${(p.ltp||0).toFixed(1)}</td>
-      <td class="${pnlCls}" style="font-weight:700">${fmtINR(p.pnl||0)}</td>
-      <td><button class="topbar-btn danger" onclick="exitPosition('${p.symbol}')">EXIT</button></td>
+      <td style="font-weight:600" title="Manual/broker position">${sym} <span style="font-size:9px;color:var(--muted);">[BRK]</span></td>
+      <td><span class="tag ${typeCls}">${optType}</span></td>
+      <td><span class="tag ${sideCls}">${side}</span></td>
+      <td>${Math.abs(p.quantity||0)}</td>
+      <td>${(p.average_price||0).toFixed(2)}</td>
+      <td>${(p.last_price||0).toFixed(2)}</td>
+      <td class="${pnlCls}" style="font-weight:700">${fmtINR(pnl)}</td>
+      <td><span style="font-size:10px;color:var(--muted);">Manage in Kite</span></td>
     </tr>`;
   }).join('');
 }
+
+function refreshBrokerPositions() {
+  fetch('/api/broker/positions').then(r => r.json()).then(d => {
+    if (d && d.error) return;
+    const all = (d.net_positions || []).filter(p => Math.abs(p.quantity || 0) > 0);
+    window._brokerPositions = all;
+    // Re-render positions tab (only if it'd show fallback path)
+    if (!(state.positions?.open?.length)) renderPositions();
+    // Update hero capital using broker funds (total = available + used)
+    if (window._liveBrokerFunds) {
+      const tot = (window._liveBrokerFunds.available_margin || 0) + (window._liveBrokerFunds.used_margin || 0);
+      if (tot > 0) window._liveBrokerCapital = tot;
+    }
+    // Update hero P&L footer if engine hasn't ticked
+    const totPnl = all.reduce((s, p) => s + (p.pnl || 0), 0);
+    if (totPnl !== 0 && !(state.pnl?.total_pnl)) {
+      const heroPnl = document.querySelector('.hero-pnl');
+      if (heroPnl) {
+        heroPnl.textContent = (totPnl >= 0 ? '+' : '') + Math.round(totPnl);
+        heroPnl.className = 'hero-pnl ' + (totPnl >= 0 ? 'up' : 'down');
+      }
+    }
+  }).catch(() => {});
+}
+setInterval(refreshBrokerPositions, 6000);
+refreshBrokerPositions();
 
 function renderOrders() {
   const orders = state.orders || [];
@@ -1899,14 +1952,21 @@ function refreshKiteStatus() {
       user.textContent = (d.user || '--') + ' (' + (d.user_id || '') + ')';
       avail.textContent = fmtRs(d.available_margin);
       used.textContent = fmtRs(d.used_margin);
-      // Expose live broker balance to hero card so Capital shows real value
-      // even before engine has written its first state tick.
-      window._liveBrokerCapital = d.available_margin || 0;
+      // Stash full funds object for any other consumer
+      window._liveBrokerFunds = {
+        available_margin: d.available_margin || 0,
+        used_margin: d.used_margin || 0,
+      };
+      // Capital = TOTAL funds deployed in account (available + used in margin).
+      // Earlier this read only `available_margin`, which showed Rs 2K when
+      // the user had Rs 20K parked in a margin block.
+      const totalFunds = (d.available_margin || 0) + (d.used_margin || 0);
+      window._liveBrokerCapital = totalFunds;
       // If engine hasn't pushed state yet, hero-sub still shows the placeholder.
-      // Update it directly with live broker balance.
+      // Update it directly with live broker total balance.
       const heroSub = document.getElementById('hero-sub');
       if (heroSub && (heroSub.textContent.includes('--') || heroSub.textContent.includes('2,00,000'))) {
-        heroSub.textContent = '0.0% | Capital: Rs ' + (d.available_margin || 0).toLocaleString('en-IN');
+        heroSub.textContent = '0.0% | Capital: Rs ' + totalFunds.toLocaleString('en-IN');
       }
     } else {
       badge.textContent = 'DISCONNECTED';
