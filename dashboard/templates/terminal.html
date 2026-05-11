@@ -621,6 +621,17 @@ tbody tr:hover { background:var(--card2); }
           V14 R5 Decision Engine <span class="arrow">&#9660;</span>
         </div>
         <div class="panel-body" id="decision-panel">
+          <!-- CURRENT SIGNAL banner (plain-English what to do right now) -->
+          <div id="current-signal-banner" style="padding:10px 12px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);">
+            <div style="font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-bottom:4px;">CURRENT SIGNAL</div>
+            <div id="cs-headline" style="font-size:16px;font-weight:800;line-height:1.2;color:var(--muted);">
+              WARMING UP
+            </div>
+            <div id="cs-detail" style="font-size:11px;color:var(--fg);margin-top:4px;line-height:1.5;">
+              Loading historical bars from Kite...
+            </div>
+            <div id="cs-ai" style="font-size:10px;color:var(--muted);margin-top:4px;font-style:italic;display:none;"></div>
+          </div>
           <!-- Indicator summary -->
           <div style="padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;font-size:11px;border-bottom:1px solid var(--border);" id="indicator-summary">
             <span class="indicator-tag neutral">Warming up...</span>
@@ -1075,8 +1086,101 @@ function renderMetrics() {
   ).join('');
 }
 
+function renderCurrentSignal(d) {
+  // Renders the plain-English CURRENT SIGNAL banner. Called from
+  // renderDecision() and also runs on partial state so user always
+  // sees *something* meaningful instead of "Warming up...".
+  const head = document.getElementById('cs-headline');
+  const det = document.getElementById('cs-detail');
+  const aiEl = document.getElementById('cs-ai');
+  if (!head || !det) return;
+
+  // 1. Engine not warmed up yet
+  if (!d || !d.ready) {
+    head.textContent = 'WARMING UP';
+    head.style.color = 'var(--yellow)';
+    const bars = state.market?.bars?.length || 0;
+    det.innerHTML = bars > 0
+      ? `${bars} historical bars loaded. Indicators will compute on the next live tick.`
+      : 'Loading historical bars from Kite (~30-day window)...';
+    aiEl.style.display = 'none';
+    return;
+  }
+
+  const putScore = d.put_score || 0;
+  const callScore = d.call_score || 0;
+  const putMin = d.put_min || 7;
+  const callMin = d.call_min || 7;
+  const spot = state.market?.spot_price || 0;
+  const aiAction = (d.ai_brain_action || '').toUpperCase();
+  const ssLast = d.smart_strike_last;
+
+  // 2. AI Brain has an EXIT instruction — top priority
+  if (aiAction === 'EXIT_ALL') {
+    head.textContent = 'EXIT ALL';
+    head.style.color = 'var(--red,#f44)';
+    det.innerHTML = 'AI Brain has issued EXIT ALL — engine is closing positions.';
+    aiEl.style.display = 'none';
+    return;
+  }
+
+  // 3. Determine the dominant side. Use the actual fire threshold (score >= min)
+  let action = 'HOLD';
+  let optType = '--';
+  let scoreShown = 0;
+  let minShown = 7;
+  if (putScore >= putMin && putScore >= callScore) {
+    action = 'BUY PUT'; optType = 'PE'; scoreShown = putScore; minShown = putMin;
+  } else if (callScore >= callMin && callScore > putScore) {
+    action = 'BUY CALL'; optType = 'CE'; scoreShown = callScore; minShown = callMin;
+  }
+
+  // 4. AI Brain can also nudge action up to BUY if scores are close
+  if (action === 'HOLD' && aiAction.includes('CALL') && callScore >= putScore) {
+    action = 'BUY CALL'; optType = 'CE'; scoreShown = callScore; minShown = callMin;
+  } else if (action === 'HOLD' && aiAction.includes('PUT') && putScore >= callScore) {
+    action = 'BUY PUT'; optType = 'PE'; scoreShown = putScore; minShown = putMin;
+  }
+
+  if (action === 'HOLD') {
+    head.textContent = 'HOLD';
+    head.style.color = 'var(--muted)';
+    det.innerHTML =
+      `PUT score <strong>${putScore.toFixed(1)}/${putMin}</strong> &nbsp;|&nbsp; ` +
+      `CALL score <strong>${callScore.toFixed(1)}/${callMin}</strong>` +
+      ` — neither side at threshold yet.`;
+  } else {
+    // BUY signal — show strike, entry, sizing
+    head.textContent = action;
+    head.style.color = action === 'BUY PUT' ? 'var(--red,#f44)' : 'var(--green,#0f0)';
+    const strike = (ssLast && ssLast.strike) ? ssLast.strike.toFixed(0) : '--';
+    const premium = (ssLast && ssLast.premium) ? ` ~Rs ${ssLast.premium.toFixed(1)}` : '';
+    const delta = (ssLast && ssLast.delta) ? ` Δ=${Math.abs(ssLast.delta).toFixed(2)}` : '';
+    const lotSize = 65;
+    det.innerHTML =
+      `Strike: <strong>NIFTY ${strike} ${optType}</strong>${premium}${delta}<br>` +
+      `Score: <strong style="color:${action==='BUY PUT'?'var(--red,#f44)':'var(--green,#0f0)'};">${scoreShown.toFixed(1)}/${minShown}</strong>` +
+      ` (threshold reached)` +
+      ` &nbsp;|&nbsp; Spot: ${spot ? spot.toFixed(0) : '--'}<br>` +
+      `Suggested qty: <strong>${lotSize}</strong> (1 lot of ${lotSize}) — SL fires at 50% premium loss`;
+  }
+
+  // 5. AI Brain commentary line (always show if AI is active)
+  if (d.ai_brain_active && aiAction) {
+    aiEl.style.display = '';
+    const sent = (d.ai_brain_sentiment || 'neutral');
+    const risk = (d.ai_brain_risk || 'moderate');
+    aiEl.textContent = `AI Brain: ${aiAction} | sentiment=${sent} | risk=${risk}`;
+  } else {
+    aiEl.style.display = 'none';
+  }
+}
+
 function renderDecision() {
   const d = state.decision;
+  // Always update the CURRENT SIGNAL banner — even with no data, it shows
+  // a meaningful "WARMING UP" state instead of nothing.
+  renderCurrentSignal(d);
   if (!d || !d.ready) return;
 
   document.getElementById('put-score').textContent = d.put_score?.toFixed(1) || '0';
