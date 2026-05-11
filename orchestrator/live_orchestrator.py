@@ -179,7 +179,22 @@ class LiveTradingOrchestrator:
         self._gtt_orders: dict[str, int] = {}
 
         # Config flags for safety features
-        self._auto_close_orphans: bool = True
+        # 2026-05-11: defaulted to FALSE after user incident where engine
+        # tried to auto-close a manually-opened NIFTY PE on startup.
+        # Engine must NEVER close positions it didn't open. Set
+        # ENGINE_AUTO_CLOSE_ORPHANS=true in .env only if you know there
+        # are NO manual positions in your Zerodha account.
+        import os as _os
+        self._auto_close_orphans: bool = (
+            _os.getenv("ENGINE_AUTO_CLOSE_ORPHANS", "false").strip().lower()
+            in ("1", "true", "yes", "on")
+        )
+        # Known engine tags — only positions with these tags are touchable
+        # by orphan reconciliation. Manual trades from the Kite app have
+        # tag=None and are always left alone.
+        self._engine_tag_prefixes: tuple[str, ...] = (
+            "v14_", "v15_", "v17_", "ddqn_", "iron_", "bps_", "engine_",
+        )
         self._use_gtt_backup_sl: bool = True
         self._gtt_sl_pct: float = 0.50  # 50% premium loss triggers GTT SL
 
@@ -334,10 +349,23 @@ class LiveTradingOrchestrator:
             pnl = pos.get("pnl", 0.0)
             product = pos.get("product", "MIS")
             exchange = pos.get("exchange", "NFO")
+            tag = pos.get("tag") or ""
+
+            # Skip positions the engine didn't open. Manual trades from
+            # the Kite app have tag=None / empty. Only touch positions
+            # whose tag starts with a known engine prefix.
+            tag_is_engine = any(tag.startswith(p) for p in self._engine_tag_prefixes)
+            if not tag_is_engine:
+                logger.warning(
+                    "ORPHAN SKIPPED (manual position): %s qty=%d pnl=%.2f tag=%r "
+                    "-- engine will NOT touch user-opened positions",
+                    symbol, qty, pnl, tag,
+                )
+                continue
 
             logger.warning(
-                "ORPHAN POSITION: %s qty=%d pnl=%.2f product=%s exchange=%s",
-                symbol, qty, pnl, product, exchange,
+                "ORPHAN POSITION: %s qty=%d pnl=%.2f product=%s exchange=%s tag=%s",
+                symbol, qty, pnl, product, exchange, tag,
             )
 
             # Close orphan: sell if long, buy if short
