@@ -1043,7 +1043,7 @@ class LiveTradingOrchestrator:
                     pass
                 if abs(self._live_vix - prev_vix) >= 0.5 or prev_vix == 0.0:
                     logger.info(
-                        "VIX tick | %.2f → %.2f", prev_vix, self._live_vix,
+                        "VIX tick | %.2f -> %.2f", prev_vix, self._live_vix,
                     )
                 continue  # VIX ticks don't feed the 5-min bar aggregator
 

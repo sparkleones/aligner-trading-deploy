@@ -37,6 +37,9 @@ from pathlib import Path
 # Ensure project root is on path
 sys.path.insert(0, str(Path(__file__).parent))
 
+# IST wall-clock helper — Windows ignores TZ env var, so we anchor explicitly.
+from config.timing import now_ist  # noqa: E402
+
 from config.settings import load_settings
 from config.constants import (
     MARKET_OPEN_HOUR, MARKET_OPEN_MINUTE,
@@ -246,7 +249,7 @@ def next_market_day(d: date = None) -> date:
 
 def seconds_until(target: dt_time) -> float:
     """Seconds from now until target time today."""
-    now = datetime.now()
+    now = now_ist()
     target_dt = now.replace(
         hour=target.hour, minute=target.minute, second=0, microsecond=0
     )
@@ -306,7 +309,7 @@ def fetch_previous_close(broker, symbol: str = "NIFTY") -> float:
 
     # Method 2: Historical data — yesterday's last bar
     try:
-        now = datetime.now()
+        now = now_ist()
         # Go back up to 5 days to find last trading day
         for days_back in range(1, 6):
             prev_day = now - timedelta(days=days_back)
@@ -623,7 +626,7 @@ class AutonomousTrader:
                 if not is_market_day(today):
                     next_day = next_market_day(today)
                     wait_hours = (
-                        datetime.combine(next_day, PRE_MARKET_START) - datetime.now()
+                        datetime.combine(next_day, PRE_MARKET_START) - now_ist()
                     ).total_seconds() / 3600
                     logger.info(
                         "Not a market day. Next trading: %s (%.1f hours away)",
@@ -636,7 +639,7 @@ class AutonomousTrader:
                     continue
 
                 # It's a market day
-                now = datetime.now().time()
+                now = now_ist().time()
 
                 if now < PRE_MARKET_START:
                     # Wait until 9:10
@@ -680,7 +683,7 @@ class AutonomousTrader:
         logger.info("=" * 70)
         logger.info("  DAILY SESSION: %s (%s)",
                      date.today().isoformat(),
-                     datetime.now().strftime("%A"))
+                     now_ist().strftime("%A"))
         logger.info("=" * 70)
 
         # ── Step 1: Authenticate ──
@@ -753,7 +756,7 @@ class AutonomousTrader:
         )
         prev_close = fetch_previous_close(_prev_close_broker, self.symbol)
         self._prev_close = prev_close
-        self._session_started_at = datetime.now().isoformat()
+        self._session_started_at = now_ist().isoformat()
         logger.info("[2/8] Previous close: %.2f", prev_close)
 
         # ── Step 2.5: Fetch REAL capital from Zerodha ──
@@ -813,7 +816,7 @@ class AutonomousTrader:
                     f"TRADE: {action} {sym} x{qty} @ Rs{price:.2f}"
                 )
                 self._signals_accepted += 1
-                self._last_signal = f"{action} @ {datetime.now().strftime('%H:%M')}"
+                self._last_signal = f"{action} @ {now_ist().strftime('%H:%M')}"
                 tg.on_trade_entry(
                     symbol=sym, side=action, qty=qty, price=price,
                     lots=lots, underlying=event.get("underlying_price", 0),
@@ -1086,7 +1089,7 @@ class AutonomousTrader:
     async def _btst_evaluation_loop(self) -> None:
         """At 15:20, evaluate positions for BTST conversion."""
         while not self._shutdown:
-            now = datetime.now().time()
+            now = now_ist().time()
 
             if self.paper:
                 # Paper mode: evaluate after all bars are processed
@@ -1112,7 +1115,7 @@ class AutonomousTrader:
         if not self._orchestrator:
             return
 
-        logger.info("BTST evaluation triggered at %s", datetime.now().strftime("%H:%M:%S"))
+        logger.info("BTST evaluation triggered at %s", now_ist().strftime("%H:%M:%S"))
 
         try:
             btst_positions = await evaluate_and_convert_btst(
@@ -1319,7 +1322,7 @@ class AutonomousTrader:
                                 tag="manual",
                             )
 
-                            request["executed_at"] = datetime.now().isoformat()
+                            request["executed_at"] = now_ist().isoformat()
                             order_id = result.get("order_id", "")
                             request["order_id"] = order_id
 
@@ -1336,7 +1339,7 @@ class AutonomousTrader:
                         except Exception as e:
                             request["status"] = "FAILED"
                             request["error"] = str(e)
-                            request["executed_at"] = datetime.now().isoformat()
+                            request["executed_at"] = now_ist().isoformat()
                             logger.error("MANUAL ORDER ERROR | %s | %s", symbol, e)
 
                         self._write_json_atomic(MANUAL_ORDER_FILE, request)
@@ -1867,8 +1870,8 @@ class AutonomousTrader:
 
     async def _sleep_until_datetime(self, target: datetime) -> None:
         """Sleep until a target datetime."""
-        while datetime.now() < target and not self._shutdown:
-            remaining = (target - datetime.now()).total_seconds()
+        while now_ist() < target and not self._shutdown:
+            remaining = (target - now_ist()).total_seconds()
             await asyncio.sleep(min(remaining, 30.0))
 
     def shutdown(self) -> None:
