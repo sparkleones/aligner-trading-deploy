@@ -1,0 +1,22 @@
+{
+  "LARGE": [
+    "stage2_trend",
+    "breakout_52w",
+    "dual_momentum"
+  ],
+  "MID": [
+    "mean_reversion",
+    "momentum_12_1",
+    "breakout_52w"
+  ],
+  "SMALL": [
+    "mean_reversion",
+    "stocks_on_move",
+    "stage2_trend"
+  ],
+  "ALL": [
+    "stage2_trend",
+    "breakout_52w",
+    "mean_reversion"
+  ]
+}
