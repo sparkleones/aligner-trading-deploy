@@ -1,0 +1,76 @@
+{
+  "test": "composite in QGV engine + ensemble",
+  "windows": [
+    {
+      "window": "2022-01-01 -> 2023-07-01",
+      "A_composite_original": 0.08332156684756153,
+      "B_composite_qgv_engine": -0.05384193225878864,
+      "C_qgv_qgv_engine": -0.1654657585275282,
+      "D_blend_70B_30C": -0.08662550922478018,
+      "nifty": 0.05882858514413947,
+      "A_beats": true,
+      "B_beats": false,
+      "D_beats": false
+    },
+    {
+      "window": "2022-07-01 -> 2024-01-01",
+      "A_composite_original": 0.3804957130029891,
+      "B_composite_qgv_engine": 0.33774403194472447,
+      "C_qgv_qgv_engine": -0.12210942206544295,
+      "D_blend_70B_30C": 0.20935139401785952,
+      "nifty": 0.23912679276256954,
+      "A_beats": true,
+      "B_beats": true,
+      "D_beats": false
+    },
+    {
+      "window": "2023-01-01 -> 2024-07-01",
+      "A_composite_original": 0.5092514968796111,
+      "B_composite_qgv_engine": 0.7191112707119702,
+      "C_qgv_qgv_engine": 0.11678683822764002,
+      "D_blend_70B_30C": 0.5510157518663448,
+      "nifty": 0.2081538960506535,
+      "A_beats": true,
+      "B_beats": true,
+      "D_beats": true
+    },
+    {
+      "window": "2023-07-01 -> 2025-01-01",
+      "A_composite_original": 0.37719038085611745,
+      "B_composite_qgv_engine": 0.33576347724999556,
+      "C_qgv_qgv_engine": 0.3350088788413237,
+      "D_blend_70B_30C": 0.3355371201274251,
+      "nifty": 0.14718273782772018,
+      "A_beats": true,
+      "B_beats": true,
+      "D_beats": true
+    },
+    {
+      "window": "2024-01-01 -> 2025-07-01",
+      "A_composite_original": 0.06431789967085377,
+      "B_composite_qgv_engine": 0.24156580850399,
+      "C_qgv_qgv_engine": 0.255573494964366,
+      "D_blend_70B_30C": 0.24577633767200258,
+      "nifty": 0.11355227164931225,
+      "A_beats": false,
+      "B_beats": true,
+      "D_beats": true
+    },
+    {
+      "window": "2024-07-01 -> 2026-01-01",
+      "A_composite_original": -0.13585849899750835,
+      "B_composite_qgv_engine": -0.03880590973975839,
+      "C_qgv_qgv_engine": -0.03450712304828141,
+      "D_blend_70B_30C": -0.03751525982941484,
+      "nifty": 0.05450195764707089,
+      "A_beats": false,
+      "B_beats": false,
+      "D_beats": false
+    }
+  ],
+  "summary": {
+    "A_wins": 4,
+    "B_wins": 4,
+    "D_wins": 3
+  }
+}

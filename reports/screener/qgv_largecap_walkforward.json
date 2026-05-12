@@ -1,0 +1,87 @@
+{
+  "test": "QGV-MF on LARGE_CAP universe",
+  "windows": [
+    {
+      "window": "2022-01-01 -> 2023-07-01",
+      "qgv_cagr": -0.1654657585275282,
+      "qgv_sharpe": -1.2877811093344256,
+      "qgv_dd": -0.2686842189181444,
+      "composite_cagr": 0.08332156684756153,
+      "nifty_cagr": 0.05882858514413947,
+      "qgv_alpha": -0.22429434367166767,
+      "composite_alpha": 0.024492981703422068,
+      "qgv_beats_nifty": false,
+      "composite_beats_nifty": true
+    },
+    {
+      "window": "2022-07-01 -> 2024-01-01",
+      "qgv_cagr": -0.12210942206544295,
+      "qgv_sharpe": -1.299587227583104,
+      "qgv_dd": -0.1950543569072266,
+      "composite_cagr": 0.3804957130029891,
+      "nifty_cagr": 0.23912679276256954,
+      "qgv_alpha": -0.3612362148280125,
+      "composite_alpha": 0.14136892024041958,
+      "qgv_beats_nifty": false,
+      "composite_beats_nifty": true
+    },
+    {
+      "window": "2023-01-01 -> 2024-07-01",
+      "qgv_cagr": 0.11678683822764002,
+      "qgv_sharpe": 0.7241417846427513,
+      "qgv_dd": -0.1950543569072266,
+      "composite_cagr": 0.5092514968796111,
+      "nifty_cagr": 0.2081538960506535,
+      "qgv_alpha": -0.09136705782301346,
+      "composite_alpha": 0.30109760082895765,
+      "qgv_beats_nifty": false,
+      "composite_beats_nifty": true
+    },
+    {
+      "window": "2023-07-01 -> 2025-01-01",
+      "qgv_cagr": 0.3350088788413237,
+      "qgv_sharpe": 1.6585325676617615,
+      "qgv_dd": -0.14608405993946683,
+      "composite_cagr": 0.37719038085611745,
+      "nifty_cagr": 0.14718273782772018,
+      "qgv_alpha": 0.1878261410136035,
+      "composite_alpha": 0.23000764302839727,
+      "qgv_beats_nifty": true,
+      "composite_beats_nifty": true
+    },
+    {
+      "window": "2024-01-01 -> 2025-07-01",
+      "qgv_cagr": 0.255573494964366,
+      "qgv_sharpe": 1.2886547386490592,
+      "qgv_dd": -0.18100154333324914,
+      "composite_cagr": 0.06431789967085377,
+      "nifty_cagr": 0.11355227164931225,
+      "qgv_alpha": 0.14202122331505374,
+      "composite_alpha": -0.04923437197845848,
+      "qgv_beats_nifty": true,
+      "composite_beats_nifty": false
+    },
+    {
+      "window": "2024-07-01 -> 2026-01-01",
+      "qgv_cagr": -0.03450712304828141,
+      "qgv_sharpe": -1.1211753206588277,
+      "qgv_dd": -0.06052596878675465,
+      "composite_cagr": -0.13585849899750835,
+      "nifty_cagr": 0.05450195764707089,
+      "qgv_alpha": -0.0890090806953523,
+      "composite_alpha": -0.19036045664457923,
+      "qgv_beats_nifty": false,
+      "composite_beats_nifty": false
+    }
+  ],
+  "summary": {
+    "n_qgv_beats_nifty": 2,
+    "n_composite_beats_nifty": 4,
+    "qgv_median_cagr": 0.04113985758967931,
+    "qgv_median_alpha": -0.09018806925918288,
+    "composite_median_alpha": 0.08293095097192082,
+    "qgv_worst": -0.1654657585275282,
+    "qgv_best": 0.3350088788413237
+  },
+  "generated_at": "2026-05-13T02:51:01.185009"
+}
