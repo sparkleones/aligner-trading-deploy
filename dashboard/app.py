@@ -2190,6 +2190,53 @@ async def agent_team_options_review():
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 
+@app.get("/api/screener/current_regime")
+async def screener_current_regime():
+    """
+    Classify the current market regime. INFORMATIONAL ONLY — does not
+    drive picks. Read the postmortem for why regime-adaptive ensemble
+    was rejected (regime detection at quarterly frequency is too lagged
+    to improve picks; it hurt 5+/6 windows in backtest).
+    """
+    try:
+        from screener.market_timing_analyzer import _fetch_nifty, _fetch_vix
+        from screener.strategies.regime_adaptive import (
+            classify_regime, compute_breadth,
+        )
+        from screener.data_loader import load_universe
+        from screener.universe_extended import LARGE_CAP
+
+        nifty = _fetch_nifty()
+        vix = _fetch_vix()
+        if nifty.empty:
+            return {"error": "no NIFTY data"}
+        asof = nifty.index[-1]
+        history = load_universe(LARGE_CAP, period="2y", use_cache=True, progress=False)
+        breadth = compute_breadth(history, asof)
+        snap = classify_regime(nifty, vix, breadth, asof)
+        return {
+            "regime": snap.regime.value if hasattr(snap.regime, "value") else str(snap.regime),
+            "reason": snap.reason,
+            "nifty_close": snap.nifty_close,
+            "nifty_ma_50": snap.nifty_ma_50,
+            "nifty_ma_200": snap.nifty_ma_200,
+            "above_200dma": snap.above_200dma,
+            "golden_cross": snap.golden_cross,
+            "rsi_14": snap.rsi_14,
+            "vix_percentile": snap.vix_percentile,
+            "breadth_pct": snap.breadth_pct,
+            "informational_note": (
+                "Regime detection is INFORMATIONAL only. Backtest showed "
+                "regime-adaptive ensembles UNDERPERFORM pure momentum "
+                "(2-3 of 6 windows beat NIFTY vs 4 of 6 for momentum). "
+                "Picks remain pure momentum. Read regime_adaptation_postmortem.md."
+            ),
+        }
+    except Exception as e:
+        logger.error("current_regime error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
 @app.get("/api/screener/rolling_walkforward")
 async def screener_rolling_walkforward():
     """Return the rolling walk-forward findings if saved."""
