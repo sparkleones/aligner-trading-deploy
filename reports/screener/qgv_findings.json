@@ -1,0 +1,122 @@
+{
+  "strategy": "QGV-MF (Quality+Growth+Value, conviction-weighted, dip-buy)",
+  "window": [
+    "2022-01-01",
+    "2026-04-30"
+  ],
+  "scenarios": {
+    "sc_lump": {
+      "cagr_pct": -0.019239452283781988,
+      "sharpe": -0.7531793351819545,
+      "max_dd_pct": -0.08050508021997083,
+      "calmar": -0.23898432535204497,
+      "n_trades": 8,
+      "win_rate_pct": 0.0,
+      "final_equity": 91949.49197800292,
+      "total_invested": 100000,
+      "absolute_profit": -8050.508021997084,
+      "absolute_return_pct": -0.08050508021997083,
+      "years": 4.32
+    },
+    "sc_sip": {
+      "cagr_pct": -0.024283830887786406,
+      "sharpe": 2.9029825138400853,
+      "max_dd_pct": -0.05152961681344548,
+      "calmar": -0.47125968306153004,
+      "n_trades": 8,
+      "win_rate_pct": 0.0,
+      "final_equity": 573660.7702035034,
+      "total_invested": 620000,
+      "absolute_profit": -46339.22979649657,
+      "absolute_return_pct": -0.07474069322015575,
+      "years": 4.32
+    },
+    "mc_lump": {
+      "cagr_pct": -0.014798841305142085,
+      "sharpe": -0.10051708067155615,
+      "max_dd_pct": -0.16860477056496237,
+      "calmar": -0.08777237592716977,
+      "n_trades": 19,
+      "win_rate_pct": 0.15789473684210525,
+      "final_equity": 93761.70602723176,
+      "total_invested": 100000,
+      "absolute_profit": -6238.293972768239,
+      "absolute_return_pct": -0.062382939727682385,
+      "years": 4.32
+    },
+    "mc_sip": {
+      "cagr_pct": -0.02680204663255714,
+      "sharpe": 2.257837605229318,
+      "max_dd_pct": -0.17041441342911945,
+      "calmar": -0.15727570276034739,
+      "n_trades": 24,
+      "win_rate_pct": 0.16666666666666666,
+      "final_equity": 570006.99660646,
+      "total_invested": 620000,
+      "absolute_profit": -49993.00339354004,
+      "absolute_return_pct": -0.08063387644119357,
+      "years": 4.32
+    },
+    "combined_lump": {
+      "cagr_pct": -0.014750416192043758,
+      "sharpe": -0.10003698730461905,
+      "max_dd_pct": -0.16840674966036473,
+      "calmar": -0.08758803445700214,
+      "n_trades": 19,
+      "win_rate_pct": 0.15789473684210525,
+      "final_equity": 93781.6184197122,
+      "total_invested": 100000,
+      "absolute_profit": -6218.381580287794,
+      "absolute_return_pct": -0.062183815802877906,
+      "years": 4.32
+    },
+    "combined_sip": {
+      "cagr_pct": -0.02707396143329599,
+      "sharpe": 2.2558661236569995,
+      "max_dd_pct": -0.17153468828262275,
+      "calmar": -0.15783374024435562,
+      "n_trades": 24,
+      "win_rate_pct": 0.16666666666666666,
+      "final_equity": 569613.7321485095,
+      "total_invested": 620000,
+      "absolute_profit": -50386.26785149053,
+      "absolute_return_pct": -0.08126817395401698,
+      "years": 4.32
+    },
+    "combined_big_sip": {
+      "cagr_pct": -0.023251705026120062,
+      "sharpe": 2.252385760768618,
+      "max_dd_pct": -0.20069889921011697,
+      "calmar": -0.11585367492114264,
+      "n_trades": 29,
+      "win_rate_pct": 0.20689655172413793,
+      "final_equity": 1060021.1895556895,
+      "total_invested": 1140000,
+      "absolute_profit": -79978.81044431054,
+      "absolute_return_pct": -0.07015685126693905,
+      "years": 4.32
+    },
+    "lc_lump_ref": {
+      "cagr_pct": -0.03279507806774773,
+      "sharpe": -0.7594267131599236,
+      "max_dd_pct": -0.14365703318075151,
+      "calmar": -0.228287312786729,
+      "n_trades": 21,
+      "win_rate_pct": 0.19047619047619047,
+      "final_equity": 86583.50312452883,
+      "total_invested": 100000,
+      "absolute_profit": -13416.496875471174,
+      "absolute_return_pct": -0.13416496875471173,
+      "years": 4.32
+    }
+  },
+  "benchmarks_5y_typical": {
+    "Nippon India SC": 0.31,
+    "HDFC SC": 0.28,
+    "Kotak SC": 0.26,
+    "Motilal MidCap": 0.28,
+    "Nifty Smallcap 250": 0.2,
+    "Nifty Midcap 150": 0.22
+  },
+  "generated_at": "2026-05-13T02:38:24.411729"
+}
