@@ -1955,6 +1955,63 @@ async def screener_universe():
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 
+@app.get("/api/screener/picks_v2")
+async def screener_picks_v2(
+    capital: float = 100000.0,
+    tier: str = "BLEND",
+    enable_ai: int = 1,
+    force: int = 0,
+):
+    """
+    V2 screener producer. Combines:
+      - LARGE: composite (stage2 + breakout)  -- 70% allocation
+      - MID:   mean_reversion (Connors RSI-2) -- 30% allocation
+      - AI agent review of every pick
+      - Concrete entry/SL/target/qty with 42-day hold
+
+    Params:
+      capital:    total equity capital in Rs (default 100000)
+      tier:       LARGE | MID | BLEND (default BLEND = 70/30)
+      enable_ai:  1 = run LLM review, 0 = skip (faster)
+      force:      1 = bypass 6h cache
+    """
+    try:
+        from screener.live_picks_v2 import generate
+        # tier override: SOLO LARGE or SOLO MID
+        n_large = 2
+        n_mid = 1
+        if tier.upper() == "LARGE":
+            n_large = 3
+            n_mid = 0
+        elif tier.upper() == "MID":
+            n_large = 0
+            n_mid = 3
+        payload = generate(
+            capital=float(capital),
+            n_large=n_large,
+            n_mid=n_mid,
+            enable_ai=bool(int(enable_ai)),
+            force_refresh=bool(int(force)),
+        )
+        return payload
+    except Exception as e:
+        logger.error("Screener picks_v2 error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/screener/train_test_findings")
+async def screener_train_test():
+    """Return train/test backtest findings."""
+    try:
+        path = Path(__file__).resolve().parent.parent / "reports" / "screener" / "train_test_findings.json"
+        if not path.exists():
+            return {"error": "no findings yet"}
+        with open(path, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
 # ── Entry Point ──────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":

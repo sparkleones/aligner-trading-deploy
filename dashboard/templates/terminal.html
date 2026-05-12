@@ -860,22 +860,31 @@ tbody tr:hover { background:var(--card2); }
         </div>
         <div class="panel-body collapsed" id="screener-panel" style="max-height:580px;">
           <div style="padding:10px 12px;">
-            <!-- Capital input + refresh -->
-            <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center;">
+            <!-- Capital + tier + AI controls -->
+            <div style="display:flex;gap:6px;margin-bottom:6px;align-items:center;flex-wrap:wrap;">
               <input type="number" id="scr-capital" value="100000" min="25000" step="10000"
-                     style="flex:1;padding:4px 6px;background:var(--card2);border:1px solid var(--border);
+                     style="flex:1;min-width:90px;padding:4px 6px;background:var(--card2);border:1px solid var(--border);
                             color:var(--fg);font-size:11px;font-family:inherit;border-radius:3px;"
                      placeholder="Equity capital (Rs)" />
-              <select id="scr-n-picks" style="padding:4px;background:var(--card2);border:1px solid var(--border);
-                                              color:var(--fg);font-size:11px;font-family:inherit;border-radius:3px;">
-                <option value="2" selected>2 picks</option>
-                <option value="3">3 picks</option>
+              <select id="scr-tier" style="padding:4px;background:var(--card2);border:1px solid var(--border);
+                                            color:var(--fg);font-size:11px;font-family:inherit;border-radius:3px;"
+                      title="Cap tier mix">
+                <option value="BLEND" selected>BLEND 70/30</option>
+                <option value="LARGE">LARGE only</option>
+                <option value="MID">MID only</option>
               </select>
-              <button onclick="refreshScreener(true)"
+              <label style="font-size:10px;color:var(--muted);display:flex;align-items:center;gap:3px;">
+                <input type="checkbox" id="scr-ai" checked style="margin:0;" /> AI
+              </label>
+              <button onclick="refreshScreenerV2(true)"
                       style="padding:4px 10px;background:var(--accent);color:#000;border:0;
                              font-size:11px;font-weight:700;cursor:pointer;border-radius:3px;">
                 SCAN
               </button>
+            </div>
+            <div style="font-size:9px;color:var(--muted);margin-bottom:6px;line-height:1.3;">
+              Hold: 42 days &middot; Rebal: 1st of month &middot;
+              Train CAGR 39.7% (Sharpe 1.92) &middot; OOS alpha +2.7%
             </div>
 
             <!-- Top picks (cards) -->
@@ -1992,6 +2001,83 @@ function refreshScreener(force) {
     refreshScreenerStats();
   }).catch(err => {
     picksDiv.innerHTML = `<div style="color:var(--red);font-size:11px;padding:8px;">Fetch failed: ${err.message}</div>`;
+  });
+}
+
+function refreshScreenerV2(force) {
+  // V2: cap-tier-aware picks with AI agent review + concrete levels
+  const cap = parseFloat(document.getElementById('scr-capital')?.value) || 100000;
+  const tier = document.getElementById('scr-tier')?.value || 'BLEND';
+  const ai = document.getElementById('scr-ai')?.checked ? 1 : 0;
+  const picksDiv = document.getElementById('scr-picks');
+  if (force && picksDiv) {
+    picksDiv.innerHTML = `<div style="font-size:11px;color:var(--muted);text-align:center;padding:20px;">
+      Scanning ${tier} universe${ai ? ' + AI review' : ''}...
+      ${ai ? '<br><span style="font-size:9px;">AI calls can take 20-40s</span>' : ''}
+    </div>`;
+  }
+  const url = `/api/screener/picks_v2?capital=${cap}&tier=${tier}&enable_ai=${ai}&force=${force?1:0}`;
+  fetch(url).then(r => r.json()).then(d => {
+    if (d.error) {
+      picksDiv.innerHTML = `<div style="color:var(--red);font-size:11px;padding:8px;">Error: ${d.error}</div>`;
+      return;
+    }
+    let html = '';
+    (d.picks || []).forEach(p => {
+      const rr = ((p.target - p.entry) / Math.max(1e-6, p.entry - p.stop_loss));
+      const tierColor = p.cap_tier === 'LARGE' ? 'var(--green)' : 'var(--yellow)';
+      const verdictBadge = p.ai_verdict ?
+        `<span style="font-size:9px;padding:1px 4px;border-radius:2px;background:${
+          p.ai_verdict === 'BUY' ? 'rgba(0,255,0,0.15)' :
+          p.ai_verdict === 'CAUTION' ? 'rgba(255,200,0,0.15)' :
+          'rgba(255,0,0,0.15)'};">AI: ${p.ai_verdict}</span>` : '';
+      const fs = p.fundamentals_summary || {};
+      const fundLine = [];
+      if (fs.pe) fundLine.push(`PE ${fs.pe.toFixed(1)}`);
+      if (fs.roe != null) fundLine.push(`ROE ${(fs.roe*100).toFixed(1)}%`);
+      if (fs.de != null) fundLine.push(`D/E ${fs.de.toFixed(0)}`);
+      html += `
+        <div style="background:var(--card2);border:1px solid var(--border);border-left:3px solid ${tierColor};
+                    padding:8px;margin-bottom:6px;border-radius:3px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <span style="font-weight:700;font-size:13px;color:${tierColor};">
+              ${p.symbol} <span style="font-size:9px;color:var(--muted);">${p.cap_tier} | ${p.sector}</span>
+            </span>
+            <span>${verdictBadge}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:10px;">
+            <div><span style="color:var(--muted);">Entry</span> <b>Rs ${p.entry}</b></div>
+            <div><span style="color:var(--red);">SL</span> <b>Rs ${p.stop_loss}</b></div>
+            <div><span style="color:var(--green);">Target</span> <b>Rs ${p.target}</b></div>
+            <div><span style="color:var(--muted);">Qty</span> <b>${p.qty}</b></div>
+            <div><span style="color:var(--muted);">Deploy</span> <b>Rs ${Math.round(p.capital_deployed).toLocaleString('en-IN')}</b></div>
+            <div><span style="color:var(--muted);">Risk</span> <b>Rs ${Math.round(p.risk_inr).toLocaleString('en-IN')}</b></div>
+          </div>
+          <div style="font-size:9px;color:var(--muted);margin-top:4px;">
+            SL ${(p.stop_distance_pct*100).toFixed(1)}% &middot; Tgt ${(p.target_pct*100).toFixed(1)}% &middot;
+            R:R ${rr.toFixed(1)} &middot; Hold ${p.hold_days}d
+            ${fundLine.length ? ' &middot; ' + fundLine.join(' &middot; ') : ''}
+          </div>
+          ${p.ai_reasoning ? `<div style="font-size:9px;color:var(--accent);margin-top:3px;font-style:italic;">AI: ${p.ai_reasoning}</div>` : ''}
+          ${(p.notes && p.notes.length) ? `<div style="font-size:9px;color:var(--yellow);margin-top:3px;">${p.notes.join('; ')}</div>` : ''}
+        </div>`;
+    });
+    if (!html) {
+      html = '<div style="font-size:11px;color:var(--muted);padding:8px;">No picks qualify under current filters.</div>';
+    }
+    picksDiv.innerHTML = html;
+    // Update verdict footer with backtest summary
+    const vDiv = document.getElementById('scr-verdict');
+    if (vDiv && d.backtest_summary) {
+      const bs = d.backtest_summary;
+      vDiv.innerHTML =
+        `<b>${d.config?.allocation_split || ''}</b> &middot; ` +
+        `<b>AI: ${d.config?.ai_enabled ? 'ON' : 'OFF'}</b><br>` +
+        `Train (4.5y): CAGR ${(bs.train_cagr*100).toFixed(1)}%, Sharpe ${bs.train_sharpe.toFixed(2)} &middot; ` +
+        `OOS (6m): alpha +${(bs.test_alpha_vs_nifty*100).toFixed(1)}%/yr vs NIFTY`;
+    }
+  }).catch(err => {
+    if (picksDiv) picksDiv.innerHTML = `<div style="color:var(--red);font-size:11px;padding:8px;">Fetch failed: ${err.message}</div>`;
   });
 }
 

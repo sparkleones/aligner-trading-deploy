@@ -1,0 +1,22 @@
+{
+  "train_window": [
+    "2021-11-13",
+    "2025-11-12"
+  ],
+  "test_window": [
+    "2025-11-13",
+    "2026-05-13"
+  ],
+  "initial_capital": 100000.0,
+  "best_hold_bars": 30,
+  "best_hold_days": 42,
+  "train_cagr": 0.3972305076870115,
+  "train_sharpe": 1.915089719297649,
+  "train_dd": -0.15646064333127363,
+  "test_cagr_annualized": -0.12850662042404593,
+  "test_sharpe": -0.4441301952800115,
+  "test_dd": -0.15312379978487545,
+  "test_final_equity": 93446.13850577408,
+  "test_absolute_pct": -0.06553861494225921,
+  "benchmark_nifty_test_cagr": -0.15594522827021784
+}
