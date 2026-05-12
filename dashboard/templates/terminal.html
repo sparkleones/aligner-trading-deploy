@@ -676,6 +676,85 @@ tbody tr:hover { background:var(--card2); }
               <div id="stx-review-output" style="font-size:10px;color:var(--fg);"></div>
             </div>
 
+            <!-- === 7.5 PRODUCTION PICKS V3 (QGV engine) === -->
+            <div style="background:var(--card);border:2px solid var(--green,#0a0);border-radius:6px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div style="font-size:13px;font-weight:700;color:var(--green,#0a0);">
+                  PRODUCTION PICKS V3 (QGV ENGINE)
+                  <span style="font-size:9px;color:var(--muted);margin-left:6px;">+5.84%/yr vs v2 backtest</span>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <input type="number" id="v3-capital" value="100000" min="25000" step="10000"
+                         style="width:90px;padding:3px 6px;background:var(--card2);border:1px solid var(--border);
+                                color:var(--fg);font-size:10px;border-radius:3px;" />
+                  <select id="v3-universe" style="padding:3px;background:var(--card2);border:1px solid var(--border);
+                                                    color:var(--fg);font-size:10px;border-radius:3px;">
+                    <option value="LARGE">LARGE</option>
+                    <option value="MIXED">LARGE+MID</option>
+                  </select>
+                  <button onclick="loadV3Picks()"
+                          style="padding:3px 10px;background:var(--green,#0a0);color:#000;border:0;font-size:10px;
+                                 font-weight:700;cursor:pointer;border-radius:3px;">SCAN</button>
+                  <button onclick="recordV3Picks(false)"
+                          style="padding:3px 10px;background:var(--accent);color:#000;border:0;font-size:10px;
+                                 font-weight:700;cursor:pointer;border-radius:3px;" title="Save these picks for tracking">RECORD</button>
+                  <button onclick="recordV3Picks(true)"
+                          style="padding:3px 10px;background:var(--yellow);color:#000;border:0;font-size:10px;
+                                 font-weight:700;cursor:pointer;border-radius:3px;" title="Mark as actually invested">INVESTED</button>
+                </div>
+              </div>
+              <div id="stx-v3-summary" style="font-size:10px;color:var(--muted);margin-bottom:6px;"></div>
+              <div id="stx-v3-picks" style="font-size:10px;color:var(--fg);">
+                Click SCAN to generate production picks.
+              </div>
+            </div>
+
+            <!-- === 7.6 LIVE PERFORMANCE TRACKER === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div style="font-size:13px;font-weight:700;color:var(--accent);">
+                  LIVE PERFORMANCE TRACKER
+                </div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <button onclick="loadTracker()"
+                          style="padding:3px 10px;background:var(--accent);color:#000;border:0;font-size:10px;
+                                 font-weight:700;cursor:pointer;border-radius:3px;">REFRESH</button>
+                  <button onclick="resetTracker()"
+                          style="padding:3px 10px;background:var(--red,#a00);color:#fff;border:0;font-size:10px;
+                                 font-weight:700;cursor:pointer;border-radius:3px;">RESET LEDGER</button>
+                </div>
+              </div>
+              <div style="padding:6px;background:rgba(0,200,255,0.08);border-left:3px solid var(--accent);
+                          font-size:10px;color:var(--fg);margin-bottom:8px;">
+                Track actual live performance of recommended picks. RECORD button on
+                V3 panel saves a snapshot. INVESTED button marks as actually deployed.
+                After 3-6 months of records, you'll have real evidence of whether the
+                system is delivering its backtest-promised alpha.
+              </div>
+              <div id="stx-tracker" style="font-size:10px;color:var(--fg);">Click REFRESH to load tracker.</div>
+            </div>
+
+            <!-- === 7.7 MULTI-STRATEGY CONSENSUS === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div style="font-size:13px;font-weight:700;color:var(--accent);">
+                  MULTI-STRATEGY CONSENSUS
+                  <span style="font-size:9px;color:var(--muted);margin-left:6px;">(informational)</span>
+                </div>
+                <button onclick="loadMultiStrategy()"
+                        style="padding:3px 10px;background:var(--accent);color:#000;border:0;font-size:10px;
+                               font-weight:700;cursor:pointer;border-radius:3px;">RUN ALL 6 STRATEGIES</button>
+              </div>
+              <div style="padding:6px;background:rgba(255,200,0,0.08);border-left:3px solid var(--yellow);
+                          font-size:10px;color:var(--fg);margin-bottom:8px;">
+                <b>This is INFORMATION, not action.</b> Shows what 6 different strategies
+                would pick TODAY. Consensus picks (3+ strategies agree) = highest conviction.
+                <b>DO NOT</b> auto-switch based on this. Stick with V3 production picks for
+                consistency. Senior PM rule: regime-chasing destroys returns.
+              </div>
+              <div id="stx-multi" style="font-size:10px;color:var(--fg);">Click RUN to see all strategies.</div>
+            </div>
+
             <!-- === 7b. MUTUAL FUND RECOMMENDATIONS === -->
             <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -2650,6 +2729,158 @@ function refreshStocksWalkforward() {
     html += `<div style="font-size:9px;color:var(--muted);">${d.strategy || ''}</div>`;
     div.innerHTML = html;
   }).catch(err => console.warn('walkforward failed', err));
+}
+
+// ── V3 production picks (QGV engine) ──
+function loadV3Picks() {
+  const cap = parseFloat(document.getElementById('v3-capital').value) || 100000;
+  const univ = document.getElementById('v3-universe').value;
+  const summary = document.getElementById('stx-v3-summary');
+  const div = document.getElementById('stx-v3-picks');
+  div.innerHTML = '<i>Loading...</i>';
+  summary.innerHTML = '';
+  fetch(`/api/screener/picks_v3?capital=${cap}&universe=${univ}&fundamental_filter=1&force=1`)
+    .then(r => r.json()).then(d => {
+      if (d.error) { div.innerHTML = `<span style="color:var(--red);">${d.error}</span>`; return; }
+      const bs = d.backtest_summary_v3 || {};
+      summary.innerHTML =
+        `Engine: <b>${d.engine}</b> &middot; ` +
+        `Backtest median CAGR: <b style="color:var(--green);">${(bs.median_cagr*100).toFixed(2)}%</b> &middot; ` +
+        `Beats NIFTY: <b>${bs.beats_nifty_in}/${bs.of_windows}</b> windows &middot; ` +
+        `Deployed: <b>Rs ${d.total_deployed_inr.toLocaleString('en-IN')}</b> / ` +
+        `Cash: <b>Rs ${d.cash_reserve_inr.toLocaleString('en-IN')}</b><br>` +
+        `Top sectors: <b style="color:var(--green);">${(d.sector_tiers?.top || []).join(', ')}</b> &middot; ` +
+        `Mid sectors: <b style="color:var(--yellow);">${(d.sector_tiers?.mid || []).join(', ')}</b>`;
+
+      let html = '<div style="display:grid;grid-template-columns:1fr;gap:4px;">';
+      (d.picks || []).forEach((p, i) => {
+        const tierColor = (d.sector_tiers?.top || []).includes(p.sector) ? 'var(--green)' :
+                          (d.sector_tiers?.mid || []).includes(p.sector) ? 'var(--yellow)' :
+                          'var(--muted)';
+        const fs = p.fundamentals_summary || {};
+        const fundLine = [];
+        if (fs.pe) fundLine.push(`PE ${fs.pe.toFixed(1)}`);
+        if (fs.roe_pct != null) fundLine.push(`ROE ${fs.roe_pct.toFixed(1)}%`);
+        if (fs.de != null) fundLine.push(`D/E ${fs.de.toFixed(0)}`);
+        const fundPass = p.fundamental_pass === false ? '<span style="color:var(--yellow);">⚠ fund weak</span>' :
+                         p.fundamental_pass === true ? '<span style="color:var(--green);">✓ fund OK</span>' : '';
+        html += `<div style="background:var(--card2);border-left:3px solid ${tierColor};padding:6px;border-radius:3px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:700;font-size:11px;">${i+1}. ${p.symbol}
+              <span style="font-size:9px;color:var(--muted);">${p.cap_tier}/${p.sector}</span>
+              ${fundPass}
+            </span>
+            <span style="font-size:11px;font-weight:700;color:${tierColor};">${p.target_weight_pct.toFixed(1)}% wt</span>
+          </div>
+          <div style="font-size:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:3px;">
+            <div><span style="color:var(--muted);">Price</span> <b>Rs ${p.current_price.toFixed(0)}</b></div>
+            <div><span style="color:var(--muted);">Qty</span> <b>${p.target_qty}</b></div>
+            <div><span style="color:var(--muted);">Value</span> <b>Rs ${p.target_value_inr.toLocaleString('en-IN', {maximumFractionDigits:0})}</b></div>
+            <div><span style="color:var(--muted);">Score</span> <b>${p.composite_score.toFixed(2)}</b></div>
+          </div>
+          <div style="font-size:9px;color:var(--muted);margin-top:3px;">
+            Dip-buy: <b>add ${p.dip_add_qty_if_triggered}</b> if drops below Rs ${p.dip_trigger_price.toFixed(0)} &middot;
+            Sector mom 6m: ${p.sector_momentum_6m_pct.toFixed(1)}%
+            ${fundLine.length ? ' &middot; ' + fundLine.join(' / ') : ''}
+          </div>
+          ${p.fundamental_reasons && p.fundamental_reasons.length ?
+            `<div style="font-size:9px;color:var(--yellow);margin-top:2px;">${p.fundamental_reasons.join('; ')}</div>` : ''}
+        </div>`;
+      });
+      html += '</div>';
+      html += `<div style="font-size:10px;color:var(--muted);margin-top:8px;font-style:italic;">
+        Hold horizon: ${d.config?.hold_horizon || 'until next rebalance'}.
+        Dip-buy: add ${(d.config?.dip_buy_add_pct*100).toFixed(0)}% to position if it drops ${(d.config?.dip_buy_trigger_pct*100).toFixed(0)}%+ from entry while quality intact.
+      </div>`;
+      div.innerHTML = html;
+    }).catch(err => { div.innerHTML = `<span style="color:var(--red);">${err.message}</span>`; });
+}
+
+function recordV3Picks(invested) {
+  const url = `/api/screener/picks_v3/record?invested=${invested ? 1 : 0}`;
+  fetch(url, { method: 'POST' }).then(r => r.json()).then(d => {
+    if (d.error) { alert('Error: ' + d.error); return; }
+    alert(invested ? 'Picks marked as INVESTED. They will be tracked in Live Tracker.' :
+                      'Picks RECORDED (paper). Click INVESTED if you actually buy them.');
+  });
+}
+
+function loadTracker() {
+  const div = document.getElementById('stx-tracker');
+  div.innerHTML = '<i>Loading...</i>';
+  fetch('/api/screener/picks_v3/tracker').then(r => r.json()).then(d => {
+    if (d.error) { div.innerHTML = `<span style="color:var(--red);">${d.error}</span>`; return; }
+    if (!d.records || d.records.length === 0) {
+      div.innerHTML = '<i style="color:var(--muted);">No records yet. Use RECORD or INVESTED on V3 picks panel.</i>';
+      return;
+    }
+    let html = '';
+    const s = d.summary || {};
+    if (s.n_invested > 0) {
+      html += `<div style="background:var(--card2);padding:6px;border-radius:3px;margin-bottom:6px;">
+        <b>${s.n_invested}</b> invested pick-sets &middot;
+        Avg alpha vs NIFTY: <b style="color:${(s.lifetime_alpha_avg||0)>=0?'var(--green)':'var(--red)'};">${(s.lifetime_alpha_avg||0).toFixed(2)}%</b> &middot;
+        Avg return: <b>${(s.lifetime_return_avg||0).toFixed(2)}%</b>
+      </div>`;
+    }
+    d.records.slice().reverse().forEach((rec, i) => {
+      const color = (rec.total_pnl_pct||0) >= 0 ? 'var(--green)' : 'var(--red)';
+      const investedBadge = rec.mark_as_invested ? '<span style="background:rgba(255,200,0,0.15);font-size:9px;padding:1px 5px;border-radius:2px;color:var(--yellow);">INVESTED</span>' : '<span style="background:rgba(255,255,255,0.05);font-size:9px;padding:1px 5px;border-radius:2px;color:var(--muted);">PAPER</span>';
+      html += `<div style="background:var(--card2);padding:6px;border-radius:3px;margin-bottom:4px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-weight:700;font-size:11px;">${rec.generated_at?.slice(0,10) || ''} (${rec.days_held}d) ${investedBadge}</span>
+          <span style="font-weight:700;font-size:11px;color:${color};">${(rec.total_pnl_pct||0).toFixed(2)}%</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;font-size:10px;margin-top:3px;">
+          <div><span style="color:var(--muted);">Invested</span> <b>Rs ${(rec.total_invested||0).toLocaleString('en-IN', {maximumFractionDigits:0})}</b></div>
+          <div><span style="color:var(--muted);">Current</span> <b>Rs ${(rec.current_value||0).toLocaleString('en-IN', {maximumFractionDigits:0})}</b></div>
+          <div><span style="color:var(--muted);">P&L</span> <b style="color:${color};">Rs ${(rec.total_pnl_inr||0).toLocaleString('en-IN', {maximumFractionDigits:0})}</b></div>
+          <div><span style="color:var(--muted);">vs NIFTY</span> <b style="color:${(rec.alpha_vs_nifty_pct||0)>=0?'var(--green)':'var(--red)'};">${rec.alpha_vs_nifty_pct!=null ? rec.alpha_vs_nifty_pct.toFixed(2)+'%' : '—'}</b></div>
+        </div>
+      </div>`;
+    });
+    div.innerHTML = html;
+  }).catch(err => { div.innerHTML = `<span style="color:var(--red);">${err.message}</span>`; });
+}
+
+function resetTracker() {
+  if (!confirm('Wipe the entire live pick tracker ledger? This cannot be undone.')) return;
+  fetch('/api/screener/picks_v3/tracker/reset', { method: 'POST' })
+    .then(r => r.json()).then(() => loadTracker());
+}
+
+function loadMultiStrategy() {
+  const div = document.getElementById('stx-multi');
+  div.innerHTML = '<i>Running 6 strategies... (~10s)</i>';
+  fetch('/api/screener/multi_strategy?universe=LARGE').then(r => r.json()).then(d => {
+    if (d.error) { div.innerHTML = `<span style="color:var(--red);">${d.error}</span>`; return; }
+    let html = '<div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;">CONSENSUS PICKS (3+ strategies agree)</div>';
+    if (d.consensus_picks && d.consensus_picks.length) {
+      html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:4px;margin-bottom:8px;">';
+      d.consensus_picks.slice(0, 12).forEach(c => {
+        html += `<div style="background:var(--card2);border-left:3px solid var(--green);padding:5px;border-radius:3px;">
+          <div style="font-weight:700;font-size:11px;">${c.symbol} <span style="color:var(--muted);font-size:9px;">(${c.sector})</span></div>
+          <div style="font-size:9px;color:var(--muted);">${c.picked_by_n_strategies} strategies: ${c.strategies.slice(0,2).join(', ')}${c.strategies.length>2?'+'+(c.strategies.length-2):''}</div>
+        </div>`;
+      });
+      html += '</div>';
+    } else {
+      html += '<i style="color:var(--muted);">No high-conviction consensus today.</i>';
+    }
+    // Show what each strategy picks
+    html += '<div style="font-size:11px;font-weight:700;color:var(--muted);margin:8px 0 4px;">EACH STRATEGY\'S TOP 5</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px;">';
+    for (const [name, picks] of Object.entries(d.picks_by_strategy || {})) {
+      html += `<div style="background:var(--card2);padding:5px;border-radius:3px;">
+        <div style="font-weight:700;font-size:10px;color:var(--accent);">${name}</div>`;
+      picks.slice(0, 5).forEach(p => {
+        html += `<div style="font-size:9px;color:var(--fg);">${p.symbol} <span style="color:var(--muted);">(${p.sector}, ${p.score.toFixed(2)})</span></div>`;
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+    div.innerHTML = html;
+  }).catch(err => { div.innerHTML = `<span style="color:var(--red);">${err.message}</span>`; });
 }
 
 // ── Mutual Fund recommendations panel ──

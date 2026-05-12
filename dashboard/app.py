@@ -1955,6 +1955,75 @@ async def screener_universe():
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 
+@app.get("/api/screener/picks_v3")
+async def screener_picks_v3(
+    capital: float = 100000.0,
+    universe: str = "LARGE",
+    fundamental_filter: int = 1,
+    force: int = 0,
+):
+    """
+    Production picks using QGV engine (+5.84%/yr vs old engine).
+    Conviction-weighted, sector-tier allocated, 10-12 picks, dip-buy ready.
+    """
+    try:
+        from screener.live_picks_v3 import generate
+        return generate(
+            capital=float(capital), universe=universe,
+            enable_fundamental_filter=bool(int(fundamental_filter)),
+            force_refresh=bool(int(force)),
+        )
+    except Exception as e:
+        logger.error("picks_v3 error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.post("/api/screener/picks_v3/record")
+async def picks_v3_record(invested: int = 0):
+    """Record the latest v3 picks to the live ledger."""
+    try:
+        from screener.live_picks_v3 import generate
+        from screener.live_performance_tracker import record_picks
+        payload = generate(force_refresh=False)
+        if payload.get("error"):
+            return payload
+        record = record_picks(payload, mark_as_invested=bool(int(invested)))
+        return {"ok": True, "record": record}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/screener/picks_v3/tracker")
+async def picks_v3_tracker():
+    """Evaluate all recorded picks vs current prices + NIFTY."""
+    try:
+        from screener.live_performance_tracker import evaluate_all
+        return evaluate_all()
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.post("/api/screener/picks_v3/tracker/reset")
+async def picks_v3_tracker_reset():
+    """Wipe the live performance tracker ledger."""
+    try:
+        from screener.live_performance_tracker import reset_ledger
+        return reset_ledger()
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/screener/multi_strategy")
+async def screener_multi_strategy(universe: str = "LARGE"):
+    """Run all 6 strategies in parallel + show consensus."""
+    try:
+        from screener.multi_strategy_view import generate_consensus
+        return generate_consensus(universe=universe)
+    except Exception as e:
+        logger.error("multi_strategy error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
 @app.get("/api/screener/picks_v2")
 async def screener_picks_v2(
     capital: float = 100000.0,
