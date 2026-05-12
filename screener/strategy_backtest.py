@@ -28,10 +28,23 @@ class StrategyBacktestConfig:
     slippage_bps: float = 10.0
     brokerage_bps: float = 3.0
     stt_sell_bps: float = 10.0
+    stcg_tax_pct: float = 0.0     # 15% on profitable trades if enabled
     time_stop_bars: int = 60
     min_score: float = -1e9   # by default no min, each strategy decides via NaN
     max_per_sector: int = 1
     min_bars_required: int = 252
+
+    # ── ANTI-LOOK-AHEAD: how many bars to delay scoring relative to execution ──
+    # 0 = original buggy behavior (scoring and execution use same bar)
+    # 1 = score on day T-1, execute on day T (the honest setting)
+    score_lag_bars: int = 1
+
+    # ── RISK MANAGEMENT (matches what live_picks_v2 actually does) ──
+    apply_stop_loss: bool = True
+    min_stop_pct: float = 0.04   # 4% floor (matches levels.py)
+    max_stop_pct: float = 0.08   # 8% ceiling (matches levels.py)
+    atr_multiplier: float = 2.0  # SL = max(min_stop_pct, atr_mult * ATR/price)
+    reward_risk_ratio: float = 3.0  # target = entry + 3 * stop_dist
 
 
 def _rank_at(
@@ -40,13 +53,30 @@ def _rank_at(
     asof: pd.Timestamp,
     cfg: StrategyBacktestConfig,
 ) -> list[tuple[str, float]]:
-    """Score every stock using `strategy` at date `asof`. Return sorted list."""
+    """Score every stock using `strategy` as of (asof - score_lag_bars).
+
+    Anti-look-ahead: with default score_lag_bars=1, scoring uses data
+    only through the PRIOR trading day. The pick is then executed at
+    asof's close. This matches reality: a screener run on Monday morning
+    can only use Friday's data; the order fills at Monday's close.
+    """
     rows = []
     for sym, df in history.items():
-        slice_ = df.loc[:asof]
+        # Find the bar `score_lag_bars` before asof (or use asof itself if lag=0)
+        if cfg.score_lag_bars <= 0:
+            slice_end = asof
+        else:
+            # df.index sorted ascending; find position of asof and step back
+            try:
+                pos = df.index.searchsorted(asof, side="right") - 1
+                pos = max(0, pos - cfg.score_lag_bars)
+                slice_end = df.index[pos]
+            except Exception:
+                slice_end = asof
+        slice_ = df.loc[:slice_end]
         if len(slice_) < cfg.min_bars_required:
             continue
-        score = strategy.score(sym, slice_, asof=asof)
+        score = strategy.score(sym, slice_, asof=slice_end)
         if score is None or pd.isna(score) or not np.isfinite(score):
             continue
         if score < cfg.min_score:
@@ -54,6 +84,34 @@ def _rank_at(
         rows.append((sym, float(score)))
     rows.sort(key=lambda x: x[1], reverse=True)
     return rows
+
+
+def _atr_pct(history: pd.DataFrame, asof: pd.Timestamp, period: int = 20) -> float:
+    """ATR as % of close at `asof`. Default 4% if insufficient data."""
+    df = history.loc[:asof]
+    if len(df) < period + 1:
+        return 0.04
+    h = df["High"]
+    l = df["Low"]
+    c = df["Close"]
+    prev_c = c.shift(1)
+    tr = pd.concat([h - l, (h - prev_c).abs(), (l - prev_c).abs()], axis=1).max(axis=1)
+    atr = tr.rolling(period).mean().iloc[-1]
+    px = c.iloc[-1]
+    if px <= 0 or pd.isna(atr):
+        return 0.04
+    return float(atr / px)
+
+
+def _compute_levels(history: pd.DataFrame, asof: pd.Timestamp, cfg: StrategyBacktestConfig) -> tuple[float, float, float]:
+    """Return (entry_px, stop_loss, target) at `asof` matching live_picks_v2 rules."""
+    entry = float(history.loc[asof, "Close"])
+    atr_p = _atr_pct(history, asof)
+    raw_stop = max(cfg.atr_multiplier * atr_p, cfg.min_stop_pct)
+    stop_pct = min(raw_stop, cfg.max_stop_pct)
+    sl = entry * (1.0 - stop_pct)
+    target = entry + cfg.reward_risk_ratio * (entry - sl)
+    return entry, sl, target
 
 
 def _pick_top(
@@ -112,15 +170,31 @@ def run_strategy_backtest(
     cost_sell = 1.0 - (cfg.slippage_bps + cfg.brokerage_bps + cfg.stt_sell_bps) / 10_000.0
 
     for d in trading_dates:
-        # time-stop exit check
+        # Exit checks: SL, target, time-stop. Checked intraday using
+        # the day's High/Low. SL/target priority is conservative — if
+        # both could fire on the same day, the SL fires first.
         to_close = []
         for sym, pos in positions.items():
             df = history.get(sym)
             if df is None or d not in df.index:
                 continue
             pos["bars_held"] += 1
+            high = float(df.loc[d, "High"])
+            low = float(df.loc[d, "Low"])
+            close = float(df.loc[d, "Close"])
+            sl = pos.get("stop_loss")
+            tgt = pos.get("target")
+            # Stop-loss hit intraday (fills AT the SL price)
+            if cfg.apply_stop_loss and sl is not None and low <= sl:
+                to_close.append((sym, sl, "stop_loss"))
+                continue
+            # Target hit intraday (fills AT the target price)
+            if tgt is not None and high >= tgt:
+                to_close.append((sym, tgt, "target"))
+                continue
+            # Time stop
             if pos["bars_held"] >= cfg.time_stop_bars:
-                to_close.append((sym, float(df.loc[d, "Close"]), "time_stop"))
+                to_close.append((sym, close, "time_stop"))
         for sym, px, reason in to_close:
             pos = positions.pop(sym)
             sell = pos["qty"] * px * cost_sell
@@ -179,10 +253,12 @@ def run_strategy_backtest(
                     df = history.get(sym)
                     if df is None or d not in df.index:
                         continue
-                    px = float(df.loc[d, "Close"])
-                    if px <= 0:
+                    # Compute entry + SL + target using the SAME rules as
+                    # live_picks_v2 — this is the critical fix.
+                    entry, sl, tgt = _compute_levels(df, d, cfg)
+                    if entry <= 0:
                         continue
-                    eff = px * cost_buy
+                    eff = entry * cost_buy
                     qty = int(budget / eff)
                     if qty < 1:
                         continue
@@ -191,7 +267,8 @@ def run_strategy_backtest(
                         continue
                     cash -= cost
                     positions[sym] = {
-                        "entry": px, "qty": qty, "bars_held": 0,
+                        "entry": entry, "stop_loss": sl, "target": tgt,
+                        "qty": qty, "bars_held": 0,
                     }
 
     # Close remaining at end
