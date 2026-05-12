@@ -1999,6 +1999,24 @@ async def screener_picks_v2(
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 
+@app.get("/api/screener/strategy_comparison")
+async def screener_strategy_comparison():
+    """Return strategy_comparison.csv as JSON rows."""
+    try:
+        path = Path(__file__).resolve().parent.parent / "reports" / "screener" / "strategy_comparison.csv"
+        if not path.exists():
+            return {"error": "run 'python -m screener.compare_all_strategies' first"}
+        import csv as _csv
+        rows = []
+        with open(path, "r", newline="") as f:
+            reader = _csv.DictReader(f)
+            for r in reader:
+                rows.append(r)
+        return {"rows": rows, "count": len(rows)}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
 @app.get("/api/screener/train_test_findings")
 async def screener_train_test():
     """Return train/test backtest findings."""
@@ -2009,6 +2027,186 @@ async def screener_train_test():
         with open(path, "r") as f:
             return json.load(f)
     except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+# ── Market Timing + DCA Endpoints ────────────────────────────────────────────
+
+@app.get("/api/screener/market_timing")
+async def screener_market_timing():
+    """Run the market timing analyzer on live NIFTY/VIX data. ~10-15s."""
+    try:
+        from screener.market_timing_analyzer import (
+            _fetch_nifty, _fetch_vix,
+            analyze_price_position, analyze_technical,
+            analyze_volatility, analyze_breadth, historical_analog,
+            make_verdict,
+        )
+        from screener.universe_extended import LARGE_CAP
+
+        nifty = _fetch_nifty()
+        if nifty.empty:
+            return {"error": "could not fetch NIFTY data"}
+        vix_df = _fetch_vix()
+        price = analyze_price_position(nifty)
+        tech = analyze_technical(nifty)
+        vol = analyze_volatility(vix_df)
+        breadth = analyze_breadth(LARGE_CAP)
+        analog = historical_analog(nifty, price["dist_from_high_pct"])
+        verdict = make_verdict(price, tech, vol, breadth, analog)
+        return {
+            "price": price,
+            "technical": tech,
+            "volatility": vol,
+            "breadth": breadth,
+            "historical_analog": analog,
+            "verdict": verdict,
+        }
+    except Exception as e:
+        logger.error("Market timing error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/dca/status")
+async def dca_status():
+    """Return current DCA plan state. Returns null if no plan exists."""
+    try:
+        from screener.dca_state import load_plan
+        plan = load_plan()
+        if plan is None:
+            return {"plan": None, "message": "No DCA plan started. Click INIT to create one."}
+        return {"plan": plan.to_dict(),
+                "remaining_capital": plan.remaining_capital(),
+                "remaining_tranches": plan.remaining_tranches(),
+                "base_tranche_size": plan.base_tranche_size()}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.post("/api/dca/init")
+async def dca_init(capital: float = 100000.0, tranches: int = 4):
+    """Initialize a fresh DCA plan (wipes existing)."""
+    try:
+        from screener.dca_state import reset_plan, new_plan
+        reset_plan()
+        plan = new_plan(total_capital=float(capital), base_tranches=int(tranches))
+        return {"ok": True, "plan": plan.to_dict()}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.post("/api/dca/reset")
+async def dca_reset():
+    """Wipe the DCA plan."""
+    try:
+        from screener.dca_state import reset_plan
+        reset_plan()
+        return {"ok": True, "message": "Plan wiped"}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.post("/api/dca/resume")
+async def dca_resume():
+    """Resume a PAUSED plan."""
+    try:
+        from screener.dca_state import load_plan, save_plan
+        plan = load_plan()
+        if plan is None:
+            return {"error": "no plan"}
+        if plan.status == "PAUSED":
+            plan.status = "ACTIVE"
+            plan.pause_reason = None
+            save_plan(plan)
+        return {"ok": True, "status": plan.status}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.post("/api/dca/run")
+async def dca_run(dry_run: int = 0, enable_ai: int = 0):
+    """
+    Execute the weekly DCA flow on demand.
+      dry_run=1: don't update state, don't send Telegram — return the
+                 message that WOULD have been sent.
+      dry_run=0: real run — records the week + sends Telegram if envs set.
+    """
+    try:
+        from screener.dca_state import load_plan, record_week, pause_plan
+        from screener.dca_triggers import evaluate as evaluate_triggers
+        from screener.live_picks_v2 import generate as generate_picks
+        from screener.weekly_dca import format_message
+        from notifications import telegram_notifier as tg
+        import re as _re
+
+        plan = load_plan()
+        if plan is None:
+            return {"error": "no plan — call /api/dca/init first"}
+        if plan.status == "DONE":
+            return {"ok": False, "message": "Plan already DONE", "plan": plan.to_dict()}
+        if plan.status == "STOPPED":
+            return {"ok": False, "message": "Plan STOPPED — call /api/dca/resume", "plan": plan.to_dict()}
+
+        snap = evaluate_triggers()
+        base = plan.base_tranche_size()
+        tranche = base * snap.tranche_multiplier
+        if plan.status == "PAUSED" and not snap.stop_fired:
+            plan.status = "ACTIVE"
+            plan.pause_reason = None
+        if snap.stop_fired:
+            tranche = 0.0
+            if not dry_run and plan.status != "PAUSED":
+                pause_plan(plan, "; ".join(snap.stop_fired))
+        tranche = min(tranche, plan.remaining_capital())
+
+        picks_payload = {}
+        if tranche > 0:
+            picks_payload = generate_picks(
+                capital=tranche, n_large=2, n_mid=1,
+                enable_ai=bool(int(enable_ai)),
+                force_refresh=True,
+            )
+
+        msg_html = format_message(plan, snap, tranche, picks_payload)
+        msg_plain = _re.sub(r"<[^>]+>", "", msg_html)
+
+        sent = False
+        if not dry_run:
+            bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+            chat_id = os.getenv("TELEGRAM_CHAT_ID")
+            if bot_token and chat_id:
+                try:
+                    tg.configure(bot_token, chat_id)
+                    tg.notify(msg_html)
+                    sent = True
+                except Exception as e:
+                    logger.warning("Telegram send failed: %s", e)
+            # Record the week
+            record_week(
+                plan=plan, tranche=tranche,
+                triggers_fired=snap.accelerate_fired + snap.stop_fired,
+                market_score=0, market_verdict=snap.recommended_action,
+                picks=picks_payload.get("picks", []),
+                notes="; ".join(snap.notes),
+            )
+
+        return {
+            "ok": True,
+            "dry_run": bool(dry_run),
+            "tranche": tranche,
+            "multiplier": snap.tranche_multiplier,
+            "action": snap.recommended_action,
+            "accelerate_fired": snap.accelerate_fired,
+            "stop_fired": snap.stop_fired,
+            "notes": snap.notes,
+            "message_html": msg_html,
+            "message_plain": msg_plain,
+            "telegram_sent": sent,
+            "picks": picks_payload.get("picks", []),
+            "plan": plan.to_dict(),
+        }
+    except Exception as e:
+        logger.error("DCA run error: %s", e, exc_info=True)
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 

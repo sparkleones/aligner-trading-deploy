@@ -372,6 +372,7 @@ tbody tr:hover { background:var(--card2); }
         <div class="tab" data-tab="closed" onclick="switchTab(this)">Closed Trades</div>
         <div class="tab" data-tab="optchain" onclick="switchTab(this)">Option Chain</div>
         <div class="tab" data-tab="strategy" onclick="switchTab(this)">Strategy</div>
+        <div class="tab" data-tab="stocks" onclick="switchTab(this)">Stocks</div>
         <div class="tab" data-tab="logs" onclick="switchTab(this)">Logs</div>
       </div>
 
@@ -497,6 +498,139 @@ tbody tr:hover { background:var(--card2); }
               <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border);"><span>Nov 2024</span><span class="up">+9,40,586</span></div>
               <div style="display:flex;justify-content:space-between;padding:3px 0;"><span>Dec 2024</span><span class="up">+1,74,724</span></div>
             </div>
+          </div>
+        </div>
+
+        <!-- Stocks (comprehensive screener + DCA + market timing) -->
+        <div class="tab-pane" id="pane-stocks" style="overflow-y:auto;padding:0;">
+          <div style="padding:12px 16px;display:flex;flex-direction:column;gap:14px;">
+
+            <!-- === 1. MARKET TIMING === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div style="font-size:13px;font-weight:700;color:var(--accent);">MARKET TIMING ANALYSIS</div>
+                <button onclick="refreshMarketTiming()"
+                        style="padding:3px 10px;background:var(--accent);color:#000;border:0;font-size:10px;
+                               font-weight:700;cursor:pointer;border-radius:3px;">REFRESH</button>
+              </div>
+              <div id="mt-verdict" style="font-size:14px;font-weight:800;color:var(--muted);margin-bottom:4px;">
+                Click REFRESH to analyze current market...
+              </div>
+              <div id="mt-action" style="font-size:11px;color:var(--fg);margin-bottom:8px;"></div>
+
+              <div id="mt-snapshot" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;font-size:10px;margin-bottom:8px;"></div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div>
+                  <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">FACTORS</div>
+                  <div id="mt-factors" style="font-size:10px;color:var(--fg);line-height:1.5;"></div>
+                </div>
+                <div>
+                  <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:4px;">HISTORICAL ANALOG</div>
+                  <div id="mt-analog" style="font-size:10px;color:var(--fg);line-height:1.5;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- === 2. DCA PLAN === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div style="font-size:13px;font-weight:700;color:var(--accent);">DCA PLAN (auto-deploys weekly)</div>
+                <span id="dca-status-pill" style="font-size:10px;padding:2px 8px;background:rgba(255,255,255,0.1);border-radius:10px;">--</span>
+              </div>
+
+              <div id="dca-summary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:11px;margin-bottom:10px;">
+                <div><div style="color:var(--muted);font-size:9px;">CAPITAL</div><div id="dca-cap" style="font-weight:700;">--</div></div>
+                <div><div style="color:var(--muted);font-size:9px;">DEPLOYED</div><div id="dca-dep" style="font-weight:700;">--</div></div>
+                <div><div style="color:var(--muted);font-size:9px;">WEEKS DONE</div><div id="dca-weeks" style="font-weight:700;">--</div></div>
+                <div><div style="color:var(--muted);font-size:9px;">BASE TRANCHE</div><div id="dca-tranche" style="font-weight:700;">--</div></div>
+              </div>
+
+              <!-- Controls -->
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center;">
+                <input type="number" id="dca-init-capital" value="100000" min="25000" step="10000"
+                       style="width:100px;padding:4px 6px;background:var(--card2);border:1px solid var(--border);
+                              color:var(--fg);font-size:11px;font-family:inherit;border-radius:3px;" />
+                <input type="number" id="dca-init-tranches" value="4" min="2" max="12"
+                       style="width:50px;padding:4px 6px;background:var(--card2);border:1px solid var(--border);
+                              color:var(--fg);font-size:11px;font-family:inherit;border-radius:3px;" title="# tranches" />
+                <button onclick="dcaInit()"
+                        style="padding:4px 10px;background:var(--green,#0a0);color:#000;border:0;
+                               font-size:10px;font-weight:700;cursor:pointer;border-radius:3px;">INIT PLAN</button>
+                <button onclick="dcaRun(true)"
+                        style="padding:4px 10px;background:var(--card2);color:var(--fg);border:1px solid var(--border);
+                               font-size:10px;font-weight:700;cursor:pointer;border-radius:3px;">DRY-RUN</button>
+                <button onclick="dcaRun(false)"
+                        style="padding:4px 10px;background:var(--accent);color:#000;border:0;
+                               font-size:10px;font-weight:700;cursor:pointer;border-radius:3px;">RUN NOW</button>
+                <button onclick="dcaResume()"
+                        style="padding:4px 10px;background:var(--yellow);color:#000;border:0;
+                               font-size:10px;font-weight:700;cursor:pointer;border-radius:3px;">RESUME</button>
+                <button onclick="dcaReset()"
+                        style="padding:4px 10px;background:var(--red,#a00);color:#fff;border:0;
+                               font-size:10px;font-weight:700;cursor:pointer;border-radius:3px;">RESET</button>
+                <label style="font-size:9px;color:var(--muted);display:flex;align-items:center;gap:3px;margin-left:8px;">
+                  <input type="checkbox" id="dca-ai-toggle" style="margin:0;" /> AI on RUN
+                </label>
+              </div>
+
+              <!-- Run result -->
+              <div id="dca-run-result" style="margin-top:6px;font-size:10px;color:var(--fg);line-height:1.5;
+                                              white-space:pre-wrap;background:var(--card2);padding:6px;border-radius:3px;
+                                              max-height:280px;overflow-y:auto;display:none;border:1px solid var(--border);"></div>
+
+              <!-- History -->
+              <div style="margin-top:8px;">
+                <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;">HISTORY</div>
+                <div id="dca-history" style="font-size:10px;color:var(--fg);"></div>
+              </div>
+            </div>
+
+            <!-- === 3. CURRENT PICKS === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div style="font-size:13px;font-weight:700;color:var(--accent);">CURRENT PICKS (v2: cap-tier + AI)</div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <input type="number" id="stx-capital" value="100000" min="25000" step="10000"
+                         style="width:90px;padding:3px 6px;background:var(--card2);border:1px solid var(--border);
+                                color:var(--fg);font-size:10px;font-family:inherit;border-radius:3px;" />
+                  <select id="stx-tier" style="padding:3px;background:var(--card2);border:1px solid var(--border);
+                                                color:var(--fg);font-size:10px;font-family:inherit;border-radius:3px;">
+                    <option value="BLEND" selected>BLEND 70/30</option>
+                    <option value="LARGE">LARGE</option>
+                    <option value="MID">MID</option>
+                  </select>
+                  <label style="font-size:9px;color:var(--muted);display:flex;align-items:center;gap:3px;">
+                    <input type="checkbox" id="stx-ai" style="margin:0;" /> AI
+                  </label>
+                  <button onclick="stxScan()"
+                          style="padding:3px 10px;background:var(--accent);color:#000;border:0;font-size:10px;
+                                 font-weight:700;cursor:pointer;border-radius:3px;">SCAN</button>
+                </div>
+              </div>
+              <div id="stx-picks" style="font-size:10px;color:var(--muted);">
+                Click SCAN to generate picks.
+              </div>
+            </div>
+
+            <!-- === 4. BACKTEST + TRAIN/TEST === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;">
+                BACKTEST PERFORMANCE
+              </div>
+              <div id="stx-backtest" style="font-size:10px;color:var(--fg);line-height:1.6;">Loading...</div>
+            </div>
+
+            <!-- === 5. STRATEGY COMPARISON === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;">
+                10-STRATEGY x 4-TIER MATRIX
+              </div>
+              <div id="stx-strategies" style="font-size:9px;color:var(--fg);overflow-x:auto;">
+                <i>Run 'python -m screener.compare_all_strategies' to populate this table.</i>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -1787,7 +1921,8 @@ document.addEventListener('keydown', (e) => {
   else if (e.key === '4') switchTab(document.querySelector('[data-tab="closed"]'));
   else if (e.key === '5') switchTab(document.querySelector('[data-tab="optchain"]'));
   else if (e.key === '6') switchTab(document.querySelector('[data-tab="strategy"]'));
-  else if (e.key === '7') switchTab(document.querySelector('[data-tab="logs"]'));
+  else if (e.key === '7') switchTab(document.querySelector('[data-tab="stocks"]'));
+  else if (e.key === '8') switchTab(document.querySelector('[data-tab="logs"]'));
 });
 
 // ── Load Strategy Info from API ──
@@ -2116,6 +2251,294 @@ function refreshScreenerStats() {
 
 // Refresh stats on load (cheap, no scan needed)
 refreshScreenerStats();
+
+// ═════════════════════════════════════════════════════════════
+// STOCKS TAB — Market timing + DCA + picks + backtest
+// ═════════════════════════════════════════════════════════════
+
+function _fmtINR(n) {
+  if (n == null || isNaN(n)) return 'Rs --';
+  if (Math.abs(n) >= 1e7) return 'Rs ' + (n/1e7).toFixed(2) + 'Cr';
+  if (Math.abs(n) >= 1e5) return 'Rs ' + (n/1e5).toFixed(2) + 'L';
+  if (Math.abs(n) >= 1e3) return 'Rs ' + (n/1e3).toFixed(1) + 'k';
+  return 'Rs ' + Math.round(n).toLocaleString('en-IN');
+}
+
+// ── Market Timing ──
+function refreshMarketTiming() {
+  const vDiv = document.getElementById('mt-verdict');
+  const aDiv = document.getElementById('mt-action');
+  const sDiv = document.getElementById('mt-snapshot');
+  const fDiv = document.getElementById('mt-factors');
+  const nDiv = document.getElementById('mt-analog');
+  if (vDiv) vDiv.textContent = 'Analyzing... (10-30s)';
+  if (aDiv) aDiv.textContent = '';
+  fetch('/api/screener/market_timing').then(r => r.json()).then(d => {
+    if (d.error) {
+      vDiv.innerHTML = '<span style="color:var(--red);">Error: ' + d.error + '</span>';
+      return;
+    }
+    const v = d.verdict || {};
+    const color = (v.score >= 3) ? 'var(--green)' : (v.score <= -3) ? 'var(--red)' : 'var(--yellow)';
+    vDiv.innerHTML = `<span style="color:${color};">${v.verdict}</span>
+      <span style="font-size:10px;color:var(--muted);margin-left:8px;">(score ${v.score >= 0 ? '+' : ''}${v.score})</span>`;
+    aDiv.textContent = v.action || '';
+
+    const p = d.price || {}, t = d.technical || {}, vol = d.volatility || {}, b = d.breadth || {};
+    sDiv.innerHTML = `
+      <div><span style="color:var(--muted);">NIFTY</span> <b>${(p.close||0).toLocaleString('en-IN')}</b></div>
+      <div><span style="color:var(--muted);">50DMA</span> <b>${(p.ma_50||0).toLocaleString('en-IN')}</b></div>
+      <div><span style="color:var(--muted);">200DMA</span> <b>${(p.ma_200||0).toLocaleString('en-IN')}</b></div>
+      <div><span style="color:var(--muted);">vs 52w high</span> <b style="color:${p.dist_from_high_pct < -5 ? 'var(--red)' : 'var(--fg)'};">${(p.dist_from_high_pct||0).toFixed(2)}%</b></div>
+      <div><span style="color:var(--muted);">RSI(d)</span> <b>${(t.rsi_14_daily||0).toFixed(1)}</b></div>
+      <div><span style="color:var(--muted);">RSI(w)</span> <b>${(t.rsi_14_weekly||0).toFixed(1)}</b></div>
+      <div><span style="color:var(--muted);">VIX</span> <b>${(vol.vix_current||0).toFixed(2)} <span style="font-size:8px;color:var(--muted);">${vol.vix_regime||''}</span></b></div>
+      <div><span style="color:var(--muted);">Breadth</span> <b>${(b.pct_above_200dma||0).toFixed(0)}%</b></div>`;
+
+    fDiv.innerHTML = (v.factors || []).map(f => {
+      const c = f.startsWith('+') ? 'var(--green)' : (f.startsWith('-') ? 'var(--red)' : 'var(--muted)');
+      return `<div style="color:${c};">${f}</div>`;
+    }).join('');
+
+    const an = d.historical_analog || {};
+    nDiv.innerHTML = `
+      <div>Drawdown depth: <b>${(p.dist_from_high_pct||0).toFixed(2)}%</b></div>
+      <div>Historical matches: <b>${an.n_historical_matches||0}</b></div>
+      <div>1mo fwd: <b>${(an.forward_1m_median_pct||0).toFixed(2)}%</b> (${(an.forward_1m_win_rate_pct||0).toFixed(0)}% wr)</div>
+      <div>3mo fwd: <b>${(an.forward_3m_median_pct||0).toFixed(2)}%</b> (${(an.forward_3m_win_rate_pct||0).toFixed(0)}% wr)</div>
+      <div>6mo fwd: <b style="color:var(--green);">${(an.forward_6m_median_pct||0).toFixed(2)}%</b> (${(an.forward_6m_win_rate_pct||0).toFixed(0)}% wr)</div>
+      <div>12mo fwd: <b style="color:var(--green);">${(an.forward_12m_median_pct||0).toFixed(2)}%</b> (${(an.forward_12m_win_rate_pct||0).toFixed(0)}% wr)</div>`;
+  }).catch(err => {
+    vDiv.innerHTML = '<span style="color:var(--red);">Fetch failed: ' + err.message + '</span>';
+  });
+}
+
+// ── DCA Plan ──
+function refreshDcaStatus() {
+  fetch('/api/dca/status').then(r => r.json()).then(d => {
+    const pill = document.getElementById('dca-status-pill');
+    const cap = document.getElementById('dca-cap');
+    const dep = document.getElementById('dca-dep');
+    const wks = document.getElementById('dca-weeks');
+    const tra = document.getElementById('dca-tranche');
+    const hist = document.getElementById('dca-history');
+
+    if (!d.plan) {
+      pill.textContent = 'NO PLAN';
+      pill.style.background = 'rgba(255,200,0,0.15)';
+      cap.textContent = '--'; dep.textContent = '--';
+      wks.textContent = '--'; tra.textContent = '--';
+      hist.innerHTML = '<i style="color:var(--muted);">No plan yet. Set capital + tranches, click INIT PLAN.</i>';
+      return;
+    }
+    const p = d.plan;
+    pill.textContent = p.status;
+    pill.style.background =
+      p.status === 'ACTIVE' ? 'rgba(0,255,0,0.15)' :
+      p.status === 'PAUSED' ? 'rgba(255,200,0,0.15)' :
+      p.status === 'DONE'   ? 'rgba(0,150,255,0.15)' :
+                              'rgba(255,0,0,0.15)';
+    cap.textContent = _fmtINR(p.total_capital);
+    dep.textContent = _fmtINR(p.deployed_so_far) + ' (' + ((p.deployed_so_far/p.total_capital)*100).toFixed(0) + '%)';
+    wks.textContent = p.weeks_completed + ' / ' + p.base_tranches;
+    tra.textContent = _fmtINR(d.base_tranche_size || 0);
+
+    if (p.history && p.history.length) {
+      hist.innerHTML = p.history.slice(-5).reverse().map(h =>
+        `<div style="padding:2px 0;border-bottom:1px dotted var(--border);">
+          <b>W${h.week}</b> ${h.date} &middot; ${_fmtINR(h.tranche_inr)} &middot;
+          ${h.market_verdict || '--'} &middot;
+          ${(h.picks || []).map(x => x.symbol).join(', ') || '<i>no picks</i>'}
+        </div>`
+      ).join('');
+    } else {
+      hist.innerHTML = '<i style="color:var(--muted);">No tranches deployed yet.</i>';
+    }
+  }).catch(err => console.warn('dca status failed', err));
+}
+
+function dcaInit() {
+  const cap = parseFloat(document.getElementById('dca-init-capital').value) || 100000;
+  const tr  = parseInt(document.getElementById('dca-init-tranches').value) || 4;
+  if (!confirm(`Initialize new DCA plan: Rs ${cap.toLocaleString('en-IN')} over ${tr} tranches?\nThis will wipe any existing plan.`)) return;
+  fetch(`/api/dca/init?capital=${cap}&tranches=${tr}`, { method: 'POST' })
+    .then(r => r.json()).then(d => {
+      if (d.error) alert('Init failed: ' + d.error);
+      refreshDcaStatus();
+    });
+}
+
+function dcaReset() {
+  if (!confirm('Wipe the DCA plan entirely? (history will be lost)')) return;
+  fetch('/api/dca/reset', { method: 'POST' })
+    .then(r => r.json()).then(() => refreshDcaStatus());
+}
+
+function dcaResume() {
+  fetch('/api/dca/resume', { method: 'POST' })
+    .then(r => r.json()).then(() => refreshDcaStatus());
+}
+
+function dcaRun(dryRun) {
+  const ai = document.getElementById('dca-ai-toggle').checked ? 1 : 0;
+  const out = document.getElementById('dca-run-result');
+  out.style.display = '';
+  out.textContent = (dryRun ? 'DRY-RUN' : 'RUNNING') + '... (15-40s)';
+  const url = `/api/dca/run?dry_run=${dryRun ? 1 : 0}&enable_ai=${ai}`;
+  fetch(url, { method: 'POST' }).then(r => r.json()).then(d => {
+    if (d.error) {
+      out.innerHTML = '<span style="color:var(--red);">Error: ' + d.error + '</span>';
+      return;
+    }
+    let html = '';
+    html += `<b>${dryRun ? 'DRY-RUN' : (d.telegram_sent ? 'SENT TO TELEGRAM' : 'RUN COMPLETE')}</b>\n`;
+    html += `Tranche this run: <b>${_fmtINR(d.tranche)}</b> (multiplier ${d.multiplier}x)\n`;
+    html += `Decision: <b>${d.action}</b>\n`;
+    if (d.accelerate_fired && d.accelerate_fired.length) {
+      html += '\n<b>Accelerate fired:</b>\n';
+      d.accelerate_fired.forEach(t => html += '  + ' + t + '\n');
+    }
+    if (d.stop_fired && d.stop_fired.length) {
+      html += '\n<b>STOP fired:</b>\n';
+      d.stop_fired.forEach(t => html += '  - ' + t + '\n');
+    }
+    html += '\n' + (d.message_plain || '').split('\n').slice(0, 40).join('\n');
+    out.innerHTML = html;
+    refreshDcaStatus();
+  }).catch(err => {
+    out.innerHTML = '<span style="color:var(--red);">Fetch failed: ' + err.message + '</span>';
+  });
+}
+
+// ── Current Picks (in Stocks tab) ──
+function stxScan() {
+  const cap = parseFloat(document.getElementById('stx-capital').value) || 100000;
+  const tier = document.getElementById('stx-tier').value;
+  const ai = document.getElementById('stx-ai').checked ? 1 : 0;
+  const div = document.getElementById('stx-picks');
+  div.innerHTML = `<i style="color:var(--muted);">Scanning ${tier}${ai ? ' + AI review' : ''}... (5-40s)</i>`;
+  fetch(`/api/screener/picks_v2?capital=${cap}&tier=${tier}&enable_ai=${ai}&force=1`)
+    .then(r => r.json()).then(d => {
+      if (d.error) {
+        div.innerHTML = '<span style="color:var(--red);">Error: ' + d.error + '</span>';
+        return;
+      }
+      let html = '';
+      (d.picks || []).forEach(p => {
+        const rr = ((p.target - p.entry) / Math.max(1e-6, p.entry - p.stop_loss));
+        const tierColor = p.cap_tier === 'LARGE' ? 'var(--green)' : 'var(--yellow)';
+        const verdictBadge = p.ai_verdict ?
+          `<span style="font-size:9px;padding:1px 5px;border-radius:2px;margin-left:6px;background:${
+            p.ai_verdict === 'BUY' ? 'rgba(0,255,0,0.15)' :
+            p.ai_verdict === 'CAUTION' ? 'rgba(255,200,0,0.15)' :
+            'rgba(255,0,0,0.15)'};">AI: ${p.ai_verdict}</span>` : '';
+        html += `
+          <div style="background:var(--card2);border:1px solid var(--border);border-left:3px solid ${tierColor};
+                      padding:8px;margin-bottom:6px;border-radius:3px;">
+            <div style="font-size:12px;font-weight:700;color:${tierColor};">
+              ${p.symbol} <span style="font-size:9px;color:var(--muted);">${p.cap_tier} / ${p.sector}</span>${verdictBadge}
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:10px;margin-top:4px;">
+              <div><span style="color:var(--muted);">Entry</span> <b>Rs ${p.entry}</b></div>
+              <div><span style="color:var(--red);">SL</span> <b>Rs ${p.stop_loss}</b></div>
+              <div><span style="color:var(--green);">Target</span> <b>Rs ${p.target}</b></div>
+              <div><span style="color:var(--muted);">Qty</span> <b>${p.qty}</b></div>
+              <div><span style="color:var(--muted);">Deploy</span> <b>${_fmtINR(p.capital_deployed)}</b></div>
+              <div><span style="color:var(--muted);">Risk</span> <b>${_fmtINR(p.risk_inr)}</b></div>
+            </div>
+            <div style="font-size:9px;color:var(--muted);margin-top:3px;">
+              R:R ${rr.toFixed(1)} &middot; Hold ${p.hold_days}d &middot;
+              SL ${(p.stop_distance_pct*100).toFixed(1)}% &middot; Tgt ${(p.target_pct*100).toFixed(1)}%
+            </div>
+            ${p.ai_reasoning ? `<div style="font-size:9px;color:var(--accent);margin-top:3px;font-style:italic;">${p.ai_reasoning}</div>` : ''}
+          </div>`;
+      });
+      if (!html) html = '<i style="color:var(--muted);">No picks qualify under current filters.</i>';
+      div.innerHTML = html;
+    });
+}
+
+// ── Backtest & comparison ──
+function refreshStocksTabBacktest() {
+  fetch('/api/screener/train_test_findings').then(r => r.json()).then(d => {
+    const div = document.getElementById('stx-backtest');
+    if (!div) return;
+    if (d.error) {
+      div.innerHTML = '<i>Run <code>python -m screener.train_test_runner</code> to populate.</i>';
+      return;
+    }
+    div.innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+        <div>
+          <div style="font-weight:700;color:var(--accent);margin-bottom:3px;">TRAIN (${d.train_window?.[0]} to ${d.train_window?.[1]})</div>
+          <div>CAGR: <b style="color:var(--green);">${(d.train_cagr*100).toFixed(2)}%</b></div>
+          <div>Sharpe: <b>${(d.train_sharpe||0).toFixed(2)}</b></div>
+          <div>MaxDD: <b style="color:var(--red);">${(d.train_dd*100).toFixed(2)}%</b></div>
+          <div>Hold: <b>${d.best_hold_days || 42} days</b> (${d.best_hold_bars || 30} bars)</div>
+        </div>
+        <div>
+          <div style="font-weight:700;color:var(--accent);margin-bottom:3px;">TEST (OOS ${d.test_window?.[0]} to ${d.test_window?.[1]})</div>
+          <div>CAGR: <b style="color:${d.test_cagr_annualized > 0 ? 'var(--green)' : 'var(--red)'};">${(d.test_cagr_annualized*100).toFixed(2)}%</b></div>
+          <div>Sharpe: <b>${(d.test_sharpe||0).toFixed(2)}</b></div>
+          <div>MaxDD: <b style="color:var(--red);">${(d.test_dd*100).toFixed(2)}%</b></div>
+          <div>Final Eq: <b>${_fmtINR(d.test_final_equity)}</b> (${((d.test_absolute_pct||0)*100).toFixed(2)}%)</div>
+          <div>NIFTY: <b>${((d.benchmark_nifty_test_cagr||0)*100).toFixed(2)}%</b> | <b style="color:var(--green);">Alpha +${((d.test_cagr_annualized - d.benchmark_nifty_test_cagr)*100).toFixed(2)}%</b></div>
+        </div>
+      </div>`;
+  }).catch(() => {});
+}
+
+function refreshStocksTabStrategies() {
+  fetch('/api/screener/strategy_comparison').then(r => r.json()).then(d => {
+    const div = document.getElementById('stx-strategies');
+    if (!div) return;
+    if (d.error) {
+      div.innerHTML = '<i>To populate: <code>python -m screener.compare_all_strategies</code></i>';
+      return;
+    }
+    const rows = d.rows || [];
+    if (!rows.length) {
+      div.innerHTML = '<i>No data</i>';
+      return;
+    }
+    const headers = Object.keys(rows[0]);
+    let html = '<table style="border-collapse:collapse;width:100%;font-size:9px;"><thead><tr style="background:var(--card2);">';
+    headers.forEach(h => html += `<th style="padding:4px;text-align:right;border:1px solid var(--border);">${h}</th>`);
+    html += '</tr></thead><tbody>';
+    rows.forEach(row => {
+      // Highlight winners
+      const sharpe = parseFloat(row.Sharpe || 0);
+      const bg = sharpe >= 1.0 ? 'rgba(0,255,0,0.05)' : (sharpe < 0 ? 'rgba(255,0,0,0.05)' : 'transparent');
+      html += `<tr style="background:${bg};">`;
+      headers.forEach(h => {
+        const val = row[h];
+        const numeric = !isNaN(parseFloat(val));
+        const color = (h === 'CAGR%' && numeric && parseFloat(val) > 15) ? 'var(--green)' :
+                      (h === 'CAGR%' && numeric && parseFloat(val) < 0) ? 'var(--red)' :
+                      (h === 'Sharpe' && numeric && parseFloat(val) >= 1) ? 'var(--green)' :
+                      'inherit';
+        html += `<td style="padding:3px;border:1px solid var(--border);text-align:${numeric ? 'right' : 'left'};color:${color};">${val}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    div.innerHTML = html;
+  }).catch(err => console.warn('strategy compare failed', err));
+}
+
+// Re-load whenever Stocks tab activates
+const _stocksTabObserver = new MutationObserver(() => {
+  const pane = document.getElementById('pane-stocks');
+  if (pane && pane.classList.contains('active')) {
+    refreshDcaStatus();
+    refreshStocksTabBacktest();
+    refreshStocksTabStrategies();
+  }
+});
+window.addEventListener('DOMContentLoaded', () => {
+  const pane = document.getElementById('pane-stocks');
+  if (pane) _stocksTabObserver.observe(pane, { attributes: true, attributeFilter: ['class'] });
+});
 
 // ── Kite Broker Auth panel ──
 function fmtRs(n) {
