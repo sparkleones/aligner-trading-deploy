@@ -26,7 +26,20 @@ class ResearchTeam:
                      by default (groq -> gemini -> haiku fallback).
         enable_llm_arbitration: PM only calls Sonnet if specialists
                                 strongly disagree. Defaults OFF for cost.
+
+        Brain instance is created ONCE and shared across all 6 agents
+        — avoids 6x "AI Market Brain initialized" log spam and 6x
+        provider-config loading cost.
         """
+        # Build a single brain instance and share it across all agents.
+        if brain is None:
+            try:
+                from orchestrator.claude_market_brain import ClaudeMarketBrain
+                brain = ClaudeMarketBrain()
+            except Exception:
+                brain = None
+        self.brain = brain
+
         self.sector = SectorAnalyst(brain=brain, prefer_fast=prefer_fast)
         self.fundamental = FundamentalAnalyst(brain=brain, prefer_fast=prefer_fast)
         self.technical = TechnicalAnalyst(brain=brain, prefer_fast=prefer_fast)
@@ -37,7 +50,6 @@ class ResearchTeam:
             brain=brain,
             enable_llm_arbitration=enable_llm_arbitration,
         )
-        self.brain = brain
 
     def review(self, symbol: str, context: dict) -> TeamVerdict:
         """Run all 6 specialists in series; PM synthesizes."""

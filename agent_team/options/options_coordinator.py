@@ -27,6 +27,14 @@ from .options_pm import OptionsPortfolioManager
 class OptionsResearchTeam:
     def __init__(self, brain=None, prefer_fast: bool = True,
                  enable_llm_arbitration: bool = False):
+        # Build a single shared brain instance to avoid 6x init
+        if brain is None:
+            try:
+                from orchestrator.claude_market_brain import ClaudeMarketBrain
+                brain = ClaudeMarketBrain()
+            except Exception:
+                brain = None
+        self.brain = brain
         self.macro = MacroAnalyst(brain=brain, prefer_fast=prefer_fast)
         self.technical = TechnicalAnalyst(brain=brain, prefer_fast=prefer_fast)
         self.volatility = VolatilityAnalyst(brain=brain, prefer_fast=prefer_fast)
