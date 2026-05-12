@@ -676,6 +676,37 @@ tbody tr:hover { background:var(--card2); }
               <div id="stx-review-output" style="font-size:10px;color:var(--fg);"></div>
             </div>
 
+            <!-- === 7.4 CONSENSUS ALLOCATOR (highest priority) === -->
+            <div style="background:var(--card);border:2px solid var(--accent);border-radius:6px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div style="font-size:13px;font-weight:700;color:var(--accent);">
+                  CONSENSUS ALLOCATOR
+                  <span style="font-size:9px;color:var(--muted);margin-left:6px;">(common stocks across all sources + AI)</span>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <input type="number" id="ca-capital" value="100000" min="10000" step="10000"
+                         style="width:110px;padding:3px 6px;background:var(--card2);border:1px solid var(--border);
+                                color:var(--fg);font-size:11px;border-radius:3px;" />
+                  <label style="font-size:9px;color:var(--muted);display:flex;align-items:center;gap:3px;">
+                    <input type="checkbox" id="ca-ai" checked style="margin:0;" /> AI
+                  </label>
+                  <button onclick="loadConsensusAllocation()"
+                          style="padding:4px 14px;background:var(--accent);color:#000;border:0;font-size:11px;
+                                 font-weight:700;cursor:pointer;border-radius:3px;">ANALYZE & ALLOCATE</button>
+                </div>
+              </div>
+              <div style="padding:6px;background:rgba(0,200,255,0.08);border-left:3px solid var(--accent);
+                          font-size:10px;color:var(--fg);margin-bottom:8px;line-height:1.4;">
+                Finds stocks recommended by 2+ of 3 sources (V2 picks, V3 picks,
+                Multi-strategy consensus). Applies QGV-style sector-tier + conviction
+                weighting + 7-agent team review. Returns the EXACT Rs allocation per stock.
+              </div>
+              <div id="ca-summary" style="font-size:10px;color:var(--muted);margin-bottom:8px;"></div>
+              <div id="ca-allocation" style="font-size:10px;color:var(--fg);">
+                Enter capital, click ANALYZE & ALLOCATE.
+              </div>
+            </div>
+
             <!-- === 7.5 PRODUCTION PICKS V3 (QGV engine) === -->
             <div style="background:var(--card);border:2px solid var(--green,#0a0);border-radius:6px;padding:12px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -2729,6 +2760,94 @@ function refreshStocksWalkforward() {
     html += `<div style="font-size:9px;color:var(--muted);">${d.strategy || ''}</div>`;
     div.innerHTML = html;
   }).catch(err => console.warn('walkforward failed', err));
+}
+
+// ── Consensus Allocator (highest-priority panel) ──
+function loadConsensusAllocation() {
+  const cap = parseFloat(document.getElementById('ca-capital').value) || 100000;
+  const ai = document.getElementById('ca-ai').checked ? 1 : 0;
+  const summary = document.getElementById('ca-summary');
+  const div = document.getElementById('ca-allocation');
+  div.innerHTML = '<i>Cross-checking 3 sources + running AI team... (' +
+                   (ai ? '40-90s with AI' : '5-10s without AI') + ')</i>';
+  summary.innerHTML = '';
+
+  const url = `/api/screener/consensus_allocation?capital=${cap}&enable_ai=${ai}&force=1`;
+  fetch(url).then(r => r.json()).then(d => {
+    if (d.error) { div.innerHTML = `<span style="color:var(--red);">${d.error}</span>`; return; }
+
+    const s = d.summary || {};
+    const a = d.allocation || {};
+    const total_dep = a.total_deployed_inr || 0;
+    const cash = a.cash_reserve_inr || 0;
+    const tiers = a.sector_tiers || {};
+
+    summary.innerHTML =
+      `<b>TRIPLE consensus:</b> ${s.n_triple_consensus} stocks · ` +
+      `<b>DOUBLE:</b> ${s.n_double_consensus} · ` +
+      `In allocation: <b>${s.n_in_final_allocation}</b><br>` +
+      `Deployed: <b>Rs ${total_dep.toLocaleString('en-IN', {maximumFractionDigits:0})}</b> ` +
+      `(${s.total_deployed_pct.toFixed(1)}%) · ` +
+      `Cash: <b>Rs ${cash.toLocaleString('en-IN', {maximumFractionDigits:0})}</b><br>` +
+      `Top sectors: <b style="color:var(--green);">${(tiers.top || []).join(', ')}</b> · ` +
+      `Mid sectors: <b style="color:var(--yellow);">${(tiers.mid || []).join(', ')}</b>`;
+
+    let html = '<div style="margin-bottom:8px;font-size:11px;font-weight:700;color:var(--accent);">RECOMMENDED ALLOCATION</div>';
+    (a.allocations || []).forEach((p, i) => {
+      const tierColor = p.sector_tier === 'TOP' ? 'var(--green)' :
+                        p.sector_tier === 'MID' ? 'var(--yellow)' : 'var(--muted)';
+      const convictionBadge = p.conviction === 'TRIPLE' ?
+        '<span style="background:rgba(0,255,0,0.15);color:var(--green);font-size:9px;padding:1px 5px;border-radius:2px;">TRIPLE</span>' :
+        '<span style="background:rgba(255,200,0,0.15);color:var(--yellow);font-size:9px;padding:1px 5px;border-radius:2px;">DOUBLE</span>';
+
+      const aiVerdict = (d.ai_reviews || {})[p.symbol];
+      const aiBadge = aiVerdict ?
+        `<span style="font-size:9px;padding:1px 5px;border-radius:2px;background:${
+          aiVerdict.final_action === 'BUY' ? 'rgba(0,255,0,0.15)' :
+          aiVerdict.final_action === 'SKIP' ? 'rgba(255,0,0,0.15)' : 'rgba(255,200,0,0.15)'};">AI: ${aiVerdict.final_action || '?'}</span>` : '';
+
+      const fs = p.fundamentals_summary || {};
+      const fundLine = [];
+      if (fs.pe) fundLine.push(`PE ${fs.pe.toFixed(1)}`);
+      if (fs.roe_pct != null) fundLine.push(`ROE ${fs.roe_pct.toFixed(1)}%`);
+      if (fs.de != null) fundLine.push(`D/E ${fs.de.toFixed(0)}`);
+
+      html += `<div style="background:var(--card2);border-left:3px solid ${tierColor};
+                            padding:8px;margin-bottom:6px;border-radius:3px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-weight:700;font-size:12px;">
+            ${i+1}. ${p.symbol}
+            <span style="font-size:9px;color:var(--muted);">${p.cap_tier || ''} / ${p.sector}</span>
+            ${convictionBadge} ${aiBadge}
+          </span>
+          <span style="font-weight:700;font-size:13px;color:${tierColor};">
+            Rs ${p.target_value_inr.toLocaleString('en-IN', {maximumFractionDigits:0})}
+            <span style="font-size:9px;color:var(--muted);">(${p.target_weight_pct.toFixed(1)}%)</span>
+          </span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;font-size:10px;">
+          <div><span style="color:var(--muted);">Price</span> <b>Rs ${p.current_price.toFixed(0)}</b></div>
+          <div><span style="color:var(--muted);">Qty</span> <b>${p.target_qty}</b></div>
+          <div><span style="color:var(--muted);">Score</span> <b>${(p.composite_score || 0).toFixed(2)}</b></div>
+          <div><span style="color:var(--muted);">Sources</span> <b>${(p.sources || []).join('+')}</b></div>
+        </div>
+        ${fundLine.length ? `<div style="font-size:9px;color:var(--muted);margin-top:3px;">${fundLine.join(' · ')}</div>` : ''}
+        ${aiVerdict && aiVerdict.summary ?
+          `<div style="font-size:9px;color:var(--accent);margin-top:3px;font-style:italic;">AI: ${aiVerdict.summary}</div>` : ''}
+        ${p.strategies_agreeing && p.strategies_agreeing.length ?
+          `<div style="font-size:9px;color:var(--muted);margin-top:3px;">Strategies: ${(p.strategies_agreeing || []).slice(0,3).join(', ')}${p.strategies_agreeing.length>3?'...':''}</div>` : ''}
+      </div>`;
+    });
+
+    if (d.methodology) {
+      html += `<div style="font-size:9px;color:var(--muted);margin-top:8px;padding:6px;background:var(--card2);border-radius:3px;line-height:1.4;">
+        <b>Methodology:</b> ${d.methodology}
+      </div>`;
+    }
+    div.innerHTML = html;
+  }).catch(err => {
+    div.innerHTML = `<span style="color:var(--red);">Fetch failed: ${err.message}</span>`;
+  });
 }
 
 // ── V3 production picks (QGV engine) ──

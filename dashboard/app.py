@@ -2013,6 +2013,32 @@ async def picks_v3_tracker_reset():
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 
+@app.get("/api/screener/consensus_allocation")
+async def screener_consensus_allocation(
+    capital: float = 100000.0,
+    enable_ai: int = 1,
+    force: int = 0,
+):
+    """
+    Find stocks recommended by 2+ of the 3 sources (v2 picks, v3 picks,
+    multi-strategy consensus). Apply QGV-style conviction-weighted
+    sector-tier allocation. Optionally run 7-agent team review on each
+    triple-consensus pick.
+
+    Returns the exact ₹ amount to invest in each consensus stock.
+    """
+    try:
+        from screener.consensus_allocator import generate
+        return generate(
+            capital=float(capital),
+            enable_ai=bool(int(enable_ai)),
+            force_refresh=bool(int(force)),
+        )
+    except Exception as e:
+        logger.error("consensus_allocation error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
 @app.get("/api/screener/multi_strategy")
 async def screener_multi_strategy(universe: str = "LARGE"):
     """Run all 6 strategies in parallel + show consensus."""
