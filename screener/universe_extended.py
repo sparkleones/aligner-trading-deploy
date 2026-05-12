@@ -83,7 +83,11 @@ MID_CAP = [
     "JUBLPHARMA", "GLAND",
 ]
 
-# ── SMALL CAP: Nifty Smallcap 250 (curated ~80 with decent liquidity) ──
+# ── SMALL CAP CORE: Liquid Nifty Smallcap 250 names selected by:
+#    - Min market cap > Rs 2,500 Cr (avoid microcap)
+#    - 20D avg turnover > Rs 25 Cr/day
+#    - F&O eligibility preferred (but not required)
+#    - Known "compounder" candidates per AMFI / Value Research
 SMALL_CAP = [
     # Banks/NBFC
     "CSBBANK", "DCBBANK", "EQUITASBNK", "UJJIVANSFB",

@@ -2190,6 +2190,33 @@ async def agent_team_options_review():
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 
+@app.get("/api/screener/mf_recommendations")
+async def screener_mf_recommendations(category: str = "ALL"):
+    """
+    Mutual fund recommendations. For categories where our screener
+    underperforms passive/active MFs (especially small-cap), point user
+    to the better external alternative.
+    """
+    try:
+        from screener.mf_recommendations import get_recommendations
+        return {"recommendations": get_recommendations(category)}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/screener/smallcap_postmortem")
+async def screener_smallcap_postmortem():
+    """Return the small-cap backtest findings + honest report."""
+    try:
+        path = Path(__file__).resolve().parent.parent / "reports" / "screener" / "smallcap_strategies.json"
+        if not path.exists():
+            return {"error": "run 'python -m screener.test_smallcap_strategies' first"}
+        with open(path, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
 @app.get("/api/screener/current_regime")
 async def screener_current_regime():
     """

@@ -676,6 +676,28 @@ tbody tr:hover { background:var(--card2); }
               <div id="stx-review-output" style="font-size:10px;color:var(--fg);"></div>
             </div>
 
+            <!-- === 7b. MUTUAL FUND RECOMMENDATIONS === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div style="font-size:13px;font-weight:700;color:var(--accent);">
+                  MUTUAL FUND RECOMMENDATIONS
+                </div>
+                <button onclick="loadMFRecs()"
+                        style="padding:3px 10px;background:var(--accent);color:#000;border:0;font-size:10px;
+                               font-weight:700;cursor:pointer;border-radius:3px;">LOAD</button>
+              </div>
+              <div style="padding:8px;background:rgba(255,100,100,0.08);border-left:3px solid var(--red);
+                          font-size:10px;color:var(--fg);margin-bottom:8px;line-height:1.4;">
+                <b>HONEST FINDING:</b> Our screener LOSES money on small-caps in backtest
+                (-2% to -11% CAGR vs Nippon India SC at +31% / HDFC SC at +28%). Top
+                quartile small-cap MFs have fundamental-research edges we cannot replicate
+                with price data alone. For SC exposure, SIP into these funds via Groww /
+                Zerodha Coin / Kuvera. Use our screener for LARGE-CAP where it works (+10%
+                alpha vs NIFTY in 4 of 6 rolling windows).
+              </div>
+              <div id="stx-mf-recs" style="font-size:10px;color:var(--fg);"></div>
+            </div>
+
             <!-- === 8. OPTIONS TEAM REVIEW === -->
             <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -2628,6 +2650,48 @@ function refreshStocksWalkforward() {
     html += `<div style="font-size:9px;color:var(--muted);">${d.strategy || ''}</div>`;
     div.innerHTML = html;
   }).catch(err => console.warn('walkforward failed', err));
+}
+
+// ── Mutual Fund recommendations panel ──
+function loadMFRecs() {
+  const div = document.getElementById('stx-mf-recs');
+  div.innerHTML = '<i>Loading...</i>';
+  fetch('/api/screener/mf_recommendations').then(r => r.json()).then(d => {
+    if (d.error) { div.innerHTML = `<span style="color:var(--red);">${d.error}</span>`; return; }
+    const recs = d.recommendations || {};
+    let html = '';
+    const catOrder = ['SMALL_CAP', 'MID_CAP', 'LARGE_CAP', 'FLEXICAP'];
+    for (const cat of catOrder) {
+      const list = recs[cat] || [];
+      if (!list.length) continue;
+      const color = cat === 'SMALL_CAP' ? 'var(--red)' :
+                    cat === 'MID_CAP' ? 'var(--yellow)' :
+                    'var(--green)';
+      html += `<div style="font-weight:700;color:${color};font-size:11px;margin-top:8px;margin-bottom:4px;">
+        ${cat.replace('_', ' ')} ${cat === 'SMALL_CAP' ? ' (recommended over our screener)' : ''}
+      </div>`;
+      list.forEach(f => {
+        html += `<div style="background:var(--card2);padding:6px;margin-bottom:4px;border-radius:3px;
+                              border-left:2px solid ${color};">
+          <div style="font-weight:700;font-size:11px;">${f.name}</div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;font-size:9px;margin-top:3px;">
+            <div><span style="color:var(--muted);">1y</span> <b>${(f.cagr_1y*100).toFixed(1)}%</b></div>
+            <div><span style="color:var(--muted);">3y</span> <b>${(f.cagr_3y*100).toFixed(1)}%</b></div>
+            <div><span style="color:var(--muted);">5y</span> <b style="color:var(--green);">${(f.cagr_5y*100).toFixed(1)}%</b></div>
+            <div><span style="color:var(--muted);">10y</span> <b>${(f.cagr_10y*100).toFixed(1)}%</b></div>
+            <div><span style="color:var(--muted);">TER</span> <b>${(f.expense_ratio*100).toFixed(2)}%</b></div>
+          </div>
+          <div style="font-size:9px;color:var(--muted);margin-top:3px;">
+            Min SIP Rs ${f.min_sip} &middot; ${f.rationale}
+          </div>
+          <div style="font-size:9px;color:var(--accent);margin-top:2px;font-style:italic;">
+            ${f.system_recommendation}
+          </div>
+        </div>`;
+      });
+    }
+    div.innerHTML = html;
+  }).catch(err => { div.innerHTML = `<span style="color:var(--red);">${err.message}</span>`; });
 }
 
 // ── Current market regime (informational) ──

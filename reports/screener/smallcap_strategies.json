@@ -1,0 +1,71 @@
+{
+  "strategy": "SCQG (Small-Cap Quality-Growth)",
+  "engine": "small-cap MF style: annual rebal, no SL, stage2_break exit",
+  "window": [
+    "2022-01-01",
+    "2026-04-30"
+  ],
+  "scenarios": {
+    "A_lumpsum_1L": {
+      "cagr_pct": -0.11060907191763003,
+      "sharpe": -1.1451675376844632,
+      "max_dd_pct": -0.40795337171818014,
+      "calmar": -0.271131652746923,
+      "n_trades": 9,
+      "win_rate_pct": 0.1111111111111111,
+      "final_equity": 60264.799827083596,
+      "total_invested": 100000,
+      "years": 4.32,
+      "absolute_profit": -39735.200172916404,
+      "absolute_return_pct": -0.3973520017291641
+    },
+    "B_sip_10k_month": {
+      "cagr_pct": -0.1275008901313872,
+      "sharpe": 1.9112321390666256,
+      "max_dd_pct": -0.1727716227888788,
+      "calmar": -0.7379735634432807,
+      "n_trades": 12,
+      "win_rate_pct": 0.08333333333333333,
+      "final_equity": 390385.20623412554,
+      "total_invested": 530000,
+      "years": 4.32,
+      "absolute_profit": -139614.79376587446,
+      "absolute_return_pct": -0.26342413918089524
+    },
+    "C_lump_1L_plus_sip_10k": {
+      "cagr_pct": -0.1288969367154612,
+      "sharpe": 1.851215593309516,
+      "max_dd_pct": -0.17955341429040106,
+      "calmar": -0.7178751639163458,
+      "n_trades": 12,
+      "win_rate_pct": 0.08333333333333333,
+      "final_equity": 438633.0647501862,
+      "total_invested": 620000,
+      "years": 4.32,
+      "absolute_profit": -181366.93524981377,
+      "absolute_return_pct": -0.2925273149190545
+    },
+    "D_large_cap_reference": {
+      "cagr_pct": 0.12767478413294908,
+      "sharpe": 0.7992567912352982,
+      "max_dd_pct": -0.2456427342570443,
+      "calmar": 0.519758032001664,
+      "n_trades": 42,
+      "win_rate_pct": 0.4523809523809524,
+      "final_equity": 168055.00844223867,
+      "years": 4.32
+    }
+  },
+  "benchmarks": {
+    "nifty_smallcap250_lump": null,
+    "nifty_smallcap250_sip": null,
+    "mf_5y_typicals": {
+      "Nippon India SC": 0.31,
+      "HDFC SC": 0.28,
+      "Kotak SC": 0.26,
+      "Axis SC": 0.25,
+      "Nifty Smallcap 250": 0.22
+    }
+  },
+  "generated_at": "2026-05-13T02:20:25.322347"
+}
