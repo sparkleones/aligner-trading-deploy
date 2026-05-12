@@ -25,26 +25,45 @@ from .universe import get_sector
 from .universe_extended import LARGE_CAP, MID_CAP
 
 
-def _nifty_bench(start, end, init):
+# Fetch NIFTY history once at module load — saves 6x cache hits + is more
+# resilient to yfinance peewee/tzdata cache corruption.
+_NIFTY_CACHE = None
+
+
+def _get_nifty_cached():
+    global _NIFTY_CACHE
+    if _NIFTY_CACHE is not None:
+        return _NIFTY_CACHE
     import yfinance as yf
-    try:
-        df = yf.Ticker("^NSEI").history(period="5y", auto_adjust=True)
-        if df.index.tz is not None:
-            df.index = df.index.tz_localize(None)
-        df = df[(df.index >= start) & (df.index <= end)]
-        if df.empty:
-            return None
-        s = float(df["Close"].iloc[0])
-        e = float(df["Close"].iloc[-1])
-        years = max((df.index[-1] - df.index[0]).days / 365.25, 1e-6)
-        cagr = (e / s) ** (1.0 / years) - 1.0
-        eq = df["Close"] / s * init
-        daily = eq.pct_change().dropna()
-        sharpe = float((daily.mean() / daily.std()) * np.sqrt(252)) if daily.std() > 0 else 0.0
-        dd = (eq / eq.cummax() - 1.0).min()
-        return {"cagr": cagr, "sharpe": sharpe, "dd": float(dd)}
-    except Exception:
+    for attempt in range(3):
+        try:
+            df = yf.Ticker("^NSEI").history(period="5y", auto_adjust=True)
+            if df.index.tz is not None:
+                df.index = df.index.tz_localize(None)
+            if not df.empty:
+                _NIFTY_CACHE = df
+                return df
+        except Exception as e:
+            print(f"  [NIFTY fetch attempt {attempt+1} failed: {e}]")
+    return None
+
+
+def _nifty_bench(start, end, init):
+    df = _get_nifty_cached()
+    if df is None or df.empty:
         return None
+    sub = df[(df.index >= pd.Timestamp(start)) & (df.index <= pd.Timestamp(end))]
+    if sub.empty or len(sub) < 10:
+        return None
+    s = float(sub["Close"].iloc[0])
+    e = float(sub["Close"].iloc[-1])
+    years = max((sub.index[-1] - sub.index[0]).days / 365.25, 1e-6)
+    cagr = (e / s) ** (1.0 / years) - 1.0
+    eq = sub["Close"] / s * init
+    daily = eq.pct_change().dropna()
+    sharpe = float((daily.mean() / daily.std()) * np.sqrt(252)) if daily.std() > 0 else 0.0
+    dd = (eq / eq.cummax() - 1.0).min()
+    return {"cagr": cagr, "sharpe": sharpe, "dd": float(dd)}
 
 
 def rolling_windows(start: str = "2022-01-01", end: str = "2026-04-30",
@@ -150,6 +169,39 @@ def main():
     print("  Median large-cap MF:        ~11-13%")
     print("  NIFTY 50 (5y):              ~12-14%")
     print("=" * 78)
+
+    # ── Save findings for dashboard consumption ──
+    import json as _json
+    from pathlib import Path as _Path
+    out_dir = _Path(__file__).resolve().parent.parent / "reports" / "screener"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    findings = {
+        "engine": "MF-style (hold-until-deterioration, quarterly rebal, STCG tax)",
+        "strategy": "composite_top (stage2 + breakout), top-5 LARGE cap picks",
+        "windows": rows,
+        "summary": {
+            "n_windows": len(rows),
+            "n_beating_nifty": n_beats,
+            "median_cagr": float(median_cagr),
+            "median_sharpe": float(median_sharpe),
+            "median_dd": float(median_dd),
+            "median_alpha": float(median_alpha),
+            "worst_cagr": float(worst_cagr),
+            "best_cagr": float(best_cagr),
+            "median_nifty_cagr": float(median_nifty),
+            "median_trades_per_window": float(median_n_trades),
+        },
+        "benchmarks": {
+            "top_quartile_largecap_mf_5y": 0.15,
+            "top_quartile_midcap_mf_5y": 0.24,
+            "median_largecap_mf_5y": 0.12,
+            "nifty50_5y": 0.13,
+        },
+        "generated_at": pd.Timestamp.now().isoformat(),
+    }
+    with open(out_dir / "rolling_walkforward.json", "w") as f:
+        _json.dump(findings, f, indent=2, default=str)
+    print(f"\n[OK] Saved to {out_dir/'rolling_walkforward.json'}")
 
 
 if __name__ == "__main__":

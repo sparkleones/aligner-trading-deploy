@@ -2032,6 +2032,177 @@ async def screener_train_test():
 
 # ── Market Timing + DCA Endpoints ────────────────────────────────────────────
 
+@app.get("/api/agent_team/review")
+async def agent_team_review(symbol: str, sector: str = "OTHER"):
+    """
+    Run the full 7-agent research team on any NSE symbol on demand.
+    Returns each specialist's report + the PM's synthesis.
+    """
+    try:
+        from agent_team import ResearchTeam
+        from agent_team.context_builder import build_context
+        from screener.data_loader import load_history
+        from screener.fundamentals import fetch_fundamentals
+        from screener.market_timing_analyzer import _fetch_nifty
+        from screener.universe import get_sector as _get_sector
+        from screener.universe_extended import LARGE_CAP, MID_CAP
+
+        sym = symbol.upper().strip()
+        # Resolve sector via the existing map if user didn't supply
+        if sector == "OTHER" or not sector:
+            sector = _get_sector(sym)
+
+        df = load_history(sym, period="3y", use_cache=True)
+        if df.empty or len(df) < 252:
+            return {"error": f"insufficient history for {sym}"}
+        fund = fetch_fundamentals(sym)
+        try:
+            nifty_h = _fetch_nifty()
+        except Exception:
+            nifty_h = None
+
+        # Same-sector peers for sector context
+        peers = {}
+        for s in LARGE_CAP + MID_CAP:
+            if _get_sector(s) == sector and s != sym:
+                pdf = load_history(s, period="3y", use_cache=True)
+                if not pdf.empty and len(pdf) >= 252:
+                    peers[s] = pdf
+                if len(peers) >= 12:
+                    break
+
+        macro_extra = {}
+        if nifty_h is not None and not nifty_h.empty:
+            c = nifty_h["Close"]
+            close_n = float(c.iloc[-1])
+            ma_200 = float(c.rolling(200).mean().iloc[-1]) if len(c) >= 200 else close_n
+            ma_50  = float(c.rolling(50).mean().iloc[-1]) if len(c) >= 50 else close_n
+            high_252 = float(nifty_h["High"].tail(252).max())
+            macro_extra = {
+                "nifty_close": close_n,
+                "nifty_dist_high_pct": (close_n/high_252 - 1.0) if high_252 > 0 else 0,
+                "nifty_dist_200dma_pct": (close_n/ma_200 - 1.0) if ma_200 > 0 else 0,
+                "above_200dma": close_n > ma_200,
+                "golden_cross": ma_50 > ma_200,
+            }
+
+        ctx = build_context(
+            symbol=sym, sector=sector, history=df,
+            fundamentals=fund, nifty_history=nifty_h,
+            sector_peers=peers, macro_extra=macro_extra,
+        )
+
+        team = ResearchTeam(prefer_fast=True, enable_llm_arbitration=False)
+        tv = team.review(sym, ctx)
+        return {
+            "symbol": sym, "sector": sector,
+            "final_action": tv.final_action,
+            "final_score": tv.final_score,
+            "confidence": tv.confidence,
+            "suggested_qty_mult": tv.suggested_qty_mult,
+            "hold_days": tv.hold_days,
+            "coordinator_note": tv.coordinator_note,
+            "reports": [
+                {"agent": r.agent_name, "score": r.score, "verdict": r.verdict,
+                 "confidence": r.confidence, "flags": r.flags,
+                 "one_liner": r.one_liner, "error": r.error,
+                 "provider": r.provider_used}
+                for r in tv.reports
+            ],
+            "context_summary": {
+                "technical": ctx.get("technical", {}),
+                "risk": ctx.get("risk", {}),
+                "sector_metrics": ctx.get("sector_metrics", {}),
+                "events": ctx.get("events", {}),
+            },
+        }
+    except Exception as e:
+        logger.error("agent_team review error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/agent_team/options_review")
+async def agent_team_options_review():
+    """
+    Run the OPTIONS research team on the current NIFTY F&O state.
+    Returns strategy recommendation + all specialist reports.
+    """
+    try:
+        from agent_team.options import OptionsResearchTeam
+        from agent_team.options.context_builder import build_options_context
+        from screener.market_timing_analyzer import _fetch_nifty, _fetch_vix
+
+        nifty_h = _fetch_nifty()
+        vix_h = _fetch_vix()
+
+        # Try to pull engine state for Greeks if available
+        portfolio_greeks = {}
+        capital_deployed = 0
+        capital_available = 0
+        try:
+            engine_state_path = Path(__file__).resolve().parent.parent / "data" / "live_state.json"
+            if engine_state_path.exists():
+                with open(engine_state_path, "r") as f:
+                    es = json.load(f)
+                # Simple proxies — engine may not expose Greeks directly
+                capital_deployed = float(es.get("system", {}).get("used_margin", 0))
+                capital_available = float(es.get("system", {}).get("available_margin", 0))
+        except Exception:
+            pass
+
+        ctx = build_options_context(
+            nifty_history=nifty_h,
+            vix_history=vix_h,
+            option_chain={},
+            portfolio_greeks=portfolio_greeks,
+            capital_deployed=capital_deployed,
+            capital_available=capital_available,
+        )
+
+        team = OptionsResearchTeam(prefer_fast=True, enable_llm_arbitration=False)
+        tv = team.review("NIFTY", ctx)
+        chosen_strategy = getattr(tv, "chosen_strategy", "HOLD")
+        return {
+            "symbol": "NIFTY",
+            "final_action": tv.final_action,
+            "chosen_strategy": chosen_strategy,
+            "final_score": tv.final_score,
+            "confidence": tv.confidence,
+            "suggested_qty_mult": tv.suggested_qty_mult,
+            "hold_days": tv.hold_days,
+            "coordinator_note": tv.coordinator_note,
+            "reports": [
+                {"agent": r.agent_name, "score": r.score, "verdict": r.verdict,
+                 "confidence": r.confidence, "flags": r.flags,
+                 "one_liner": r.one_liner, "error": r.error,
+                 "provider": r.provider_used}
+                for r in tv.reports
+            ],
+            "context_summary": {
+                "macro": ctx.get("macro", {}),
+                "vol": ctx.get("vol", {}),
+                "greeks": ctx.get("greeks", {}),
+                "events": ctx.get("events", {}),
+            },
+        }
+    except Exception as e:
+        logger.error("options_review error: %s", e, exc_info=True)
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.get("/api/screener/rolling_walkforward")
+async def screener_rolling_walkforward():
+    """Return the rolling walk-forward findings if saved."""
+    try:
+        path = Path(__file__).resolve().parent.parent / "reports" / "screener" / "rolling_walkforward.json"
+        if not path.exists():
+            return {"error": "run 'python -m screener.rolling_walkforward' first"}
+        with open(path, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+
 @app.get("/api/screener/market_timing")
 async def screener_market_timing():
     """Run the market timing analyzer on live NIFTY/VIX data. ~10-15s."""

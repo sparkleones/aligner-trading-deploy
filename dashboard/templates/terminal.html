@@ -631,6 +631,44 @@ tbody tr:hover { background:var(--card2); }
               </div>
             </div>
 
+            <!-- === 6. ROLLING WALK-FORWARD (honest engine) === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;">
+                ROLLING WALK-FORWARD vs NIFTY (6 windows, 4.5y)
+              </div>
+              <div id="stx-walkforward" style="font-size:10px;color:var(--fg);">Loading...</div>
+            </div>
+
+            <!-- === 7. REVIEW ANY SYMBOL (7-agent team on demand) === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;">
+                7-AGENT REVIEW (any NSE symbol)
+              </div>
+              <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center;">
+                <input type="text" id="stx-review-sym" placeholder="e.g. HDFCBANK"
+                       style="flex:1;padding:5px;background:var(--card2);border:1px solid var(--border);
+                              color:var(--fg);font-size:11px;font-family:inherit;border-radius:3px;
+                              text-transform:uppercase;" />
+                <button onclick="reviewSymbol()"
+                        style="padding:5px 14px;background:var(--accent);color:#000;border:0;
+                               font-size:11px;font-weight:700;cursor:pointer;border-radius:3px;">REVIEW</button>
+              </div>
+              <div id="stx-review-output" style="font-size:10px;color:var(--fg);"></div>
+            </div>
+
+            <!-- === 8. OPTIONS TEAM REVIEW === -->
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <div style="font-size:13px;font-weight:700;color:var(--accent);">
+                  NIFTY OPTIONS — 6-AGENT TEAM
+                </div>
+                <button onclick="reviewOptions()"
+                        style="padding:4px 12px;background:var(--accent);color:#000;border:0;
+                               font-size:11px;font-weight:700;cursor:pointer;border-radius:3px;">REVIEW NIFTY F&amp;O</button>
+              </div>
+              <div id="stx-options-output" style="font-size:10px;color:var(--fg);"></div>
+            </div>
+
           </div>
         </div>
 
@@ -2526,6 +2564,151 @@ function refreshStocksTabStrategies() {
   }).catch(err => console.warn('strategy compare failed', err));
 }
 
+// ── B: Rolling walk-forward ──
+function refreshStocksWalkforward() {
+  fetch('/api/screener/rolling_walkforward').then(r => r.json()).then(d => {
+    const div = document.getElementById('stx-walkforward');
+    if (!div) return;
+    if (d.error) {
+      div.innerHTML = '<i>To populate: <code>python -m screener.rolling_walkforward</code></i>';
+      return;
+    }
+    const s = d.summary || {};
+    let html = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;">
+      <div><div style="color:var(--muted);font-size:9px;">MEDIAN CAGR</div><div style="font-weight:700;color:var(--green);">${(s.median_cagr*100).toFixed(2)}%</div></div>
+      <div><div style="color:var(--muted);font-size:9px;">MEDIAN ALPHA</div><div style="font-weight:700;color:var(--green);">+${(s.median_alpha*100).toFixed(2)}%</div></div>
+      <div><div style="color:var(--muted);font-size:9px;">MEDIAN SHARPE</div><div style="font-weight:700;">${s.median_sharpe.toFixed(2)}</div></div>
+      <div><div style="color:var(--muted);font-size:9px;">MEDIAN MAX DD</div><div style="font-weight:700;color:var(--red);">${(s.median_dd*100).toFixed(2)}%</div></div>
+      <div><div style="color:var(--muted);font-size:9px;">BEAT NIFTY</div><div style="font-weight:700;">${s.n_beating_nifty}/${s.n_windows}</div></div>
+      <div><div style="color:var(--muted);font-size:9px;">WORST/BEST</div><div style="font-weight:700;">${(s.worst_cagr*100).toFixed(1)}% / ${(s.best_cagr*100).toFixed(1)}%</div></div>
+    </div>`;
+    html += '<table style="border-collapse:collapse;width:100%;font-size:9px;"><thead><tr style="background:var(--card2);">' +
+      '<th style="padding:4px;border:1px solid var(--border);text-align:left;">Window</th>' +
+      '<th style="padding:4px;border:1px solid var(--border);text-align:right;">Strategy CAGR</th>' +
+      '<th style="padding:4px;border:1px solid var(--border);text-align:right;">NIFTY CAGR</th>' +
+      '<th style="padding:4px;border:1px solid var(--border);text-align:right;">Alpha</th>' +
+      '<th style="padding:4px;border:1px solid var(--border);text-align:right;">Sharpe</th>' +
+      '<th style="padding:4px;border:1px solid var(--border);text-align:right;">DD</th>' +
+      '<th style="padding:4px;border:1px solid var(--border);text-align:center;">Beats?</th></tr></thead><tbody>';
+    (d.windows || []).forEach(w => {
+      const beat = w.beats_nifty;
+      const bg = beat ? 'rgba(0,255,0,0.05)' : 'rgba(255,0,0,0.05)';
+      html += `<tr style="background:${bg};">
+        <td style="padding:3px;border:1px solid var(--border);">${w.window}</td>
+        <td style="padding:3px;border:1px solid var(--border);text-align:right;font-weight:700;color:${w.strat_cagr>=0?'var(--green)':'var(--red)'};">${(w.strat_cagr*100).toFixed(2)}%</td>
+        <td style="padding:3px;border:1px solid var(--border);text-align:right;">${(w.nifty_cagr*100).toFixed(2)}%</td>
+        <td style="padding:3px;border:1px solid var(--border);text-align:right;font-weight:700;color:${w.alpha>=0?'var(--green)':'var(--red)'};">${w.alpha>=0?'+':''}${(w.alpha*100).toFixed(2)}%</td>
+        <td style="padding:3px;border:1px solid var(--border);text-align:right;">${w.strat_sharpe.toFixed(2)}</td>
+        <td style="padding:3px;border:1px solid var(--border);text-align:right;color:var(--red);">${(w.strat_dd*100).toFixed(1)}%</td>
+        <td style="padding:3px;border:1px solid var(--border);text-align:center;font-weight:700;">${beat?'Y':'N'}</td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+    html += `<div style="margin-top:8px;font-size:9px;color:var(--muted);">${d.engine || ''}</div>`;
+    html += `<div style="font-size:9px;color:var(--muted);">${d.strategy || ''}</div>`;
+    div.innerHTML = html;
+  }).catch(err => console.warn('walkforward failed', err));
+}
+
+// ── E: Review any symbol with the 7-agent team ──
+function reviewSymbol() {
+  const sym = (document.getElementById('stx-review-sym').value || '').toUpperCase().trim();
+  if (!sym) return;
+  const out = document.getElementById('stx-review-output');
+  out.innerHTML = `<div style="padding:8px;color:var(--muted);">Calling 7-agent team for ${sym}... (~30-60s on free tiers)</div>`;
+  fetch(`/api/agent_team/review?symbol=${encodeURIComponent(sym)}`).then(r => r.json()).then(d => {
+    if (d.error) {
+      out.innerHTML = `<span style="color:var(--red);">Error: ${d.error}</span>`;
+      return;
+    }
+    const finalColor = d.final_action === 'BUY' ? 'var(--green)' :
+                       d.final_action === 'SKIP' ? 'var(--red)' : 'var(--yellow)';
+    let html = `<div style="background:var(--card2);padding:8px;border-radius:3px;border-left:3px solid ${finalColor};margin-bottom:8px;">
+      <div style="font-weight:700;font-size:14px;color:${finalColor};">${d.symbol} — ${d.final_action}</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px;">
+        Sector: ${d.sector} | Score: ${d.final_score.toFixed(2)} | Confidence: ${(d.confidence*100).toFixed(0)}% |
+        Suggested size: ${(d.suggested_qty_mult*100).toFixed(0)}% | Hold: ${d.hold_days}d
+      </div>
+      <div style="font-size:10px;font-style:italic;margin-top:4px;color:var(--accent);">${d.coordinator_note}</div>
+    </div>`;
+    html += '<div style="font-size:10px;font-weight:700;color:var(--muted);margin:6px 0 4px;">SPECIALIST REPORTS</div>';
+    (d.reports || []).forEach(r => {
+      const sColor = r.score > 0.3 ? 'var(--green)' : (r.score < -0.3 ? 'var(--red)' : 'var(--yellow)');
+      html += `<div style="background:var(--card2);padding:6px;margin-bottom:4px;border-radius:3px;border-left:2px solid ${sColor};">
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-weight:700;font-size:11px;">${r.agent.replace('_', ' ')}</span>
+          <span style="font-size:10px;color:${sColor};">${r.verdict} (${r.score.toFixed(2)})</span>
+        </div>
+        <div style="font-size:9px;color:var(--muted);margin-top:2px;">${(r.flags || []).join(' · ') || '--'}</div>
+        <div style="font-size:10px;margin-top:2px;color:var(--fg);">${r.one_liner || ''}</div>
+        ${r.error ? `<div style="font-size:9px;color:var(--red);">ERROR: ${r.error}</div>` : ''}
+      </div>`;
+    });
+    out.innerHTML = html;
+  }).catch(err => {
+    out.innerHTML = `<span style="color:var(--red);">Fetch failed: ${err.message}</span>`;
+  });
+}
+
+// ── D: NIFTY Options team review ──
+function reviewOptions() {
+  const out = document.getElementById('stx-options-output');
+  out.innerHTML = `<div style="padding:8px;color:var(--muted);">Calling 6-agent options team... (~30-60s)</div>`;
+  fetch('/api/agent_team/options_review').then(r => r.json()).then(d => {
+    if (d.error) {
+      out.innerHTML = `<span style="color:var(--red);">Error: ${d.error}</span>`;
+      return;
+    }
+    const stratColor = d.chosen_strategy === 'HOLD' ? 'var(--muted)' :
+                       d.chosen_strategy.includes('BUY_CE') || d.chosen_strategy.includes('BULL') ? 'var(--green)' :
+                       d.chosen_strategy.includes('BUY_PE') || d.chosen_strategy.includes('BEAR') ? 'var(--red)' :
+                       'var(--yellow)';
+    let html = `<div style="background:var(--card2);padding:8px;border-radius:3px;border-left:3px solid ${stratColor};margin-bottom:8px;">
+      <div style="font-weight:700;font-size:14px;color:${stratColor};">${d.chosen_strategy.replace(/_/g, ' ')}</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px;">
+        Action: ${d.final_action} | Score: ${d.final_score.toFixed(2)} | Confidence: ${(d.confidence*100).toFixed(0)}% |
+        Size mult: ${(d.suggested_qty_mult*100).toFixed(0)}% | Hold: ${d.hold_days}d
+      </div>
+      <div style="font-size:10px;font-style:italic;margin-top:4px;color:var(--accent);">${d.coordinator_note}</div>
+    </div>`;
+    const cs = d.context_summary || {};
+    if (cs.macro || cs.vol) {
+      html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:9px;margin-bottom:8px;">
+        <div style="background:var(--card2);padding:6px;border-radius:3px;">
+          <div style="color:var(--muted);font-weight:700;">MACRO</div>
+          NIFTY: ${(cs.macro?.nifty_close||0).toLocaleString('en-IN')}<br>
+          Regime: ${cs.macro?.regime || '?'}<br>
+          Bias: ${cs.macro?.bias || '?'}<br>
+          200DMA dist: ${((cs.macro?.nifty_dist_200dma_pct||0)*100).toFixed(2)}%
+        </div>
+        <div style="background:var(--card2);padding:6px;border-radius:3px;">
+          <div style="color:var(--muted);font-weight:700;">VOLATILITY</div>
+          VIX: ${(cs.vol?.vix_current||0).toFixed(2)}<br>
+          Percentile: ${(cs.vol?.vix_percentile||0).toFixed(0)}<br>
+          Regime: ${cs.vol?.regime || '?'}<br>
+          IV-RV spread: ${((cs.vol?.iv_rv_spread||0)*100).toFixed(2)}%
+        </div>
+      </div>`;
+    }
+    html += '<div style="font-size:10px;font-weight:700;color:var(--muted);margin:6px 0 4px;">SPECIALIST REPORTS</div>';
+    (d.reports || []).forEach(r => {
+      const sColor = r.score > 0.3 ? 'var(--green)' : (r.score < -0.3 ? 'var(--red)' : 'var(--yellow)');
+      html += `<div style="background:var(--card2);padding:6px;margin-bottom:4px;border-radius:3px;border-left:2px solid ${sColor};">
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-weight:700;font-size:11px;">${r.agent.replace(/_/g, ' ')}</span>
+          <span style="font-size:10px;color:${sColor};">${r.verdict} (${r.score.toFixed(2)})</span>
+        </div>
+        <div style="font-size:9px;color:var(--muted);margin-top:2px;">${(r.flags || []).join(' · ') || '--'}</div>
+        <div style="font-size:10px;margin-top:2px;color:var(--fg);">${r.one_liner || ''}</div>
+        ${r.error ? `<div style="font-size:9px;color:var(--red);">ERROR: ${r.error}</div>` : ''}
+      </div>`;
+    });
+    out.innerHTML = html;
+  }).catch(err => {
+    out.innerHTML = `<span style="color:var(--red);">Fetch failed: ${err.message}</span>`;
+  });
+}
+
 // Re-load whenever Stocks tab activates
 const _stocksTabObserver = new MutationObserver(() => {
   const pane = document.getElementById('pane-stocks');
@@ -2533,6 +2716,7 @@ const _stocksTabObserver = new MutationObserver(() => {
     refreshDcaStatus();
     refreshStocksTabBacktest();
     refreshStocksTabStrategies();
+    refreshStocksWalkforward();
   }
 });
 window.addEventListener('DOMContentLoaded', () => {

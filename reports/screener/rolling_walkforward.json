@@ -1,0 +1,85 @@
+{
+  "engine": "MF-style (hold-until-deterioration, quarterly rebal, STCG tax)",
+  "strategy": "composite_top (stage2 + breakout), top-5 LARGE cap picks",
+  "windows": [
+    {
+      "window": "2022-01-01 -> 2023-07-01",
+      "strat_cagr": 0.11899021271757992,
+      "strat_sharpe": 0.859010594599818,
+      "strat_dd": -0.21779224758707794,
+      "nifty_cagr": 0.05882858514413947,
+      "alpha": 0.06016162757344046,
+      "beats_nifty": true,
+      "n_trades": 11
+    },
+    {
+      "window": "2022-07-01 -> 2024-01-01",
+      "strat_cagr": 0.38049579262243083,
+      "strat_sharpe": 1.895043579234105,
+      "strat_dd": -0.21779224758707794,
+      "nifty_cagr": 0.23912679276256954,
+      "alpha": 0.1413689998598613,
+      "beats_nifty": true,
+      "n_trades": 23
+    },
+    {
+      "window": "2023-01-01 -> 2024-07-01",
+      "strat_cagr": 0.5092515171689918,
+      "strat_sharpe": 1.922574890544803,
+      "strat_dd": -0.1353763181736075,
+      "nifty_cagr": 0.2081538960506535,
+      "alpha": 0.30109762111833827,
+      "beats_nifty": true,
+      "n_trades": 27
+    },
+    {
+      "window": "2023-07-01 -> 2025-01-01",
+      "strat_cagr": 0.37719043149837717,
+      "strat_sharpe": 1.4770721733961738,
+      "strat_dd": -0.18004462454483305,
+      "nifty_cagr": 0.14718273782772018,
+      "alpha": 0.230007693670657,
+      "beats_nifty": true,
+      "n_trades": 27
+    },
+    {
+      "window": "2024-01-01 -> 2025-07-01",
+      "strat_cagr": 0.0643179114330088,
+      "strat_sharpe": 0.40364301627622157,
+      "strat_dd": -0.22321828298105884,
+      "nifty_cagr": 0.11355227164931225,
+      "alpha": -0.04923436021630345,
+      "beats_nifty": false,
+      "n_trades": 27
+    },
+    {
+      "window": "2024-07-01 -> 2026-01-01",
+      "strat_cagr": -0.13585849085037638,
+      "strat_sharpe": -1.3380389188741553,
+      "strat_dd": -0.21398898310849346,
+      "nifty_cagr": 0.05450195764707089,
+      "alpha": -0.19036044849744727,
+      "beats_nifty": false,
+      "n_trades": 13
+    }
+  ],
+  "summary": {
+    "n_windows": 6,
+    "n_beating_nifty": 4,
+    "median_cagr": 0.24809032210797854,
+    "median_sharpe": 1.168041383997996,
+    "median_dd": -0.2158906153477857,
+    "median_alpha": 0.10076531371665087,
+    "worst_cagr": -0.13585849085037638,
+    "best_cagr": 0.5092515171689918,
+    "median_nifty_cagr": 0.13036750473851622,
+    "median_trades_per_window": 25.0
+  },
+  "benchmarks": {
+    "top_quartile_largecap_mf_5y": 0.15,
+    "top_quartile_midcap_mf_5y": 0.24,
+    "median_largecap_mf_5y": 0.12,
+    "nifty50_5y": 0.13
+  },
+  "generated_at": "2026-05-13T01:52:39.605555"
+}
